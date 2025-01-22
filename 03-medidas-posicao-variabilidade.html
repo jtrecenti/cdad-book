@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Medidas de posição e variabilidade – cdad-book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-visualizacao-seaborn.html" rel="next">
+<link href="./02-organizacao-dados-taxas.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-medidas-posicao-variabilidade.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medidas de posição e variabilidade</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">cdad-book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-tipos-variaveis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tipos de variáveis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-organizacao-dados-taxas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Organização de dados, frequências, proporções e taxas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-medidas-posicao-variabilidade.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medidas de posição e variabilidade</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-amostras-populacoes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Amostras e populações</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-probabilidade-cnormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probabilidade e curva normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-testes-hipoteses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-correlacao-regressao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Correlação e regressão</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-modelos-classificacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Modelos de classificação</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-corporativo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aplicações corporativas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-openai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Classificação de documentos usando OpenAI GPT-4o-mini</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./resumo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">4.1</span> Introdução</a></li>
+  <li><a href="#medidas-de-posição-conceitos" id="toc-medidas-de-posição-conceitos" class="nav-link" data-scroll-target="#medidas-de-posição-conceitos"><span class="header-section-number">4.2</span> Medidas de posição: conceitos</a>
+  <ul class="collapse">
+  <li><a href="#média" id="toc-média" class="nav-link" data-scroll-target="#média"><span class="header-section-number">4.2.1</span> Média</a></li>
+  <li><a href="#mediana" id="toc-mediana" class="nav-link" data-scroll-target="#mediana"><span class="header-section-number">4.2.2</span> Mediana</a></li>
+  <li><a href="#quantis" id="toc-quantis" class="nav-link" data-scroll-target="#quantis"><span class="header-section-number">4.2.3</span> Quantis</a></li>
+  </ul></li>
+  <li><a href="#medidas-de-posição-aplicação" id="toc-medidas-de-posição-aplicação" class="nav-link" data-scroll-target="#medidas-de-posição-aplicação"><span class="header-section-number">4.3</span> Medidas de posição: aplicação</a></li>
+  <li><a href="#medidas-de-variabilidade-conceitos" id="toc-medidas-de-variabilidade-conceitos" class="nav-link" data-scroll-target="#medidas-de-variabilidade-conceitos"><span class="header-section-number">4.4</span> Medidas de variabilidade: conceitos</a>
+  <ul class="collapse">
+  <li><a href="#amplitude" id="toc-amplitude" class="nav-link" data-scroll-target="#amplitude"><span class="header-section-number">4.4.1</span> Amplitude</a></li>
+  <li><a href="#amplitude-do-intervalo-interquartil-iqr" id="toc-amplitude-do-intervalo-interquartil-iqr" class="nav-link" data-scroll-target="#amplitude-do-intervalo-interquartil-iqr"><span class="header-section-number">4.4.2</span> Amplitude do Intervalo Interquartil (IQR)</a></li>
+  <li><a href="#desvio-padrão" id="toc-desvio-padrão" class="nav-link" data-scroll-target="#desvio-padrão"><span class="header-section-number">4.4.3</span> Desvio padrão</a></li>
+  </ul></li>
+  <li><a href="#medidas-de-variabilidade-aplicação" id="toc-medidas-de-variabilidade-aplicação" class="nav-link" data-scroll-target="#medidas-de-variabilidade-aplicação"><span class="header-section-number">4.5</span> Medidas de variabilidade: aplicação</a>
+  <ul class="collapse">
+  <li><a href="#cuidado-com-algumas-análises-de-tempo-avançado" id="toc-cuidado-com-algumas-análises-de-tempo-avançado" class="nav-link" data-scroll-target="#cuidado-com-algumas-análises-de-tempo-avançado"><span class="header-section-number">4.5.1</span> Cuidado com algumas análises de tempo (avançado)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medidas de posição e variabilidade</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="cell-1" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> textwrap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="introdução" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">4.1</span> Introdução</h2>
+<p>Nessa análise, nosso interesse é estudar os tempos das decisões do TJSP em apelações criminais. Para isso, vamos entender o que é distribuição, o que é uma estatística e como podemos retirar estatísticas de interesse dos nossos dados.</p>
+<p><strong>Por que isso é importante?</strong> As medidas resumo servem para facilitar nosso entendimento a respeito de uma variável quantitativa de interesse. Elas aparecem em todo lugar, mesmo no ramo do direito. Por exemplo, quando um advogado quer saber quanto tempo demora um processo, ele está interessado em medidas resumo.</p>
+</section>
+<section id="medidas-de-posição-conceitos" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="medidas-de-posição-conceitos"><span class="header-section-number">4.2</span> Medidas de posição: conceitos</h2>
+<p>Para cada conceito, vamos mostrar a definição, a fórmula matemática e o código em python para calcular.</p>
+<section id="média" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="média"><span class="header-section-number">4.2.1</span> Média</h3>
+<section id="definição" class="level4" data-number="4.2.1.1">
+<h4 data-number="4.2.1.1" class="anchored" data-anchor-id="definição"><span class="header-section-number">4.2.1.1</span> Definição</h4>
+<p>A <strong>média</strong> é a soma de todos os valores dividido pela quantidade de valores. Ela é considerada uma medida de tendência central. Está muito presente no nosso dia a dia, como por exemplo, quando queremos saber a média de idade de um grupo de pessoas.</p>
+</section>
+<section id="fórmula" class="level4" data-number="4.2.1.2">
+<h4 data-number="4.2.1.2" class="anchored" data-anchor-id="fórmula"><span class="header-section-number">4.2.1.2</span> Fórmula</h4>
+<p>A fórmula da média é dada por:</p>
+<p><span class="math display">\[\bar{x} = \frac{x_1 + x_2 + \dots + x_N}{N} = \frac{1}{N}\sum_{i=1}^{N} x_i\]</span></p>
+<p>Nessa fórmula, o símbolo <span class="math inline">\(\bar{x}\)</span> é a notação para a média.</p>
+<p>O símbolo <span class="math inline">\(x_i\)</span> é o valor da variável quantitativa de interesse para determinado processo <span class="math inline">\(i\)</span>, enquanto <span class="math inline">\(N\)</span> é a quantidade de valores. Por exemplo, <span class="math inline">\(x_3\)</span> é o tempo de decisão do processo 3 na nossa base de dados.</p>
+<p>Já o símbolo <span class="math inline">\(\sum\)</span> pode assustar. Trata-se da notação para a soma. Lemos ela assim: “soma de <span class="math inline">\(i\)</span> igual <span class="math inline">\(1\)</span> até <span class="math inline">\(N\)</span> de <span class="math inline">\(x_i\)</span>”. Como muita coisa na matemática, é só uma forma de economizar esforço e tinta para expressar algo que queremos.</p>
+</section>
+<section id="código" class="level4" data-number="4.2.1.3">
+<h4 data-number="4.2.1.3" class="anchored" data-anchor-id="código"><span class="header-section-number">4.2.1.3</span> Código</h4>
+<p>A média pode ser calculada em python usando a função <code>mean</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.mean()</code>.</p>
+<div id="cell-5" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mean_pandas <span class="op">=</span> camaras.tempo.mean()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mean_numpy <span class="op">=</span> np.mean(camaras.tempo)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>mean_pandas, mean_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>(3.1788413612066204, 3.1788413612066204)</code></pre>
+</div>
+</div>
+<p>Veja que essa conta é equivalente a calcular a soma de todos os valores e dividir pela quantidade de valores.</p>
+<div id="cell-7" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>soma <span class="op">=</span> np.<span class="bu">sum</span>(camaras.tempo)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>quantidade <span class="op">=</span> <span class="bu">len</span>(camaras)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>soma <span class="op">/</span> quantidade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>3.1785234770704998</code></pre>
+</div>
+</div>
+<p>A diferença na quarta casa decimal se dá por conta da precisão dos números em ponto flutuante.</p>
+</section>
+</section>
+<section id="mediana" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="mediana"><span class="header-section-number">4.2.2</span> Mediana</h3>
+<section id="definição-1" class="level4" data-number="4.2.2.1">
+<h4 data-number="4.2.2.1" class="anchored" data-anchor-id="definição-1"><span class="header-section-number">4.2.2.1</span> Definição</h4>
+<p>A <strong>mediana</strong> é o valor que divide a amostra em duas partes iguais. Ou seja, 50 % dos valores são menores que a mediana e 50 % dos valores são maiores que a mediana.</p>
+<p>A mediana é calculada ordenando os valores e escolhendo o valor do meio. Se a quantidade de valores for par, a mediana é a média dos dois valores centrais.</p>
+<p>A principal diferença entre média e mediana é que a média é sensível a valores extremos, enquanto a mediana não. Por exemplo, a média dos valores <code>[1, 2, 3, 4 e 100]</code> é 22, enquanto a mediana é 3.</p>
+<p>No direito, a mediana é muito importante porque estamos sempre trabalhando com variáveis que assumem valores extremos. Por exemplo, o tempo de decisão de um processo pode ser muito longo, o que afeta a média. Outro exemplo são os valores: a maioria dos processos têm valores envolvidos na ordem de milhares de reais, mas também é comum se deparar com processos com valores muito altos, na ordem de milhões ou bilhões.</p>
+</section>
+<section id="fórmula-1" class="level4" data-number="4.2.2.2">
+<h4 data-number="4.2.2.2" class="anchored" data-anchor-id="fórmula-1"><span class="header-section-number">4.2.2.2</span> Fórmula</h4>
+<p>A mediana é o valor que divide a amostra em duas partes iguais. Se a quantidade de valores for ímpar, a mediana é o valor do meio. Se a quantidade de valores for par, a mediana é a média dos dois valores centrais.</p>
+<p>Para mostrar isso matematicamente, introduzimos o conceito de <em>postos</em> (em inglês, <em>rank</em>). O posto de um valor é a sua posição na amostra, quando ela está ordenada. Por exemplo, na amostra <code>[1, 2, 100, 3, 4]</code>, <span class="math inline">\(x_{(3)}\)</span> é 3 (leia assim: a lista ordenada na 3ª posição é 3), enquanto <span class="math inline">\(x_{(5)}\)</span> é 100 (a lista ordenada na 5ª posição).</p>
+<p>Assim, a mediana é o posto do meio. Mas o que é o meio? Bem, em uma amostra com <span class="math inline">\(N\)</span> valores, o meio é o valor <span class="math inline">\(\frac{N+1}{2}\)</span>, se <span class="math inline">\(N\)</span> for ímpar. Se <span class="math inline">\(N\)</span> for par, o meio é a média dos valores <span class="math inline">\(\frac{N}{2}\)</span> e <span class="math inline">\(\frac{N}{2}+1\)</span>.</p>
+<p>Por exemplo, se <span class="math inline">\(N = 31\)</span>, o meio é o valor na posição <span class="math inline">\(\frac{31+1}{2} = 16\)</span>, ou seja, <span class="math inline">\(x_{(16)}\)</span>. Se <span class="math inline">\(N = 30\)</span>, o meio é a média dos valores nas posições <span class="math inline">\(\frac{30}{2} = 15\)</span> e <span class="math inline">\(\frac{30}{2}+1 = 16\)</span>, ou seja, <span class="math inline">\((x_{(15)})+(x_{(16)}))/2\)</span>.</p>
+<p>Assim, temos:</p>
+<p><span class="math display">\[md = \begin{cases} x_{((N+1)/2)} &amp; \text{se } N \text{ é ímpar} \\ \frac{x_{(N/2)}+x_{(N/2+1)}}{2} &amp; \text{se } N \text{ é par} \end{cases}\]</span></p>
+<p>Como você pode ver, a fórmula nesse caso é muito mais difícil do que o cálculo em si. A dificuldade na notação está em expressar o que queremos de forma geral, para qualquer amostra, seja ela par ou ímpar.</p>
+</section>
+<section id="código-1" class="level4" data-number="4.2.2.3">
+<h4 data-number="4.2.2.3" class="anchored" data-anchor-id="código-1"><span class="header-section-number">4.2.2.3</span> Código</h4>
+<p>A mediana pode ser calculada em python usando a função <code>median</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.median()</code>.</p>
+<div id="cell-10" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>median_pandas <span class="op">=</span> camaras.tempo.median()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>median_numpy <span class="op">=</span> np.median(camaras.tempo)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>median_pandas, median_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>(2.529774127310062, nan)</code></pre>
+</div>
+</div>
+<p>Opa, o que significa esse nan? Bem, no numpy, nan é a sigla para “not a number”. Isso acontece quando tentamos calcular a mediana de uma variável que tem valores faltantes. O pandas, por outro lado, ignora os valores faltantes e calcula a mediana normalmente. Tome cuidado com isso!</p>
+<p>Para calcular a mediana ignorando os valores faltantes, podemos usar a função <code>nanmedian()</code>, como abaixo</p>
+<div id="cell-12" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>median_numpy <span class="op">=</span> np.nanmedian(camaras.tempo)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>median_pandas, median_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>(2.529774127310062, 2.529774127310062)</code></pre>
+</div>
+</div>
+<p><strong>Obs</strong>: note que a mediana deu um valor menor do que a média. Isso é esperado, pois a mediana é menos sensível a valores extremos.</p>
+</section>
+</section>
+<section id="quantis" class="level3" data-number="4.2.3">
+<h3 data-number="4.2.3" class="anchored" data-anchor-id="quantis"><span class="header-section-number">4.2.3</span> Quantis</h3>
+<p>Você percebeu que a mediana é a posição central da lista de dados depois de ordenada? E se considerarmos outras posições dessa lista? Por exemplo, o que está na posição que separa os 25% menores tempos? Ou os 75% menores tempos? Esses valores são chamados de <strong>quantis</strong>.</p>
+<section id="definição-2" class="level4" data-number="4.2.3.1">
+<h4 data-number="4.2.3.1" class="anchored" data-anchor-id="definição-2"><span class="header-section-number">4.2.3.1</span> Definição</h4>
+<p>Os <strong>quantis</strong> são os valores que dividem a amostra em partes iguais. O quantil de ordem <span class="math inline">\(p\)</span>, com <span class="math inline">\(p\)</span> entre 0 e 1, é o valor que deixa <span class="math inline">\(p\)</span> dos valores menores que ele e <span class="math inline">\((1-p)\)</span> dos valores maiores que ele.</p>
+<p>No caso da mediana, temos a questão dos pares e ímpares. Aqui, isso também acontece. A verdade é que existem várias formas de calcular os quantis, de acordo com como escolhemos os valores quando o <span class="math inline">\(p\)</span>% de interesse cai entre uma e outra observação. Mas a verdade é que a diferença entre essas técnicas é tão pequena que não vale à pena discutirmos isso.</p>
+<p>Na prática, existem alguns quantis que geralmente damos mais atenção. O primeiro deles é o quantil de 0%, que nada mais é do que o menor valor da amostra (o mínimo). Outro é o quantil de 100%, também conhecido como máximo. A mediana é o quantil de 50%. Os quantis de 25% e 75% também são muito comuns, e são chamados de quartis.</p>
+</section>
+<section id="fórmula-2" class="level4" data-number="4.2.3.2">
+<h4 data-number="4.2.3.2" class="anchored" data-anchor-id="fórmula-2"><span class="header-section-number">4.2.3.2</span> Fórmula</h4>
+<p>A fórmula para calcular o quantil de ordem <span class="math inline">\(p\)</span> é dada por:</p>
+<p><span class="math display">\[q(p) = \begin{cases} x_{(k)} &amp; \text{se } k \text{ é inteiro} \\ x_{(k)} + (x_{(k+1)}-x_{(k)})\cdot (pN - k) &amp; \text{se } k \text{ não é inteiro} \end{cases}\]</span></p>
+<p>Ou seja, se ao pegar o <span class="math inline">\(p\)</span> da amostra, caímos exatamente em um valor, o quantil é esse valor. Se não, o quantil é uma interpolação (uma média com pesos) dos valores nas posições <span class="math inline">\(k\)</span> e <span class="math inline">\(k+1\)</span>, onde <span class="math inline">\(k\)</span> é a parte inteira do número de observações que queremos pegar.</p>
+</section>
+<section id="código-2" class="level4" data-number="4.2.3.3">
+<h4 data-number="4.2.3.3" class="anchored" data-anchor-id="código-2"><span class="header-section-number">4.2.3.3</span> Código</h4>
+<p>Os quantis podem ser calculados em python usando a função <code>quantile</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.quantile()</code>.</p>
+<div id="cell-15" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>q20_pandas <span class="op">=</span> camaras.tempo.quantile(<span class="fl">0.2</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>q20_numpy <span class="op">=</span> np.quantile(camaras.tempo, <span class="fl">0.2</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>q20_pandas, q20_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>(1.5742642026009583, nan)</code></pre>
+</div>
+</div>
+<p>Note que, assim como no caso da mediana, o numpy retorna nan quando tentamos calcular quantis de uma variável que tem valores faltantes. O pandas, por outro lado, ignora os valores faltantes e calcula os quantis normalmente.</p>
+<div id="cell-17" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># quantil de 20%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># interpretação: 20% dos tempos são menores que esse valor encontrado</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>q20_numpy <span class="op">=</span> np.nanquantile(camaras.tempo, <span class="fl">0.2</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>q20_pandas, q20_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>(1.5742642026009583, 1.5742642026009583)</code></pre>
+</div>
+</div>
+<div id="cell-18" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mínimo: p=0</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>min_pandas <span class="op">=</span> camaras.tempo.<span class="bu">min</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>min_numpy <span class="op">=</span> np.<span class="bu">min</span>(camaras.tempo)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># usando quantis</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>qmin_pandas <span class="op">=</span> camaras.tempo.quantile(<span class="dv">0</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>qmin_numpy <span class="op">=</span> np.nanquantile(camaras.tempo, <span class="dv">0</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>min_pandas, min_numpy, qmin_pandas, qmin_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>(0.2600958247775496,
+ 0.2600958247775496,
+ 0.2600958247775496,
+ 0.2600958247775496)</code></pre>
+</div>
+</div>
+<div id="cell-19" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># máximo: p=1</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>max_pandas <span class="op">=</span> camaras.tempo.<span class="bu">max</span>()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>max_numpy <span class="op">=</span> np.<span class="bu">max</span>(camaras.tempo)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># usando quantis</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>qmax_pandas <span class="op">=</span> camaras.tempo.quantile(<span class="dv">1</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>qmax_numpy <span class="op">=</span> np.nanquantile(camaras.tempo, <span class="dv">1</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>max_pandas, max_numpy, qmax_pandas, qmax_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>(27.49075975359343, 27.49075975359343, 27.49075975359343, 27.49075975359343)</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="medidas-de-posição-aplicação" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="medidas-de-posição-aplicação"><span class="header-section-number">4.3</span> Medidas de posição: aplicação</h2>
+<p>Agora vamos aplicar os conceitos aprendidos para entender melhor os tempos de decisão do TJSP.</p>
+<p>Primeiro, os tempos apresentados estão em anos, e são os tempos entre o ajuizamento e a decisão do recurso de apelação.</p>
+<div id="cell-21" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>camaras.tempo.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>count    9999.000000
+mean        3.178841
+std         2.182874
+min         0.260096
+25%         1.705681
+50%         2.529774
+75%         3.931554
+max        27.490760
+Name: tempo, dtype: float64</code></pre>
+</div>
+</div>
+<p>O método <code>.describe()</code> já calcula várias coisas pra gente! Primeiro, ele nos dá a quantidade de observações não nulas, que é 9999 das 10000. A média é 3.17, que dá aproximadamente 3 anos e 2 meses (para verificar a quantidade de meses, multiplique 0.17 * 12 e aproxime para o número mais próximo). Veremos o <code>std</code> (<em>standard deviation</em>) depois.</p>
+<p>A mediana é de 2.53, ou seja, 2 anos e 6 meses. Olhando para os quartis, temos que 50% dos processos têm entre 1.71 ano (1 ano e 8 meses) e 3.93 anos (3 anos e 11 meses). Ou seja, dependendo do ponto de vista, até que são rápidos, considerando a conhecida morosidade do judiciário e que esse tempo leva em consideração a primeira e segunda instâncias combinadas.</p>
+<p><strong>Obs</strong>: Essa é uma medida de variabilidade chamada intervalo interquartil, uma forma de entender a dispersão dos dados. Veremos essa medida com mais detalhes em seguida.</p>
+<p>O tempo máximo encontrado foi de 27.49 anos (27 anos e 6 meses). Isso é muito tempo! Vamos dar uma olhada nesse caso:</p>
+<div id="cell-23" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>camaras[camaras.tempo <span class="op">&gt;</span> <span class="dv">27</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">processo</th>
+<th data-quarto-table-cell-role="th">assunto</th>
+<th data-quarto-table-cell-role="th">camara</th>
+<th data-quarto-table-cell-role="th">relator</th>
+<th data-quarto-table-cell-role="th">origem</th>
+<th data-quarto-table-cell-role="th">comarca</th>
+<th data-quarto-table-cell-role="th">polo_mp</th>
+<th data-quarto-table-cell-role="th">decisao</th>
+<th data-quarto-table-cell-role="th">unanimidade</th>
+<th data-quarto-table-cell-role="th">dt_publicacao</th>
+<th data-quarto-table-cell-role="th">ementa</th>
+<th data-quarto-table-cell-role="th">tempo</th>
+<th data-quarto-table-cell-role="th">rel_idade</th>
+<th data-quarto-table-cell-role="th">rel_id_municipio_nasc</th>
+<th data-quarto-table-cell-role="th">rel_faculdade_direito</th>
+<th data-quarto-table-cell-role="th">rel_tempo_magistratura</th>
+<th data-quarto-table-cell-role="th">rel_tipo_magistrado</th>
+<th data-quarto-table-cell-role="th">rel_quinto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8991</td>
+<td>04526037019918260011</td>
+<td>DIREITO PENAL-Crimes contra a vida-Homicídio Q...</td>
+<td>01ª Câmara de Direito Criminal</td>
+<td>DINIZ FERNANDO</td>
+<td>Comarca de São Paulo / Foro Regional de Pinhei...</td>
+<td>SAO PAULO</td>
+<td>Passivo</td>
+<td>Negaram</td>
+<td>Unânime</td>
+<td>2018-06-29</td>
+<td>HOMICÍDIO QUALIFICADO. Apelo fundamentado no a...</td>
+<td>27.49076</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>juiz substituto 2º grau</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Veja, pelo número do processo, que esse caso foi distribuído em 1991. Como esperado, é um caso complexo. Trata-se de um homicídio qualificado.</p>
+<p>Será, então, que os tempos típicos dos processos variam conforme o assunto? Vamos analisar isso agora.</p>
+<div id="cell-25" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_colwidth'</span>, <span class="va">None</span>) <span class="co"># Mostrar todas as colunas</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'assunto'</span>)[<span class="st">'tempo'</span>]</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  .describe()</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  .reset_index()</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'count &gt;= 100'</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'50%'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">assunto</th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+<th data-quarto-table-cell-role="th">min</th>
+<th data-quarto-table-cell-role="th">25%</th>
+<th data-quarto-table-cell-role="th">50%</th>
+<th data-quarto-table-cell-role="th">75%</th>
+<th data-quarto-table-cell-role="th">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">105</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Estelionato</td>
+<td>220.0</td>
+<td>6.210591</td>
+<td>3.287898</td>
+<td>0.813142</td>
+<td>3.856947</td>
+<td>5.778234</td>
+<td>8.112936</td>
+<td>21.440110</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">41</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Trânsito</td>
+<td>458.0</td>
+<td>4.367793</td>
+<td>2.104371</td>
+<td>0.626968</td>
+<td>2.763176</td>
+<td>3.908282</td>
+<td>5.548255</td>
+<td>14.579055</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">69</td>
+<td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica</td>
+<td>222.0</td>
+<td>3.790949</td>
+<td>1.329072</td>
+<td>1.122519</td>
+<td>2.779603</td>
+<td>3.579740</td>
+<td>4.754962</td>
+<td>8.323066</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">109</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Receptação</td>
+<td>439.0</td>
+<td>3.745380</td>
+<td>2.091780</td>
+<td>0.418891</td>
+<td>2.123203</td>
+<td>3.329227</td>
+<td>4.899384</td>
+<td>10.603696</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">108</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Furto</td>
+<td>577.0</td>
+<td>3.487429</td>
+<td>2.050025</td>
+<td>0.260096</td>
+<td>2.088980</td>
+<td>3.123888</td>
+<td>4.490075</td>
+<td>17.210130</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">94</td>
+<td>DIREITO PENAL-Crimes contra a liberdade pessoal-Ameaça</td>
+<td>248.0</td>
+<td>3.194067</td>
+<td>1.459880</td>
+<td>0.678987</td>
+<td>2.084873</td>
+<td>2.926762</td>
+<td>4.145791</td>
+<td>8.134155</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">62</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - Furto Qualificado</td>
+<td>1122.0</td>
+<td>3.455517</td>
+<td>2.168286</td>
+<td>0.375086</td>
+<td>1.898700</td>
+<td>2.926762</td>
+<td>4.511978</td>
+<td>16.459959</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">42</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes do Sistema Nacional de Armas</td>
+<td>355.0</td>
+<td>3.291969</td>
+<td>1.735908</td>
+<td>0.547570</td>
+<td>2.110883</td>
+<td>2.910335</td>
+<td>4.179329</td>
+<td>12.610541</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">70</td>
+<td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica-Contra a Mulher</td>
+<td>204.0</td>
+<td>3.277932</td>
+<td>1.686380</td>
+<td>0.862423</td>
+<td>2.107461</td>
+<td>2.818617</td>
+<td>4.150582</td>
+<td>10.398357</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">67</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - Roubo Majorado</td>
+<td>1397.0</td>
+<td>2.824282</td>
+<td>1.956017</td>
+<td>0.323066</td>
+<td>1.620808</td>
+<td>2.310746</td>
+<td>3.258042</td>
+<td>19.529090</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">110</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Roubo</td>
+<td>422.0</td>
+<td>2.431815</td>
+<td>1.785516</td>
+<td>0.465435</td>
+<td>1.425051</td>
+<td>1.924709</td>
+<td>2.823409</td>
+<td>17.289528</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">40</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins</td>
+<td>3081.0</td>
+<td>2.221805</td>
+<td>1.215906</td>
+<td>0.366872</td>
+<td>1.459274</td>
+<td>1.919233</td>
+<td>2.636550</td>
+<td>13.757700</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A operação acima agrupa por assunto e calcula as estatísticas da variável tempo. Depois, ela exclui os assuntos com menos de 100 casos e ordena a base pela mediana em ordem decrescente.</p>
+<p>Pela tabela, o assunto com menor tempo mediano é o tráfico de drogas, com mediana de 1.92 anos (1 ano e 11 meses). Já o assunto com maior tempo mediano é o estelionato, com mediana de 5.77 anos (5 anos e 9 meses). Você saberia teorizar o motivo?</p>
+<p>Os casos de homicídio provavelmente têm tempos altos também, mas o filtro de 100 casos excluiu esse assunto da análise. Note também que os tempos médios costumam ser maiores do que as medianas, como esperado.</p>
+<p>Chamamos variáveis que com médias diferentes das medianas de <em>assimétricas</em>. A assimetria é uma medida de desvio da simetria. Se a média é maior que a mediana, dizemos que há <em>assimetria à direita</em>. Se a média é menor que a mediana, dizemos que há <em>assimetria à esquerda</em>.</p>
+<p>Isso tem relação com a distribuição dos dados. Por distribuição, queremos dizer a forma como os dados estão distribuídos quando colocamos ele em um histograma. Vamos ver então o histograma dos tempos:</p>
+<div id="cell-27" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(camaras.tempo, kde<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-medidas-posicao-variabilidade_files/figure-html/cell-15-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Está vendo como os dados estão concentrados à esquerda? Isso é um sinal de assimetria à direita. A assimetria é justamente essa massa de dados que temos a mais de um lado da distribuição. No nosso caso, isso é esperado, pois temos muitos processos que são resolvidos rapidamente, mas alguns poucos que demoram muito tempo.</p>
+<p>Por último, será que os tempos variam por câmara? Em tese, não deveriam, já que os casos são distribuídos aleatoriamente entre elas.</p>
+<div id="cell-29" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  camaras</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'camara'</span>)[<span class="st">'tempo'</span>]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  .describe()</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  .reset_index()</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'count &gt;= 100'</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'50%'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">camara</th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">mean</th>
+<th data-quarto-table-cell-role="th">std</th>
+<th data-quarto-table-cell-role="th">min</th>
+<th data-quarto-table-cell-role="th">25%</th>
+<th data-quarto-table-cell-role="th">50%</th>
+<th data-quarto-table-cell-role="th">75%</th>
+<th data-quarto-table-cell-role="th">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">23</td>
+<td>12ª Câmara de Direito Criminal</td>
+<td>567.0</td>
+<td>3.460561</td>
+<td>2.096506</td>
+<td>0.383299</td>
+<td>1.941136</td>
+<td>2.910335</td>
+<td>4.399726</td>
+<td>17.210130</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">24</td>
+<td>13ª Câmara de Direito Criminal</td>
+<td>624.0</td>
+<td>3.361304</td>
+<td>2.321851</td>
+<td>0.418891</td>
+<td>1.837098</td>
+<td>2.751540</td>
+<td>4.141684</td>
+<td>21.108830</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>03ª Câmara de Direito Criminal</td>
+<td>581.0</td>
+<td>3.199803</td>
+<td>2.263286</td>
+<td>0.487337</td>
+<td>1.681040</td>
+<td>2.650240</td>
+<td>4.128679</td>
+<td>18.893908</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15</td>
+<td>08ª Câmara de Direito Criminal</td>
+<td>683.0</td>
+<td>3.255774</td>
+<td>2.174564</td>
+<td>0.470910</td>
+<td>1.774127</td>
+<td>2.639288</td>
+<td>4.088980</td>
+<td>18.266940</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">27</td>
+<td>16ª Câmara de Direito Criminal</td>
+<td>660.0</td>
+<td>3.272711</td>
+<td>2.330123</td>
+<td>0.501027</td>
+<td>1.704997</td>
+<td>2.621492</td>
+<td>4.143053</td>
+<td>18.976044</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>05ª Câmara de Direito Criminal</td>
+<td>464.0</td>
+<td>3.291133</td>
+<td>2.282669</td>
+<td>0.323066</td>
+<td>1.766598</td>
+<td>2.596851</td>
+<td>4.118412</td>
+<td>17.078713</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">26</td>
+<td>15ª Câmara de Direito Criminal</td>
+<td>620.0</td>
+<td>3.135109</td>
+<td>2.063688</td>
+<td>0.410678</td>
+<td>1.746749</td>
+<td>2.568104</td>
+<td>3.739220</td>
+<td>13.930185</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>02ª Câmara de Direito Criminal</td>
+<td>523.0</td>
+<td>3.167589</td>
+<td>2.288019</td>
+<td>0.525667</td>
+<td>1.672827</td>
+<td>2.472279</td>
+<td>3.801506</td>
+<td>21.508556</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>06ª Câmara de Direito Criminal</td>
+<td>723.0</td>
+<td>3.176956</td>
+<td>2.443826</td>
+<td>0.511978</td>
+<td>1.618070</td>
+<td>2.444901</td>
+<td>3.822040</td>
+<td>21.440110</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17</td>
+<td>09ª Câmara de Direito Criminal</td>
+<td>610.0</td>
+<td>3.045163</td>
+<td>1.907837</td>
+<td>0.495551</td>
+<td>1.788501</td>
+<td>2.440794</td>
+<td>3.670089</td>
+<td>13.478439</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21</td>
+<td>11ª Câmara de Direito Criminal</td>
+<td>601.0</td>
+<td>3.086797</td>
+<td>2.154204</td>
+<td>0.375086</td>
+<td>1.650924</td>
+<td>2.395619</td>
+<td>3.759069</td>
+<td>15.203285</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>07ª Câmara de Direito Criminal</td>
+<td>655.0</td>
+<td>2.992580</td>
+<td>1.932092</td>
+<td>0.476386</td>
+<td>1.639973</td>
+<td>2.387406</td>
+<td>3.744011</td>
+<td>16.479124</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>01ª Câmara de Direito Criminal</td>
+<td>566.0</td>
+<td>2.971269</td>
+<td>2.218564</td>
+<td>0.260096</td>
+<td>1.594798</td>
+<td>2.350445</td>
+<td>3.632444</td>
+<td>27.490760</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">25</td>
+<td>14ª Câmara de Direito Criminal</td>
+<td>636.0</td>
+<td>3.003530</td>
+<td>2.177534</td>
+<td>0.377823</td>
+<td>1.562628</td>
+<td>2.344969</td>
+<td>3.782341</td>
+<td>16.783025</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">19</td>
+<td>10ª Câmara de Direito Criminal</td>
+<td>487.0</td>
+<td>2.882080</td>
+<td>1.994354</td>
+<td>0.366872</td>
+<td>1.567420</td>
+<td>2.321697</td>
+<td>3.581109</td>
+<td>13.738535</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>04ª Câmara de Direito Criminal</td>
+<td>568.0</td>
+<td>2.804750</td>
+<td>1.868122</td>
+<td>0.536619</td>
+<td>1.552361</td>
+<td>2.277892</td>
+<td>3.463381</td>
+<td>17.407255</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Os tempos medianos variam entre 2.91 (2 anos e 11 meses) e 2.28 (2 anos e 3 meses). A diferença é pequena, mas existe. Veremos, mais adiante na disciplina, se podemos considerar que essa diferença é estatisticamente significante.</p>
+</section>
+<section id="medidas-de-variabilidade-conceitos" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="medidas-de-variabilidade-conceitos"><span class="header-section-number">4.4</span> Medidas de variabilidade: conceitos</h2>
+<p>Medidas de <strong>dispersão</strong> ou <strong>variabilidade</strong> nos dão uma ideia de quão espalhados os dados estão em torno de algum ponto de referência. Essas medidas são essenciais para compreender o fenômeno estudado. Na verdade, elas são o segredo por trás do funcionamento da estatística.</p>
+<p>As afirmações que fazemos na estatística têm sempre um grau de incerteza atrelado, porque não temos controle sobre tudo o que pode acontecer. No entanto, nós sabemos estimar esse grau de incerteza, justamente com essas medidas de variabilidade. Elas nos dão uma noção de quanto podemos confiar em uma média ou mediana, por exemplo, para tomar decisões estratégicas em um caso.</p>
+<p>Um exemplo simples sobre isso. Imagine que, na câmara 3, <strong>todos</strong> os processos durem 1 ano e 3 meses. Por conta disso, sabemos que a mediana é de 1 ano e 3 meses. Na câmara 6, no entanto, a mediana é de 1 ano e 3 meses também, mas temos muitos casos que duram 5 meses e casos que duram 10 anos. Se seu recurso caísse na 3ª câmara e seu cliente perguntasse quanto tempo o processo vai demorar, você falaria o mesmo que se caísse na 6ª câmara?</p>
+<p>Provavelmente <strong>não</strong>. Isso porque a incerteza é maior na 6ª câmara do que na 3ª. Para a 3ª câmara, provavelmente você falaria para o cliente “tudo pode acontecer no direito, mas metade dos casos duram até 1 ano e 3 meses”. Já para a 6ª, talvez seria algo do tipo “é difícil precisar, mas geralmente demora entre X meses e Y anos”. A variabilidade nos ajuda a entender X e Y.</p>
+<p>Na seção anterior, já vimos um possível intervalo desse tipo quando analisamos os quartis, relacionado à amplitude a partir de quantis empírios. Vamos começar por eles.</p>
+<p>Como antes, para cada conceito, vamos mostrar a definição, a fórmula matemática e o código em python para calcular.</p>
+<section id="amplitude" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="amplitude"><span class="header-section-number">4.4.1</span> Amplitude</h3>
+<p>Como veremos, a amplitude é mais útil para reportar dados básicos sobre o fenômeno estudado do que para tomar decisões sobre o comportamento dos dados.</p>
+<section id="definição-3" class="level4" data-number="4.4.1.1">
+<h4 data-number="4.4.1.1" class="anchored" data-anchor-id="definição-3"><span class="header-section-number">4.4.1.1</span> Definição</h4>
+<p>A <strong>amplitude</strong> é a diferença entre o maior e o menor valor da amostra. Ela é uma medida de variabilidade que nos dá uma ideia de quão espalhados em geral.</p>
+</section>
+<section id="fórmula-3" class="level4" data-number="4.4.1.2">
+<h4 data-number="4.4.1.2" class="anchored" data-anchor-id="fórmula-3"><span class="header-section-number">4.4.1.2</span> Fórmula</h4>
+<p>A fórmula da amplitude é dada por:</p>
+<p><span class="math display">\[A = \text{máximo} - \text{mínimo} = q(1) - q(0)\]</span></p>
+</section>
+<section id="código-3" class="level4" data-number="4.4.1.3">
+<h4 data-number="4.4.1.3" class="anchored" data-anchor-id="código-3"><span class="header-section-number">4.4.1.3</span> Código</h4>
+<p>A amplitude pode ser calculada em python fazendo a diferença entre o máximo, com <code>.max()</code> e o mínimo, com <code>.min()</code>, como já vimos anteriormente.</p>
+</section>
+</section>
+<section id="amplitude-do-intervalo-interquartil-iqr" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="amplitude-do-intervalo-interquartil-iqr"><span class="header-section-number">4.4.2</span> Amplitude do Intervalo Interquartil (IQR)</h3>
+<section id="definição-4" class="level4" data-number="4.4.2.1">
+<h4 data-number="4.4.2.1" class="anchored" data-anchor-id="definição-4"><span class="header-section-number">4.4.2.1</span> Definição</h4>
+<p>A amplitude do <strong>intervalo interquartil</strong> (inter quantile range, IQR) é a diferença entre o terceiro quartil (75%) e o primeiro quartil (25%). Ele é uma medida de variabilidade que nos dá uma ideia de quão espalhados os dados estão em torno da mediana.</p>
+</section>
+<section id="fórmula-4" class="level4" data-number="4.4.2.2">
+<h4 data-number="4.4.2.2" class="anchored" data-anchor-id="fórmula-4"><span class="header-section-number">4.4.2.2</span> Fórmula</h4>
+<p>O IQR é dado por:</p>
+<p><span class="math display">\[IQR = q(75\%) - q(25\%)\]</span></p>
+<p>Como o <span class="math inline">\(q(25\%)\)</span> é o valor que separa os 25% menores valores da amostra e como o <span class="math inline">\(q(75\%)\)</span> é o valor que separa os 25% maiores valores da amostra, o IQR é a amplitude de um intervalo que contém 50% dos dados.</p>
+<p>Por exemplo, para um conjunto de dados [1, 2, 2, 3, 3, 4, 4, 5, 5, 7, 9, 9, 10] /com 13 observações, temos que <span class="math inline">\(q(25\%) = 3\)</span> e <span class="math inline">\(q(75\%) = 7\)</span>, então o IQR é <span class="math inline">\(7-3=4\)</span>.</p>
+</section>
+<section id="código-4" class="level4" data-number="4.4.2.3">
+<h4 data-number="4.4.2.3" class="anchored" data-anchor-id="código-4"><span class="header-section-number">4.4.2.3</span> Código</h4>
+<p>O IQR pode ser calculado em python usando a função <code>quantile</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.quantile()</code>. Também vimos a o método <code>.describe()</code>, que acaba soltando o IQR.</p>
+<div id="cell-33" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>minimo <span class="op">=</span> camaras.tempo.<span class="bu">min</span>()</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>maximo <span class="op">=</span> camaras.tempo.<span class="bu">max</span>()</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>amplitude <span class="op">=</span> maximo <span class="op">-</span> minimo</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>q3 <span class="op">=</span> camaras.tempo.quantile(<span class="fl">0.75</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>q1 <span class="op">=</span> camaras.tempo.quantile(<span class="fl">0.25</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> q3 <span class="op">-</span> q1</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>amplitude, iqr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>(27.23066392881588, 2.2258726899383983)</code></pre>
+</div>
+</div>
+<p>A amplitude dos tempos é de 27.23 anos (27 anos e 3 meses). Já o IQR dos tempos é de 2.23 anos (2 anos e 3 meses).</p>
+<p>Note como temos, aqui, um balanço entre a incerteza a informação a ser passada. Nos nossos dados, 100% do que vimos varia em torno de 27 anos, mas isso não é muito informativo. No entanto, sabemos que 50% dos dados que vimos variam em 2 anos e 3 meses em torno da mediana. Assumimos um erro, mas é uma informação mais útil para tomada de decisão. A estatística é exatamente sobre isso: assumimos a possibilidade de errar para fazer afirmações mais úteis.</p>
+<p>Um exemplo caricato desse pensamento é o das pesquisas eleitorais. Em pesquisas eleitorais, geralmente os institutos de pesquisa apresentam margens de erro (de 2 ou 3 pontos percentuais, para cima e para baixo). Depois, quando os resultados ficam fora dessa margem de erro, os institutos são criticados. Não seria melhor, então, para os institutos, que falassem que a intenção de votos de um candidato está entre 0% e 100%? Dessa forma, o instituto não erraria. Mas essa não é a informação que a população quer saber. O que é acertar ou errar nesse sentido?</p>
+<p>Para finalizar o assunto do IQR e amplitude, nada nos impede de considerar outros intervalos que não os quartis. A medida também não precisa ficar em torno da mediana, se isso for de interesse. O IQR é apenas um valor clássico e bastante usado.</p>
+</section>
+</section>
+<section id="desvio-padrão" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="desvio-padrão"><span class="header-section-number">4.4.3</span> Desvio padrão</h3>
+<section id="definição-5" class="level4" data-number="4.4.3.1">
+<h4 data-number="4.4.3.1" class="anchored" data-anchor-id="definição-5"><span class="header-section-number">4.4.3.1</span> Definição</h4>
+<p>O <strong>desvio padrão</strong> é uma medida de variabilidade que nos dá uma ideia de quão espalhados os dados estão em torno da média. Ele é a medida de variabilidade mais comum na estatística.</p>
+</section>
+<section id="fórmula-5" class="level4" data-number="4.4.3.2">
+<h4 data-number="4.4.3.2" class="anchored" data-anchor-id="fórmula-5"><span class="header-section-number">4.4.3.2</span> Fórmula</h4>
+<p>O desvio padrão é dado por:</p>
+<p><span class="math display">\[s = \sqrt{\frac{1}{N}\sum_{i=1}^{N} (x_i - \bar{x})^2}\]</span></p>
+<p>Onde <span class="math inline">\(\bar{x}\)</span> é a média e <span class="math inline">\(x_i\)</span> é o valor da variável quantitativa de interesse para determinado processo <span class="math inline">\(i\)</span>.</p>
+<p>A fórmula pode assustar um pouco. Por que temos uma raiz quadrada, e qual o objetivo desse valor ao quadrado? Em linhas gerais, o que queremos é medir o quanto cada valor está distante da média. Para isso, fazemos a diferença entre o valor observado e a média (<span class="math inline">\(x_i - \bar{x}\)</span>). Como esses valores podem ser positivos ou negativos, elevamos essas diferenças ao quadrado, o que torna os valores sempre positivos. Aí calculamos a média desses desvios (que chamamos de <strong>variância</strong>). Finalmente, para retornar à escala original, aplicamos a raiz quadrada, que é a operação inversa de elevar ao quadrado.</p>
+<p>Sugestão de leitura: <a href="https://livro.abj.org.br/03-estatisticas.html#medidas-de-dispers%C3%A3o-ao-redor-da-m%C3%A9dia-desvio-padr%C3%A3o-e-desvio-m%C3%A9dio">este texto aqui</a> para maior aprofundamento.</p>
+</section>
+<section id="código-5" class="level4" data-number="4.4.3.3">
+<h4 data-number="4.4.3.3" class="anchored" data-anchor-id="código-5"><span class="header-section-number">4.4.3.3</span> Código</h4>
+<p>Para calcular o desvio padrão em python, usamos a função <code>std</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.std()</code>.</p>
+<div id="cell-35" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>std_pandas <span class="op">=</span> camaras.tempo.std()</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>std_numpy <span class="op">=</span> np.std(camaras.tempo)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>std_pandas, std_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>(2.182874474194876, 2.1827653168264267)</code></pre>
+</div>
+</div>
+<p>Os números do numpy são ligeiramente diferentes do que os do pandas. Vamos testar um exemplo com menos números.</p>
+<div id="cell-37" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'numeros'</span>: [<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">9</span>]</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>std_pd <span class="op">=</span> df[<span class="st">'numeros'</span>].std()</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>std_np <span class="op">=</span> np.std(df[<span class="st">'numeros'</span>])</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>std_pd, std_np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>(3.03315017762062, 2.7129319932501073)</code></pre>
+</div>
+</div>
+<p>Com um exemplo pequeno a diferença ficou ainda maior!</p>
+<p>Isso ocorre porque as fórmulas que o numpy e o pandas usam para calcular o desvio padrão são diferentes.</p>
+<p>Fórmula no caso do pandas:</p>
+<p><span class="math display">\[s_{\text{pandas}} = \sqrt{\frac{1}{N}\sum_{i=1}^{N} (x_i - \bar{x})^2}\]</span></p>
+<p>Fórmula no caso do numpy:</p>
+<p><span class="math display">\[s_{\text{numpy}} = \sqrt{\frac{1}{N-1}\sum_{i=1}^{N} (x_i - \bar{x})^2}\]</span></p>
+<p>Veja que a conta do pandas é igual à nossa conta original. Já a do numpy coloca o valor <span class="math inline">\(N-1\)</span> no denominador, ao invés de <span class="math inline">\(N\)</span>. O valor <span class="math inline">\(N-1\)</span> é um ajuste que estatísticos do século XX fizeram para garantir algumas propriedades matemáticas dessa estatística, que não vamos tratar agora. Na prática, no entanto, essa diferença é muito pequena, especialmente com grandes bases de dados. Se tiver interesse em estudar sobre isso, veja Bussab &amp; Morettin (2023).</p>
+</section>
+</section>
+</section>
+<section id="medidas-de-variabilidade-aplicação" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="medidas-de-variabilidade-aplicação"><span class="header-section-number">4.5</span> Medidas de variabilidade: aplicação</h2>
+<p>Vamos voltar ao nosso querido <code>.describe()</code>.</p>
+<div id="cell-40" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>camaras.tempo.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>count    9999.000000
+mean        3.178841
+std         2.182874
+min         0.260096
+25%         1.705681
+50%         2.529774
+75%         3.931554
+max        27.490760
+Name: tempo, dtype: float64</code></pre>
+</div>
+</div>
+<p>Agora temos conhecimento suficiente para calcular tudo a partir desses resumos!</p>
+<p>Os processos costumam demorar 2 anos e 6 meses desde o ajuizamento até o acórdão. Podemos dizer que 50% deles variam entre 1 ano e 8 meses e 3 anos e 11 meses. Já a média é de 3 anos e 2 meses, com desvio padrão 2 anos e 2 meses. Ou seja, tipicamente os tempos variam mais de 2 anos para mais ou para menos da média. É bastante variação.</p>
+<p>Uma dúvida que pode surgir, já que isso foi citado na introdução, é: como eu associo essa variabilidade à uma medida de incerteza? Por exemplo, como podemos proceder para fazer afirmações do tipo: com 95% de certeza, os processos duram entre X e Y? Veremos isso quando falarmos de <strong>estatística inferencial</strong>.</p>
+<p>Enquanto não chegamos nessa parte mais mágica da estatística, vamos ver mais algumas visualizações interessantes. Primeiro, não seria interessante analisar esses quantis que vêm do <code>.describe()</code> de forma visual?</p>
+<p>Esse é o papel do boxplot:</p>
+<div id="cell-42" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Primeiro, vamos retirar da amostra os assuntos que têm menos de 100 observações</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>camaras_assuntos_100 <span class="op">=</span> camaras.groupby(<span class="st">'assunto'</span>).<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="bu">len</span>(x) <span class="op">&gt;=</span> <span class="dv">100</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>camaras_assuntos_100[<span class="st">'assunto'</span>] <span class="op">=</span> [</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  textwrap.fill(a, <span class="dv">70</span>) <span class="cf">for</span> a <span class="kw">in</span> camaras_assuntos_100[<span class="st">'assunto'</span>]</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># agora, vamos fazer o boxplot</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>camaras_assuntos_100, y<span class="op">=</span><span class="st">'assunto'</span>, x<span class="op">=</span><span class="st">'tempo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-medidas-posicao-variabilidade_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Nesse gráfico, a linha central é a mediana. Os valores limites da ‘caixa’ são, respectivamente, os quartis 1 e 3. Ou seja, a amplitude da caixa é exatamente o IQR. As linhas contínuas que vêm em seguida são chamadas de <em>bigodes</em>, e são calculadas por 1,5 vezes o IQR (o motivo disso não vem ao caso agora). Valores que estão fora dos bigodes, nas bolinhas, são considerados valores atípicos para esse tipo de processo.</p>
+<p>Muita informação em um gráfico apenas! Geralmente usamos esses gráficos para rapidamente entender um pouco mais sobre nossos dados. Por exemplo, é possível ver que tráfico de drogas não só tem uma mediana menor mas também varia pouco. Já estelionato varia bastante, inclusive com alguns casos durando mais de 15 anos. E muito mais para investigar.</p>
+<section id="cuidado-com-algumas-análises-de-tempo-avançado" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="cuidado-com-algumas-análises-de-tempo-avançado"><span class="header-section-number">4.5.1</span> Cuidado com algumas análises de tempo (avançado)</h3>
+<p>Um cuidado a ser tomado em estudos relacionados a tempo de processos judiciais é com relação ao escopo da pesquisa.</p>
+<p>No caso da pesquisa das câmaras, a origem dos dados é a consulta de jurisprudência. Isso significa que temos em nossa amostra apenas casos que tiveram acórdãos proferidos. Existem muitos casos criminais tramitando na segunda instância do TJSP que não estão em nossa base simplesmente porque não foram decididos ainda. Chamamos esse tipo de pesquisa de <strong>retrospectiva</strong>.</p>
+<p>Isso significa que a nossa análise de tempos pode ter um problema: será que os casos que ainda não foram julgados são mais demorados do que os casos que temos em nossa amostra? Pode ser que sim, mas também pode ser que não.</p>
+<p>A única forma de verificar se existe um viés é coletando dados de processos a partir da sua data de ajuizamento, utilizando ferramentas como Diários de Justiça ou o DataJud. Esse tipo de pesquisa é chamada de <strong>prospectiva</strong>.</p>
+<p>A imagem abaixo mostra exemplos de processos que ficam dentro de estudos prospectivos ou retrospectivos.</p>
+<p><img src="https://livro.abj.org.br/assets/img/tempos.png" class="img-fluid"></p>
+<ol type="1">
+<li>Prospectivo e retrospectivo</li>
+<li>Apenas prospectivo</li>
+<li>Apenas retrospectivo</li>
+<li>Nenhum dos dois, mas poderia ser capturado por atividade no período</li>
+<li>fora do escopo</li>
+<li>fora do escopo</li>
+<li>Nenhum dos dois tipos e não poderia ser capturado (ficou inativo no período)</li>
+</ol>
+<p>Esse assunto é complexo e poucas pessoas dominam. Até mesmo o CNJ comete alguns erros nesse sentido. O importante que devemos ter em mente são três coisas:</p>
+<ol type="1">
+<li>Quando analisamos tempos em estudos retrospectivos, precisamos ter em mente que estamos estimando o tempo dos processos em toda a história do TJSP e não só dos últimos anos, já que nossa amostra inclui casos muito antigos.</li>
+<li>Quando analisamos tempos em estudos prospectivos, precisamos tomar certos cuidados para realizar estimativas. Não veremos isso aqui, mas se tiver interesse, a técnica a ser aplicada aqui é a <strong>análise de sobrevivência</strong>.</li>
+<li><strong>NUNCA</strong> faça análises de aceleração dos processos (verificar se os processos estão ficando mais rápidos) em estudos retrospectivos.</li>
+</ol>
+<p>Sobre (3), é possível verificar visualmente o motivo disso ser um problema grave. A figura abaixo mostra, no eixo x, o ano de ajuizamento dos processos e, no eixo y, o tempo dos processos até o acórdão.</p>
+<div id="cell-45" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>camaras[<span class="st">'ano_ajuizamento'</span>] <span class="op">=</span> [<span class="bu">int</span>(p[<span class="dv">9</span>:<span class="dv">13</span>]) <span class="cf">for</span> p <span class="kw">in</span> camaras.processo]</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(camaras, x <span class="op">=</span> <span class="st">'ano_ajuizamento'</span>, y <span class="op">=</span> <span class="st">'tempo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-medidas-posicao-variabilidade_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>O que está acontecendo aqui? Os processos estão ficando mais rápidos?</p>
+<p>Na verdade não.</p>
+<p>O que está acontecendo é que não conseguimos ver processos fora da faixa de pontos por conta da forma que os dados foram coletados!</p>
+<p>Os dados foram coletados a partir de acórdãos publicados entre 2016 e 2023. Ou seja, não existe possibilidade, por exemplo, de encontrar casos ajuizados em 2020 que tenham tempo maior do que 4 anos. Um caso assim seria julgado em 2024 e, portanto, estaria fora do nosso escopo de busca. O mesmo ocorre para os casos muito rápidos: não temos, em nossa amostra, casos que foram ajuizados em 2005 e que duraram menos de 10 anos, já que essas decisões foram publicadas no máximo em 2015 e, portanto, também estão fora do escopo de busca.</p>
+<p>Ou seja, esse gráfico <strong>não informa absolutamente nada</strong> a respeito da potencial aceleração dos tempos dos processos. Ele simplesmente evidencia o escopo da pesquisa.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02-organizacao-dados-taxas.html" class="pagination-link" aria-label="Organização de dados, frequências, proporções e taxas">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Organização de dados, frequências, proporções e taxas</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-visualizacao-seaborn.html" class="pagination-link" aria-label="Visualizações com seaborn">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; Correlação e regressão – cdad-book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./09-modelos-classificacao.html" rel="next">
+<link href="./07-testes-hipoteses.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./08-correlacao-regressao.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Correlação e regressão</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">cdad-book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-tipos-variaveis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tipos de variáveis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-organizacao-dados-taxas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Organização de dados, frequências, proporções e taxas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-medidas-posicao-variabilidade.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medidas de posição e variabilidade</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-amostras-populacoes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Amostras e populações</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-probabilidade-cnormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probabilidade e curva normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-testes-hipoteses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-correlacao-regressao.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Correlação e regressão</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-modelos-classificacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Modelos de classificação</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-corporativo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aplicações corporativas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-openai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Classificação de documentos usando OpenAI GPT-4o-mini</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./resumo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">9.1</span> Introdução</a></li>
+  <li><a href="#correlação" id="toc-correlação" class="nav-link" data-scroll-target="#correlação"><span class="header-section-number">9.2</span> Correlação</a>
+  <ul class="collapse">
+  <li><a href="#exemplo-no-python" id="toc-exemplo-no-python" class="nav-link" data-scroll-target="#exemplo-no-python"><span class="header-section-number">9.2.1</span> Exemplo no python</a></li>
+  <li><a href="#outliers-e-correlação" id="toc-outliers-e-correlação" class="nav-link" data-scroll-target="#outliers-e-correlação"><span class="header-section-number">9.2.2</span> Outliers e correlação</a></li>
+  <li><a href="#correlação-e-causalidade" id="toc-correlação-e-causalidade" class="nav-link" data-scroll-target="#correlação-e-causalidade"><span class="header-section-number">9.2.3</span> Correlação e causalidade</a></li>
+  </ul></li>
+  <li><a href="#regressão" id="toc-regressão" class="nav-link" data-scroll-target="#regressão"><span class="header-section-number">9.3</span> Regressão</a>
+  <ul class="collapse">
+  <li><a href="#nota-histórica-e-referências" id="toc-nota-histórica-e-referências" class="nav-link" data-scroll-target="#nota-histórica-e-referências"><span class="header-section-number">9.3.1</span> Nota histórica e referências</a></li>
+  <li><a href="#regressão-linear-múltipla" id="toc-regressão-linear-múltipla" class="nav-link" data-scroll-target="#regressão-linear-múltipla"><span class="header-section-number">9.3.2</span> Regressão linear múltipla</a></li>
+  </ul></li>
+  <li><a href="#regressão-logística" id="toc-regressão-logística" class="nav-link" data-scroll-target="#regressão-logística"><span class="header-section-number">9.4</span> Regressão logística</a>
+  <ul class="collapse">
+  <li><a href="#exemplo-no-python-1" id="toc-exemplo-no-python-1" class="nav-link" data-scroll-target="#exemplo-no-python-1"><span class="header-section-number">9.4.1</span> Exemplo no python</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Correlação e regressão</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="cell-1" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># para gráficos</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># para cálculos estatísticos e testes de hipóteses</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># para modelos estatísticos</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>camaras.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">processo</th>
+<th data-quarto-table-cell-role="th">assunto</th>
+<th data-quarto-table-cell-role="th">camara</th>
+<th data-quarto-table-cell-role="th">relator</th>
+<th data-quarto-table-cell-role="th">origem</th>
+<th data-quarto-table-cell-role="th">comarca</th>
+<th data-quarto-table-cell-role="th">polo_mp</th>
+<th data-quarto-table-cell-role="th">decisao</th>
+<th data-quarto-table-cell-role="th">unanimidade</th>
+<th data-quarto-table-cell-role="th">dt_publicacao</th>
+<th data-quarto-table-cell-role="th">ementa</th>
+<th data-quarto-table-cell-role="th">tempo</th>
+<th data-quarto-table-cell-role="th">rel_idade</th>
+<th data-quarto-table-cell-role="th">rel_id_municipio_nasc</th>
+<th data-quarto-table-cell-role="th">rel_faculdade_direito</th>
+<th data-quarto-table-cell-role="th">rel_tempo_magistratura</th>
+<th data-quarto-table-cell-role="th">rel_tipo_magistrado</th>
+<th data-quarto-table-cell-role="th">rel_quinto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>00013452120188260535</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - R...</td>
+<td>01ª Câmara de Direito Criminal</td>
+<td>MÁRIO DEVIENNE FERRAZ</td>
+<td>Comarca de Guarulhos / Foro de Guarulhos / 4ª ...</td>
+<td>GUARULHOS</td>
+<td>Passivo</td>
+<td>Parcialmente</td>
+<td>Unânime</td>
+<td>2020-03-13</td>
+<td>N/A&nbsp;(TJSP; &nbsp;Apelação Criminal 0001345-21.2018....</td>
+<td>2.195756</td>
+<td>70.598220</td>
+<td>3534708.0</td>
+<td>Faculdade Católica de Direito de Santos</td>
+<td>44.900753</td>
+<td>desembargador</td>
+<td>não</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>00647287520158260050</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação...</td>
+<td>07ª Câmara de Direito Criminal</td>
+<td>ALBERTO ANDERSON FILHO</td>
+<td>Comarca de São Paulo / Foro Central Criminal B...</td>
+<td>SAO PAULO</td>
+<td>Passivo</td>
+<td>Negaram</td>
+<td>Unânime</td>
+<td>2016-08-02</td>
+<td>APELAÇÃO CRIMINAL – Tráfico de entorpecentes ...</td>
+<td>1.585216</td>
+<td>69.590691</td>
+<td>3509502.0</td>
+<td>Faculdade de Direito da Pontifícia Universidad...</td>
+<td>35.835729</td>
+<td>desembargador</td>
+<td>não</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>00039169220148260150</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Aprop...</td>
+<td>14ª Câmara de Direito Criminal</td>
+<td>FERNANDO TORRES GARCIA</td>
+<td>Comarca de Cosmópolis / Foro de Cosmópolis / 1...</td>
+<td>COSMOPOLIS</td>
+<td>Passivo</td>
+<td>Negaram</td>
+<td>Unânime</td>
+<td>2020-04-27</td>
+<td>APELAÇÃO CRIMINAL – Apropriação indébita qual...</td>
+<td>6.318960</td>
+<td>64.763860</td>
+<td>3550308.0</td>
+<td>Faculdade de Direito da Universidade de São Paulo</td>
+<td>40.027379</td>
+<td>desembargador</td>
+<td>não</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="introdução" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">9.1</span> Introdução</h2>
+<p>Até agora, vimos uma introdução à teoria de testes de hipóteses. Os testes de hipóteses são a base de diversos avanços científicos feitos ao longo do século XX, como a testagem de procedimentos médicos e tratamentos, a avaliação de políticas públicas, a análise de dados de pesquisas de mercado, entre outros.</p>
+<p>No entanto, o teste de hipóteses, sozinho, não é suficiente para obter esses avanços. Isso acontece porque a realidade costuma ser mais complexa do que algo que pode ser resumido em uma única variável. Por exemplo, imagine que você está interessado em saber se a proporção de decisões favoráveis de um juiz é diferente da proporção de decisões favoráveis de outro juiz. Você pode realizar um teste de hipóteses para comparar as proporções, mas isso não te dá informações sobre quais aspectos podem levar um juiz a ser mais ou menos favorável a determinados casos do que outros.</p>
+<p>O que está relacionado com o tempo dos processos? O que está relacionado com o valor de uma indenização? Quais são os condicionantes de uma decisão judicial? Para responder a essas perguntas, é necessário ir além do teste de hipóteses e explorar a relação entre variáveis. Neste notebook, vamos explorar duas formas de fazer isso: a correlação e a regressão (que é uma forma de generalizar a correlação).</p>
+</section>
+<section id="correlação" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="correlação"><span class="header-section-number">9.2</span> Correlação</h2>
+<p>Correlação é uma medida estatística que descreve a relação entre duas variáveis <strong>numéricas</strong>. A correlação é uma medida de associação linear entre duas variáveis. Em outras palavras, a correlação mede o quanto uma variável varia em relação à outra.</p>
+<p>A correlação é uma medida que varia de -1 a 1. Quando a correlação é 1, as variáveis estão perfeitamente correlacionadas positivamente, ou seja, quando uma aumenta, a outra também aumenta. Quando a correlação é -1, as variáveis estão perfeitamente correlacionadas negativamente, ou seja, quando uma aumenta, a outra diminui. Quando a correlação é 0, as variáveis não estão correlacionadas.</p>
+<p>https://www.guessthecorrelation.com/</p>
+<div>
+<img src="image.png" width="600/">
+</div>
+<p>A fórmula da correlação é dada por:</p>
+<p><span class="math display">\[
+r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2 \sum_{i=1}^{n} (y_i - \bar{y})^2}}
+\]</span></p>
+<p>Explicando a fórmula: <span class="math inline">\(r\)</span> é a correlação entre as variáveis <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, <span class="math inline">\(x_i\)</span> e <span class="math inline">\(y_i\)</span> são os valores das variáveis <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> para a observação <span class="math inline">\(i\)</span>, <span class="math inline">\(\bar{x}\)</span> e <span class="math inline">\(\bar{y}\)</span> são as médias das variáveis <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, respectivamente, e <span class="math inline">\(n\)</span> é o número de observações.</p>
+<p>Uma forma mais simples de escrever a fórmula da correlação é pensar nas variâncias e covariância das variáveis:</p>
+<p><span class="math display">\[
+r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
+\]</span></p>
+<p>As fórmulas acima são equivalentes. A covariância mede o quanto duas variáveis variam juntas, enquanto a variância mede o quanto uma variável varia sozinha. A correlação é a covariância normalizada pela variância das variáveis.</p>
+<section id="exemplo-no-python" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="exemplo-no-python"><span class="header-section-number">9.2.1</span> Exemplo no python</h3>
+<p>Vamos calcular a correlação entre a idade de um desembargador e o tempo de magistratura.</p>
+<div id="cell-4" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>relatores <span class="op">=</span> (</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  camaras</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  .drop_duplicates(<span class="st">'relator'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'rel_idade.isnull() == False and rel_tempo_magistratura.isnull() == False'</span>, engine<span class="op">=</span><span class="st">'python'</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>relatores.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">processo</th>
+<th data-quarto-table-cell-role="th">assunto</th>
+<th data-quarto-table-cell-role="th">camara</th>
+<th data-quarto-table-cell-role="th">relator</th>
+<th data-quarto-table-cell-role="th">origem</th>
+<th data-quarto-table-cell-role="th">comarca</th>
+<th data-quarto-table-cell-role="th">polo_mp</th>
+<th data-quarto-table-cell-role="th">decisao</th>
+<th data-quarto-table-cell-role="th">unanimidade</th>
+<th data-quarto-table-cell-role="th">dt_publicacao</th>
+<th data-quarto-table-cell-role="th">ementa</th>
+<th data-quarto-table-cell-role="th">tempo</th>
+<th data-quarto-table-cell-role="th">rel_idade</th>
+<th data-quarto-table-cell-role="th">rel_id_municipio_nasc</th>
+<th data-quarto-table-cell-role="th">rel_faculdade_direito</th>
+<th data-quarto-table-cell-role="th">rel_tempo_magistratura</th>
+<th data-quarto-table-cell-role="th">rel_tipo_magistrado</th>
+<th data-quarto-table-cell-role="th">rel_quinto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>00013452120188260535</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - R...</td>
+<td>01ª Câmara de Direito Criminal</td>
+<td>MÁRIO DEVIENNE FERRAZ</td>
+<td>Comarca de Guarulhos / Foro de Guarulhos / 4ª ...</td>
+<td>GUARULHOS</td>
+<td>Passivo</td>
+<td>Parcialmente</td>
+<td>Unânime</td>
+<td>2020-03-13</td>
+<td>N/A&nbsp;(TJSP; &nbsp;Apelação Criminal 0001345-21.2018....</td>
+<td>2.195756</td>
+<td>70.598220</td>
+<td>3534708.0</td>
+<td>Faculdade Católica de Direito de Santos</td>
+<td>44.900753</td>
+<td>desembargador</td>
+<td>não</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>00647287520158260050</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação...</td>
+<td>07ª Câmara de Direito Criminal</td>
+<td>ALBERTO ANDERSON FILHO</td>
+<td>Comarca de São Paulo / Foro Central Criminal B...</td>
+<td>SAO PAULO</td>
+<td>Passivo</td>
+<td>Negaram</td>
+<td>Unânime</td>
+<td>2016-08-02</td>
+<td>APELAÇÃO CRIMINAL – Tráfico de entorpecentes ...</td>
+<td>1.585216</td>
+<td>69.590691</td>
+<td>3509502.0</td>
+<td>Faculdade de Direito da Pontifícia Universidad...</td>
+<td>35.835729</td>
+<td>desembargador</td>
+<td>não</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>00039169220148260150</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Aprop...</td>
+<td>14ª Câmara de Direito Criminal</td>
+<td>FERNANDO TORRES GARCIA</td>
+<td>Comarca de Cosmópolis / Foro de Cosmópolis / 1...</td>
+<td>COSMOPOLIS</td>
+<td>Passivo</td>
+<td>Negaram</td>
+<td>Unânime</td>
+<td>2020-04-27</td>
+<td>APELAÇÃO CRIMINAL – Apropriação indébita qual...</td>
+<td>6.318960</td>
+<td>64.763860</td>
+<td>3550308.0</td>
+<td>Faculdade de Direito da Universidade de São Paulo</td>
+<td>40.027379</td>
+<td>desembargador</td>
+<td>não</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Agora vamos fazer um gráfico de dispersão</p>
+<div id="cell-6" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>relatores, x<span class="op">=</span><span class="st">'rel_idade'</span>, y<span class="op">=</span><span class="st">'rel_tempo_magistratura'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08-correlacao-regressao_files/figure-html/cell-5-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note que parece existir uma relação linear entre as variáveis. Vamos calcular a correlação para confirmar essa hipótese.</p>
+<div id="cell-8" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">=</span> relatores[<span class="st">'rel_idade'</span>].corr(relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>correlacao</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>0.6476657995825739</code></pre>
+</div>
+</div>
+<p>Note que a correlação é uma função comutativa, ou seja, a correlação entre x e y é a mesma que a correlação entre y e x:</p>
+<div id="cell-10" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>correlacao_2 <span class="op">=</span> relatores[<span class="st">'rel_tempo_magistratura'</span>].corr(relatores[<span class="st">'rel_idade'</span>])</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>correlacao_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>0.6476657995825738</code></pre>
+</div>
+</div>
+<p>Como testar a significância da correlação? Para isso, podemos usar um teste de hipóteses. A hipótese nula é que a correlação é igual a 0, e a hipótese alternativa é que a correlação é diferente de 0. O teste de hipóteses para a correlação é um teste t de Student, já que temos um resultado bem parecido com o teste de comparação de médias.</p>
+<p>Para isso, utilizamos o método <code>pearsonr</code> da biblioteca <code>scipy.stats</code>. Esse método retorna a correlação e o p-valor do teste de hipóteses.</p>
+<div id="cell-12" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>corr, p_value <span class="op">=</span> stats.pearsonr(relatores[<span class="st">'rel_idade'</span>], relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>corr, p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>(0.6476657995825736, 5.235066377782658e-12)</code></pre>
+</div>
+</div>
+<p>Nesse caso, o valor-p é menor que 0.05, então rejeitamos a hipótese nula e concluímos que a correlação é estatisticamente significante.</p>
+</section>
+<section id="outliers-e-correlação" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="outliers-e-correlação"><span class="header-section-number">9.2.2</span> Outliers e correlação</h3>
+<p>Veja que no gráfico temos alguns pontos que estão bem longe do padrão. Esses pontos são chamados de outliers. Os outliers podem influenciar a correlação, já que eles podem afetar a relação linear entre as duas quantidades, como vimos no jogo <em>guess the correlation</em>.</p>
+<p>Quando isso acontece, é importante investigar a origem desses pontos. Eles podem ser erros de medição, erros de digitação, ou podem ser realmente pontos com um comportamento diferente do padrão geral, o que poderia indicar estudos de caso interessantes. Em análises do direito, estudar outliers pode ser interessante para estudar casos em que o direito foi aplicado de forma diferente do padrão e, assim, aprimorar nosso entendimento sobre o fenômeno jurídico.</p>
+<p>Por exemplo, no estudo <a href="https://abjur.github.io/obsCRSFN/relatorio/obs_crsfn_abj_files/figure-html/multas-comparacao-1.png">Observatório do Mercado de Capitais: Conselho de Recursos do Sistema Financeiro Nacional</a>, a ABJ analisou os recursos interpostos no Conselho de Recursos do Sistema Financeiro Nacional (CRSFN), também chamado de Conselhinho. A análise identificou 2 casos em que o valor da multa após revisão do caso foi maior do que o valor original. No sistema judiciário, isso não deveria ser possível, já que isso violaria o princípio do <em>non reformatio in pejus</em>. A verdade é que essa regra não se aplica ao CRSFN, já que ele é um órgão administrativo e não um órgão judicial. Isso mostra que a análise de outliers pode ser uma ferramenta poderosa para entender o sistema jurídico.</p>
+<p><img src="https://abjur.github.io/obsCRSFN/relatorio/obs_crsfn_abj_files/figure-html/multas-comparacao-1.png" width="800"></p>
+<p>No nosso caso das câmaras, podemos investigar os outliers aplicando alguma regra para detectar os casos:</p>
+<div id="cell-15" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>relatores.query(<span class="st">'rel_tempo_magistratura &lt; 32'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">processo</th>
+<th data-quarto-table-cell-role="th">assunto</th>
+<th data-quarto-table-cell-role="th">camara</th>
+<th data-quarto-table-cell-role="th">relator</th>
+<th data-quarto-table-cell-role="th">origem</th>
+<th data-quarto-table-cell-role="th">comarca</th>
+<th data-quarto-table-cell-role="th">polo_mp</th>
+<th data-quarto-table-cell-role="th">decisao</th>
+<th data-quarto-table-cell-role="th">unanimidade</th>
+<th data-quarto-table-cell-role="th">dt_publicacao</th>
+<th data-quarto-table-cell-role="th">ementa</th>
+<th data-quarto-table-cell-role="th">tempo</th>
+<th data-quarto-table-cell-role="th">rel_idade</th>
+<th data-quarto-table-cell-role="th">rel_id_municipio_nasc</th>
+<th data-quarto-table-cell-role="th">rel_faculdade_direito</th>
+<th data-quarto-table-cell-role="th">rel_tempo_magistratura</th>
+<th data-quarto-table-cell-role="th">rel_tipo_magistrado</th>
+<th data-quarto-table-cell-role="th">rel_quinto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">31</td>
+<td>30376156820138260405</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Recep...</td>
+<td>06ª Câmara de Direito Criminal</td>
+<td>RICARDO TUCUNDUVA</td>
+<td>Comarca de Osasco / Foro de Osasco / 4ª Vara C...</td>
+<td>OSASCO</td>
+<td>Passivo</td>
+<td>Negaram</td>
+<td>Unânime</td>
+<td>2017-02-24</td>
+<td>N/A&nbsp;(TJSP; &nbsp;Apelação Criminal 3037615-68.2013....</td>
+<td>4.147844</td>
+<td>76.000000</td>
+<td>3550308.0</td>
+<td>Faculdade de Direito da Universidade de São Paulo</td>
+<td>30.047912</td>
+<td>desembargador</td>
+<td>sim</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">93</td>
+<td>00421315820128260005</td>
+<td>DIREITO PENAL - Lesão Corporal - Decorrente de...</td>
+<td>12ª Câmara de Direito Criminal</td>
+<td>ANGÉLICA DE ALMEIDA</td>
+<td>Comarca de São Paulo / Foro Regional de São Mi...</td>
+<td>SAO PAULO</td>
+<td>Passivo</td>
+<td>Punibilidade Extinta</td>
+<td>Unânime</td>
+<td>2018-02-23</td>
+<td>N/A&nbsp;(TJSP; &nbsp;Apelação Criminal 0042131-58.2012....</td>
+<td>6.146475</td>
+<td>77.144422</td>
+<td>3552205.0</td>
+<td>Faculdade de Direito da Pontifícia Universidad...</td>
+<td>28.509240</td>
+<td>desembargador</td>
+<td>sim</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>A explicação, nesse caso, é que os desembargadores vieram do quinto constitucional e, portanto, podem não ter tanto tempo de magistratura.</p>
+</section>
+<section id="correlação-e-causalidade" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="correlação-e-causalidade"><span class="header-section-number">9.2.3</span> Correlação e causalidade</h3>
+<p>Uma discussão muito comum em estatística é a diferença entre correlação e causalidade. Correlação é uma medida de associação entre duas variáveis, enquanto causalidade é uma relação de causa e efeito entre duas variáveis. A correlação não implica causalidade. Em outras palavras, só porque duas variáveis estão correlacionadas, não significa que uma causa a outra.</p>
+<p>Um site muito legal para explorar correlações espúrias é o <a href="https://www.tylervigen.com/spurious-correlations">Spurious Correlations</a>, que mostra correlações absurdas entre variáveis, como a relação quase perfeita entre o número de roubos no Alaska e o salário dos professores nos EUA.</p>
+<p><img src="https://www.tylervigen.com/spurious/correlation/image/2723_robberies-in-alaska_correlates-with_professor-salaries-in-the-us.svg" width="600"></p>
+<p>Outro ponto importante é que o fato de duas variáveis terem uma correlação baixa não significa que elas não tenham uma relação (causal ou não). O <a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">problema de Anscombe</a> é um exemplo clássico disso. O problema de Anscombe é um conjunto de 4 datasets que têm a mesma média, variância, correlação e regressão linear. No entanto, os gráficos são completamente diferentes. Isso mostra que a correlação não é suficiente para descrever a relação entre duas variáveis.</p>
+<p>Outro exemplo contemporâneo mais divertido é o Datasaurus Dozen, que mostra 12 datasets com a mesma média, variância e correlação, mas com gráficos completamente diferentes:</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:4800/format:webp/1*uzVmvgn7I-t9x5MTByQg_A.gif" width="600"></p>
+<p>Se quiser ver mais detalhes do Datasaurus Dozen, você pode acessar <a href="https://medium.com/@marc.bolle/datasaurus-dozen-visualization-using-python-d328dad64d20">este post do Medium</a>.</p>
+</section>
+</section>
+<section id="regressão" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="regressão"><span class="header-section-number">9.3</span> Regressão</h2>
+<p>A regressão vai um pouco além da correlação, permitindo tracejar uma linha que melhor se ajusta aos dados. A regressão é uma técnica estatística que permite modelar a relação entre uma variável <strong>dependente</strong> e uma ou mais variáveis <strong>independentes</strong>. A regressão pode ser pensada como uma generalização da correlação, já que a correlação é um caso especial de regressão, onde temos apenas uma variável independente. A maior parte dos estudos, tanto na academia quanto no mercado, utiliza regressão para entender a relação entre variáveis. Por exemplo, modelos preditivos de resultados de processos e até mesmo ferramentas avançadas como LLMs utilizam o framework de regressão como a base de tudo.</p>
+<p>A regressão linear simples é o modelo de regresão mais simples que existe, e modela a relação entre uma variável dependente e uma variável independente. O fato de ser simples não significa que ele é inútil. Muitos problemas do mundo real podem ser modelados com uma regressão linear simples, e ela é a base para os modelos mais complexos.</p>
+<p>A regressão linear é dada pela fórmula:</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1x + \epsilon
+\]</span></p>
+<p>Onde <span class="math inline">\(y\)</span> é a variável dependente, <span class="math inline">\(x\)</span> é a variável independente, <span class="math inline">\(\beta_0\)</span> é o intercepto, <span class="math inline">\(\beta_1\)</span> é o coeficiente angular, e <span class="math inline">\(\epsilon\)</span> é o erro. O objetivo da regressão é encontrar os valores de <span class="math inline">\(\beta_0\)</span> e <span class="math inline">\(\beta_1\)</span> que minimizam o erro <span class="math inline">\(\epsilon\)</span>.</p>
+<p>Precisamos detalhar melhor o que é variável dependente e independente. A variável dependente é aquilo que queremos prever, que queremos explicar. Por exemplo, se queremos prever o valor de uma indenização, o valor da indenização é a variável dependente. A variável independente é aquilo que usamos para prever a variável dependente. Por exemplo, se queremos prever o valor de uma indenização, podemos usar o valor da causa, o local de distribuição, juiz do caso, o tipo de ação, entre outros, como variáveis independentes. Por enquanto, vamos considerar apenas uma variável independente, mas a regressão pode ser generalizada para mais variáveis independentes.</p>
+<p>No nosso caso, a variável dependente é o tempo de magistratura e a variável independente é a idade do desembargador. A pergunta de pesquisa é: o tempo de magistratura é influenciado pela idade do desembargador? Intuitivamente, parece que sim, já que desembargadores mais velhos tendem a ter mais tempo de magistratura. Também vimos que a correlação entre as variáveis é positiva, o que corrobora essa intuição. Agora, vamos <strong>quantificar</strong> essa relação.</p>
+<p>Para ajustar nossa regressão, vamos utilizar um novo pacote: o <code>statsmodels</code>. O <code>statsmodels</code> é uma biblioteca de Python que permite fazer análises estatísticas mais avançadas, como regressão, séries de tempo, entre outros. A função que vamos usar por enquanto é a <code>ols</code>, que significa Ordinary Least Squares, ou Mínimos Quadrados Ordinários. Essa função ajusta uma regressão linear simples aos dados.</p>
+<div id="cell-18" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>modelo <span class="op">=</span> smf.ols(<span class="st">'rel_tempo_magistratura ~ rel_idade'</span>, data<span class="op">=</span>relatores).fit()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>modelo.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>rel_tempo_magistratura</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.419</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.413</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>Least Squares</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>63.59</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Sun, 07 Apr 2024</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>5.24e-12</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>20:01:05</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-237.78</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>90</td>
+<td data-quarto-table-cell-role="th">AIC:</td>
+<td>479.6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>88</td>
+<td data-quarto-table-cell-role="th">BIC:</td>
+<td>484.6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>1</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>6.2034</td>
+<td>4.070</td>
+<td>1.524</td>
+<td>0.131</td>
+<td>-1.884</td>
+<td>14.291</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">rel_idade</td>
+<td>0.4789</td>
+<td>0.060</td>
+<td>7.974</td>
+<td>0.000</td>
+<td>0.360</td>
+<td>0.598</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Omnibus:</td>
+<td>35.274</td>
+<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
+<td>2.006</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
+<td>0.000</td>
+<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
+<td>92.330</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Skew:</td>
+<td>-1.346</td>
+<td data-quarto-table-cell-role="th">Prob(JB):</td>
+<td>8.93e-21</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Kurtosis:</td>
+<td>7.168</td>
+<td data-quarto-table-cell-role="th">Cond. No.</td>
+<td>762.</td>
+</tr>
+</tbody>
+</table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<p>O sumário do modelo tem mais detalhes que o necessário para interpretar o modelo, mas ainda assim é muito interessante. Vamos focar nos coeficientes, que são as estimativas para os valores de <span class="math inline">\(\beta_0\)</span> e <span class="math inline">\(\beta_1\)</span> que minimizam o erro da equação acima.</p>
+<ul>
+<li><p>O coeficiente de idade é 0.5, o que significa que, para cada ano a mais de idade, o tempo de magistratura aumenta em 0.5 anos. O coeficiente de idade é estatisticamente significante, já que o valor-p associado a ele é menor que 0.05. O teste de hipóteses para o coeficiente de idade é um teste t de Student, assim como o teste de hipóteses para a correlação, e o resultado desses testes é o mesmo.</p></li>
+<li><p>O intercepto é 6.2, o que significa que, para um desembargador de 0 anos, o tempo de magistratura é de 6.2 anos. O intercepto não é estatisticamente significante, já que o valor-p é maior que 0.05. Nesse caso, realmente o intercepto não faz muito sentido, já que não existem desembargadores de 0 anos de idade.</p></li>
+</ul>
+<p>A outra informação mais importante do sumário é o <span class="math inline">\(R^2\)</span> (<code>r-squared</code>). O <span class="math inline">\(R^2\)</span> é uma medida de quão bem o modelo se ajusta aos dados, mostrando qual o percentual da variabilidade dos dados é explicado pelo modelo.</p>
+<p>O <span class="math inline">\(R^2\)</span> varia de 0 a 1, e quanto mais próximo de 1, melhor o modelo se ajusta aos dados. O <span class="math inline">\(R^2\)</span> é uma medida de qualidade do modelo, e é muito importante para avaliar a qualidade de um modelo de regressão.</p>
+<p>Você pode se perguntar: a interpretação <span class="math inline">\(R^2\)</span> e do coeficiente de correlação são muito parecidos, não é? A única diferença é que o <span class="math inline">\(R^2\)</span> é sempre positivo, enquanto a correlação pode ser negativa. E de fato essa intuição faz sentido: para uma regressão linear simples (ou seja, com uma variável independente), o <span class="math inline">\(R^2\)</span> é o quadrado da correlação entre as variáveis:</p>
+<div id="cell-20" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">=</span> relatores[<span class="st">'rel_idade'</span>].corr(relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> modelo.rsquared</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">**</span> <span class="dv">2</span>, r2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>(0.4194709879489347, 0.41947098794893445)</code></pre>
+</div>
+</div>
+<p>No entanto, o <span class="math inline">\(R^2\)</span> é uma medida mais geral, que pode ser aplicada a modelos de regressão mais complexos, com mais variáveis independentes. O <span class="math inline">\(R^2\)</span> pode ser pensado como uma medida de qualidade do modelo, enquanto a correlação é uma medida de associação entre variáveis.</p>
+<p>Para visualizar a regressão, podemos fazer um gráfico de dispersão com a linha de regressão. Para isso, vamos usar a função <code>lmplot</code> que plota o gráfico de dispersão e a linha de regressão.</p>
+<div id="cell-23" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sns.lmplot(data<span class="op">=</span>relatores, x<span class="op">=</span><span class="st">'rel_idade'</span>, y<span class="op">=</span><span class="st">'rel_tempo_magistratura'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08-correlacao-regressao_files/figure-html/cell-12-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Na figura, a mancha azul em torno da linha de regressão é a banda de confiança da regressão. A banda de confiança é uma faixa em torno da linha de regressão que mostra a incerteza do modelo. Quanto mais larga a banda de confiança, menos confiante o modelo é naquele ponto. Note que a dispersão dos dados é maior nas idades mais avançadas dos desembargadores, o que é refletido na banda de confiança.</p>
+<section id="nota-histórica-e-referências" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="nota-histórica-e-referências"><span class="header-section-number">9.3.1</span> Nota histórica e referências</h3>
+<p>O nome “Ordinary Leasts Squares” vem do chamado método dos mínimos quadrados, que é o procedimento matemático para encontrar os valores de <span class="math inline">\(\beta_0\)</span> e <span class="math inline">\(\beta_1\)</span> que melhor se ajustam aos dados. O método dos mínimos quadrados foi desenvolvido por Legendre e Gauss no início do século XIX, e é um dos métodos mais importantes da estatística.</p>
+<p>O método dos mínimos quadrados é um método de otimização, que é uma técnica matemática para encontrar o melhor valor de uma função. Na prática, definimos um problema de otimização (uma função de perda + um método de minimização da perda) para cada modelo. Por exemplo, em um modelo de redes neurais, podemos ter diferentes funções de perda (como a entropia cruzada) e diferentes métodos de minimização (como a descida de gradiente).</p>
+<p>O método dos mínimos quadrados é um dos métodos de otimização mais simples, mas é muito poderoso e é a base de muitos modelos estatísticos.</p>
+<p>Se tiver mais interesse sobre o tema, recomendamos o livro <a href="https://www.statlearning.com/">Introduction to Statistical Learning</a>, que é um livro introdutório sobre aprendizado estatístico e que é muito bom para quem quer aprender mais sobre regressão e outros modelos estatísticos.</p>
+<p><img src="https://images.squarespace-cdn.com/content/v1/5ff2adbe3fe4fe33db902812/8b373fbe-d1b4-4351-b803-0d3cd5bba1b0/ISLP_cover.png" width="300"></p>
+</section>
+<section id="regressão-linear-múltipla" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="regressão-linear-múltipla"><span class="header-section-number">9.3.2</span> Regressão linear múltipla</h3>
+<p>A regressão linear simples pode ser generalizada para mais variáveis independentes. A regressão linear múltipla é dada pela fórmula:</p>
+<p><span class="math display">\[
+y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p + \epsilon
+\]</span></p>
+<p>Nosso interesse agora é estudar o tempo dos processos em função da idade do desembargador e do polo do Ministério Público. Para isso, vamos ajustar um modelo de regressão linear múltipla com uma variável dependente (tempo do processo, em anos) e duas variáveis independentes (idade do desembargador e polo do Ministério Público).</p>
+<div id="cell-26" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>modelo_tempo <span class="op">=</span> smf.ols(<span class="st">'tempo ~ rel_idade + polo_mp'</span>, data<span class="op">=</span>camaras).fit()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>modelo_tempo.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>OLS Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>tempo</td>
+<td data-quarto-table-cell-role="th">R-squared:</td>
+<td>0.004</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>OLS</td>
+<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<td>0.003</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>Least Squares</td>
+<td data-quarto-table-cell-role="th">F-statistic:</td>
+<td>15.20</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Sun, 07 Apr 2024</td>
+<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<td>2.57e-07</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>20:01:06</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-18762.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>8608</td>
+<td data-quarto-table-cell-role="th">AIC:</td>
+<td>3.753e+04</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>8605</td>
+<td data-quarto-table-cell-role="th">BIC:</td>
+<td>3.755e+04</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>2</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th"></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">t</td>
+<td data-quarto-table-cell-role="th">P&gt;|t|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>4.0376</td>
+<td>0.277</td>
+<td>14.575</td>
+<td>0.000</td>
+<td>3.495</td>
+<td>4.581</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">polo_mp[T.Passivo]</td>
+<td>-0.4478</td>
+<td>0.085</td>
+<td>-5.268</td>
+<td>0.000</td>
+<td>-0.614</td>
+<td>-0.281</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">rel_idade</td>
+<td>-0.0066</td>
+<td>0.004</td>
+<td>-1.652</td>
+<td>0.099</td>
+<td>-0.014</td>
+<td>0.001</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Omnibus:</td>
+<td>4063.861</td>
+<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
+<td>1.990</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
+<td>0.000</td>
+<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
+<td>27633.729</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Skew:</td>
+<td>2.169</td>
+<td data-quarto-table-cell-role="th">Prob(JB):</td>
+<td>0.00</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Kurtosis:</td>
+<td>10.631</td>
+<td data-quarto-table-cell-role="th">Cond. No.</td>
+<td>806.</td>
+</tr>
+</tbody>
+</table>
+<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</div>
+</div>
+<p>Veja que, agora, temos dois coeficientes: um para a idade do desembargador e outro para o polo do Ministério Público. O coeficiente de idade é -0.007, o que significa que, para cada ano a mais de idade, o tempo do processo reduz em 0.007 anos (aproximadamente 3 dias). Note que o valor não é estatisticamente significante, já que o valor-p associado a ele, de 0.099, é maior que 0.05. O coeficiente de polo é -0.448, o que significa que, quando o polo do MP é passivo, o tempo do processo reduz em 0.448 dias. O coeficiente de polo é estatisticamente significante, já que o valor-p associado a ele é menor que 0.05.</p>
+<p>Nesse caso, o <span class="math inline">\(R^2\)</span> é 0.004, o que significa que o modelo explica menos de 1% da variabilidade dos dados. O <span class="math inline">\(R^2\)</span> é bem baixo, o que significa que o modelo não consegue representar completamente o tempo dos processos. O valor do <span class="math inline">\(R^2\)</span> pode ser usada como um indicativo da qualidade do ajuste, mas não deve ser usado como a única medida de qualidade do modelo. Outras análises de diagnóstico e discussões com especialistas são necessárias para avaliar a qualidade do modelo.</p>
+<p>Note que, além do <span class="math inline">\(R^2\)</span>, temos o <span class="math inline">\(R^2\)</span> ajustado. O <span class="math inline">\(R^2\)</span> ajustado é uma versão do <span class="math inline">\(R^2\)</span> que penaliza a inclusão de variáveis independentes no modelo. O <span class="math inline">\(R^2\)</span> ajustado é uma medida mais conservadora da qualidade do modelo, já que penaliza a inclusão de variáveis independentes desnecessárias. No nosso caso, o <span class="math inline">\(R^2\)</span> ajustado é 0.003. Quando temos um modelo com diversas variáveis independentes, <strong>recomenda-se usar o <span class="math inline">\(R^2\)</span> ajustado</strong>.</p>
+</section>
+</section>
+<section id="regressão-logística" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="regressão-logística"><span class="header-section-number">9.4</span> Regressão logística</h2>
+<p>A regressão logística é uma generalização da regressão linear para variáveis dependentes categóricas. A regressão logística é usada quando a variável dependente é binária, ou seja, tem apenas dois valores possíveis. A regressão logística é dada pela fórmula:</p>
+<p><span class="math display">\[
+p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p)}}
+\]</span></p>
+<p>Onde <span class="math inline">\(p\)</span> é a probabilidade de a variável dependente ser 1, <span class="math inline">\(e\)</span> é o número de Euler (aproximadamente 2.71828), e <span class="math inline">\(\beta_0, \beta_1, ..., \beta_p\)</span> são os coeficientes da regressão. A interpretação dos coeficientes é a mesma da regressão linear: o coeficiente <span class="math inline">\(\beta_1\)</span> é a mudança na probabilidade de a variável dependente ser 1 para uma unidade a mais de <span class="math inline">\(x_1\)</span>, mantendo todas as outras variáveis constantes.</p>
+<p>Para entender a fórmula, vamos olhar um caso com apenas uma variável independente. Nesse caso, a fórmula da regressão logística é:</p>
+<p><span class="math display">\[
+p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
+\]</span></p>
+<p>Veja que, ainda que a relação entre a variável de interesse (dependente) e a variável explicativa (independente) tenha uma forma estranha, a relação entre a variável de interesse e a variável explicativa ainda é linear. Por isso que a regressão logística faz parte da classe de “modelos lineares generalizados”.</p>
+<section id="exemplo-no-python-1" class="level3" data-number="9.4.1">
+<h3 data-number="9.4.1" class="anchored" data-anchor-id="exemplo-no-python-1"><span class="header-section-number">9.4.1</span> Exemplo no python</h3>
+<p>Agora, vamos fazer uma aplicação da regressão logística. Nosso interesse é estudar a probabilidade da parte autora aceitar um acordo a partir de um valor que oferecemos a ela em um caso de direito do consumidor. Na nossa base de dados, temos uma lista de processos similares, contendo</p>
+<ul>
+<li>o valor do acordo oferecido, como uma proporção do valor da causa (no mercado, esse valor é chamado de valor de alçada). Esse valor varia de 0 a 1, e representa a proporção do valor da causa que estamos oferecendo à parte autora;</li>
+<li>a informação sobre o tipo de caso: se envolve dano moral ou dano material;</li>
+<li>se a parte autora aceitou ou não o acordo.</li>
+</ul>
+<p>A ideia é estabelecer uma relação entre o valor do acordo e a aceitação do acordo, controlando pelo tipo de caso. Para isso, vamos ajustar um modelo de regressão logística com duas variáveis independentes: o valor da proposta de acordo (alçada) e o tipo de caso. A variável dependente é a aceitação do acordo, ou seja, uma variável binária que indica se a parte autora aceitou ou não o acordo.</p>
+<div id="cell-28" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>acordos <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/acordos.csv'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># nomes originais: Valor de Alçada, Tipo de Caso,   Aceita Acordo</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>acordos.rename(columns<span class="op">=</span>{</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Valor de Alçada'</span>: <span class="st">'valor_alcada'</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Tipo de Caso'</span>: <span class="st">'tipo_caso'</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Aceita Acordo'</span>: <span class="st">'aceita_acordo'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>acordos.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">valor_alcada</th>
+<th data-quarto-table-cell-role="th">tipo_caso</th>
+<th data-quarto-table-cell-role="th">aceita_acordo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.374540</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.950714</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0.731994</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0.598658</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0.156019</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>0.155995</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>0.058084</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>0.866176</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>0.601115</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>0.708073</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="cell-29" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>modelo_logistico <span class="op">=</span> smf.logit(<span class="st">'aceita_acordo ~ valor_alcada + tipo_caso'</span>, data<span class="op">=</span>acordos).fit()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>modelo_logistico.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization terminated successfully.
+         Current function value: 0.280667
+         Iterations 8</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Logit Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>aceita_acordo</td>
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>Logit</td>
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>997</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>MLE</td>
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Sun, 07 Apr 2024</td>
+<td data-quarto-table-cell-role="th">Pseudo R-squ.:</td>
+<td>0.4647</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>20:01:07</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-280.67</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">converged:</td>
+<td>True</td>
+<td data-quarto-table-cell-role="th">LL-Null:</td>
+<td>-524.36</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">LLR p-value:</td>
+<td>1.456e-106</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">z</td>
+<td data-quarto-table-cell-role="th">P&gt;|z|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>-7.6311</td>
+<td>0.541</td>
+<td>-14.104</td>
+<td>0.000</td>
+<td>-8.692</td>
+<td>-6.571</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">valor_alcada</td>
+<td>9.6214</td>
+<td>0.690</td>
+<td>13.941</td>
+<td>0.000</td>
+<td>8.269</td>
+<td>10.974</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">tipo_caso</td>
+<td>0.0727</td>
+<td>0.213</td>
+<td>0.342</td>
+<td>0.733</td>
+<td>-0.344</td>
+<td>0.490</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Vamos interpretar os resultados do modelo.</p>
+<p>O coeficiente de alçada é 9.621, o que significa que, para cada unidade a mais de alçada, a chance de a parte autora aceitar o acordo aumenta (a interpretação da magnitude desse aumento é mais complicada e não veremos por enquanto). O coeficiente de alçada é estatisticamente significante, já que o valor-p associado a ele é menor que 0.05.</p>
+<p>O coeficiente do tipo de caso ser dano moral é 0.213, o que significa que, para casos de dano moral, a probabilidade de a parte autora aceitar o acordo aumenta. O coeficiente de dano moral não é estatisticamente significante, já que o valor-p associado a ele, de 0.73, é maior que 0.05.</p>
+<p>Já que a probabilidade de aceitação não depende do tipo de caso, podemos simplificar o modelo e ajustar um modelo de regressão logística apenas com a alçada:</p>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>modelo_logistico <span class="op">=</span> smf.logit(<span class="st">'aceita_acordo ~ valor_alcada'</span>, data<span class="op">=</span>acordos).fit()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>modelo_logistico.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization terminated successfully.
+         Current function value: 0.280725
+         Iterations 8</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>Logit Regression Results</caption>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<td>aceita_acordo</td>
+<td data-quarto-table-cell-role="th">No. Observations:</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Model:</td>
+<td>Logit</td>
+<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<td>998</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Method:</td>
+<td>MLE</td>
+<td data-quarto-table-cell-role="th">Df Model:</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Date:</td>
+<td>Sun, 07 Apr 2024</td>
+<td data-quarto-table-cell-role="th">Pseudo R-squ.:</td>
+<td>0.4646</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Time:</td>
+<td>20:01:07</td>
+<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<td>-280.73</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">converged:</td>
+<td>True</td>
+<td data-quarto-table-cell-role="th">LL-Null:</td>
+<td>-524.36</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<td>nonrobust</td>
+<td data-quarto-table-cell-role="th">LLR p-value:</td>
+<td>5.568e-108</td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td></td>
+<td data-quarto-table-cell-role="th">coef</td>
+<td data-quarto-table-cell-role="th">std err</td>
+<td data-quarto-table-cell-role="th">z</td>
+<td data-quarto-table-cell-role="th">P&gt;|z|</td>
+<td data-quarto-table-cell-role="th">[0.025</td>
+<td data-quarto-table-cell-role="th">0.975]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Intercept</td>
+<td>-7.5893</td>
+<td>0.526</td>
+<td>-14.434</td>
+<td>0.000</td>
+<td>-8.620</td>
+<td>-6.559</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">valor_alcada</td>
+<td>9.6114</td>
+<td>0.689</td>
+<td>13.950</td>
+<td>0.000</td>
+<td>8.261</td>
+<td>10.962</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Agora que temos o valor final do modelo, podemos fazer uma interpretação mais direta. Podemos fazer um gráfico representando a relação entre a alçada e a probabilidade de aceitação do acordo:</p>
+<div id="cell-33" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> modelo_logistico.predict(pd.DataFrame({<span class="st">'valor_alcada'</span>: x}))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>df_predict <span class="op">=</span> pd.DataFrame({<span class="st">'valor_alcada'</span>: x, <span class="st">'probabilidade'</span>: y})</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df_predict, x<span class="op">=</span><span class="st">'valor_alcada'</span>, y<span class="op">=</span><span class="st">'probabilidade'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="08-correlacao-regressao_files/figure-html/cell-17-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Pelo gráfico, vemos que a probabilidade de aceitação do acordo aumenta com o valor da alçada. Um valor de alçada abaixo de 40% do valor da causa implica em probabilidades ínfimas de aceitação do acordo, enquanto um valor de alçada próximo de 100% implica em uma aceitação maior de 80% do acordo, apesar desse valor não ser interessante para a parte ré. O valor ótimo de acordo é um trade-off entre a probabilidade de aceitação e a expectativa do resultado do processo pela parte ré.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./07-testes-hipoteses.html" class="pagination-link" aria-label="Testes de hipóteses">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./09-modelos-classificacao.html" class="pagination-link" aria-label="Modelos de classificação">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Modelos de classificação</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

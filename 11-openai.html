@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; Classificação de documentos usando OpenAI GPT-4o-mini – cdad-book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./resumo.html" rel="next">
+<link href="./10-corporativo.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11-openai.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Classificação de documentos usando OpenAI GPT-4o-mini</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">cdad-book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-tipos-variaveis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tipos de variáveis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-organizacao-dados-taxas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Organização de dados, frequências, proporções e taxas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-medidas-posicao-variabilidade.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medidas de posição e variabilidade</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-amostras-populacoes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Amostras e populações</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-probabilidade-cnormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probabilidade e curva normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-testes-hipoteses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-correlacao-regressao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Correlação e regressão</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-modelos-classificacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Modelos de classificação</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-corporativo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aplicações corporativas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-openai.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Classificação de documentos usando OpenAI GPT-4o-mini</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./resumo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#controlando-a-temperatura" id="toc-controlando-a-temperatura" class="nav-link active" data-scroll-target="#controlando-a-temperatura"><span class="header-section-number">12.1</span> Controlando a temperatura</a></li>
+  <li><a href="#desenvolvendo-prompts-para-anotação-de-documentos-jurídicos" id="toc-desenvolvendo-prompts-para-anotação-de-documentos-jurídicos" class="nav-link" data-scroll-target="#desenvolvendo-prompts-para-anotação-de-documentos-jurídicos"><span class="header-section-number">12.2</span> Desenvolvendo prompts para anotação de documentos jurídicos</a>
+  <ul class="collapse">
+  <li><a href="#aplicando-prompt-em-um-caso" id="toc-aplicando-prompt-em-um-caso" class="nav-link" data-scroll-target="#aplicando-prompt-em-um-caso"><span class="header-section-number">12.2.1</span> Aplicando prompt em um caso</a></li>
+  </ul></li>
+  <li><a href="#exercício" id="toc-exercício" class="nav-link" data-scroll-target="#exercício"><span class="header-section-number">12.3</span> Exercício:</a></li>
+  <li><a href="#aula-05-até-aqui" id="toc-aula-05-até-aqui" class="nav-link" data-scroll-target="#aula-05-até-aqui"><span class="header-section-number">12.4</span> Aula 05 até aqui</a></li>
+  <li><a href="#aula-06" id="toc-aula-06" class="nav-link" data-scroll-target="#aula-06"><span class="header-section-number">12.5</span> Aula 06</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Classificação de documentos usando OpenAI GPT-4o-mini</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Neste notebook, vamos usar o modelo de linguagem GPT-4o-mini da OpenAI para classificar documentos em categorias. O GPT-4o-mini é um modelo de linguagem de última geração que pode ser usado para uma variedade de tarefas de processamento de linguagem natural, incluindo classificação de texto.</p>
+<p>Começamos carregando o modelo GPT-4o-mini pré-treinado da OpenAI usando a biblioteca <code>openai</code> e, em seguida, usamos o modelo para classificar documentos em categorias. Para isso, fornecemos ao modelo um documento de entrada e ele nos dá uma lista de categorias possíveis para o documento.</p>
+<p>Para acessar o modelo GPT-4o-mini, você precisará de uma chave de API da OpenAI. Esse notebook já disponibiliza uma chave de API para você usar, mas você também pode obter sua própria chave de API se desejar. Lembre-se que liberar a chave de API é uma prática insegura, então não estamos fazendo isso pelo fluxo ideal.</p>
+<div id="cell-1" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># chave liberada para uso até o final do semestre, com algumas restrições</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dotenv <span class="im">import</span> load_dotenv</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># carregando a biblioteca da openai</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega o arquivo .env</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>load_dotenv()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> OpenAI()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># testando se a chave está funcionando</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>completion <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"gpt-4o-mini"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  messages<span class="op">=</span>[</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"You are a helpful assistant."</span>},</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="st">"content"</span>: <span class="st">"Escreva um cordel curto sobre a disciplina de Ciência de Dados no Direito."</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(completion.choices[<span class="dv">0</span>].message.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>**Cordel da Ciência de Dados no Direito**
+
+No mundo virtual em que vivo,  
+A ciência desponta e reluz,  
+No Direito, uma nova prática,  
+Transforma a lei, traz nova luz.  
+
+Dados dançam, em trovas sutil,  
+E o advogado, astuto e audaz,  
+Com algoritmos faz o perfil,  
+Decifra o futuro, implacável e eficaz.  
+
+Na Justiça, as cifras ensinam,  
+Padrões e tendências a explorar,  
+Com análise e lógica divina,  
+Sentenças justas a se firmar.  
+
+Habeas data, é hora de ver,  
+O sigilo e os dados a fluir,  
+Com ética à frente a guiar,  
+O Direito vem só a evoluir.  
+
+Em estações de aprendizado,  
+Estudamos o que há de novo,  
+Na era digital, tão necessitado,  
+A Ciência de Dados é o nosso povo.  
+
+Por isso, advogados, atenção,  
+A tecnologia não vai parar,  
+Com dados em mãos, em colaboração,  
+A Justiça se faz mais a brilhar.  </code></pre>
+</div>
+</div>
+<section id="controlando-a-temperatura" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="controlando-a-temperatura"><span class="header-section-number">12.1</span> Controlando a temperatura</h2>
+<p>O modelo GPT-4o-mini tem um parâmetro chamado “temperatura” que controla a aleatoriedade das previsões do modelo. Quanto maior a temperatura, mais aleatórias as previsões do modelo serão. Vamos ver um exemplo com temperatura igual a 1, rodando duas vezes o mesmo pedido.</p>
+<div id="cell-4" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>teste1 <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"gpt-4o-mini"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  messages<span class="op">=</span>[</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"You are a helpful assistant."</span>},</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"content"</span>: <span class="st">"Qual o tesouro do jurista (ou seja, o diferencial quando comparado a um profissional da estatística, por exemplo) em pesquisas que envolvem ciência de dados no direito? Responda em uma frase."</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  ],</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  temperature<span class="op">=</span><span class="fl">1.0</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(teste1.choices[<span class="dv">0</span>].message.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>O tesouro do jurista em pesquisas que envolvem ciência de dados no direito reside na sua expertise em interpretar e aplicar normas jurídicas, contextualizando os resultados estatísticos dentro do arcabouço legal e ético pertinente.</code></pre>
+</div>
+</div>
+<p>Agora, rodamos novamente o mesmo pedido. Veja que o resultado é diferente!</p>
+<div id="cell-6" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>teste2 <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"gpt-4o-mini"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  messages<span class="op">=</span>[</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"You are a helpful assistant."</span>},</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"content"</span>: <span class="st">"Qual o tesouro do jurista (ou seja, o diferencial quando comparado a um profissional da estatística, por exemplo) em pesquisas que envolvem ciência de dados no direito? Responda em uma frase."</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  ],</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  temperature<span class="op">=</span><span class="fl">1.0</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(teste2.choices[<span class="dv">0</span>].message.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>O tesouro do jurista em pesquisas que envolvem ciência de dados no direito reside na sua capacidade de interpretar normas legais, contextos jurídicos e implicações éticas, além de aplicar conhecimentos jurídicos para analisar e contextualizar dados de forma crítica e fundamentada.</code></pre>
+</div>
+</div>
+<p>Agora, vamos rodar o mesmo pedido, mas com temperatura igual a 0, duas vezes. O que você acha que vai acontecer?</p>
+<div id="cell-8" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>teste3 <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"gpt-4o-mini"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  messages<span class="op">=</span>[</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"You are a helpful assistant."</span>},</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"content"</span>: <span class="st">"Qual o tesouro do jurista (ou seja, o diferencial quando comparado a um profissional da estatística, por exemplo) em pesquisas que envolvem ciência de dados no direito? Responda em uma frase."</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  ],</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  temperature<span class="op">=</span><span class="fl">0.0</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(teste3.choices[<span class="dv">0</span>].message.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>O tesouro do jurista em pesquisas que envolvem ciência de dados no direito reside na sua capacidade de interpretar e contextualizar dados dentro do arcabouço legal e ético, garantindo que as análises respeitem os princípios jurídicos e os direitos fundamentais.</code></pre>
+</div>
+</div>
+<div id="cell-9" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>teste4 <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  model<span class="op">=</span><span class="st">"gpt-4o-mini"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  messages<span class="op">=</span>[</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"You are a helpful assistant."</span>},</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"role"</span>: <span class="st">"user"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"content"</span>: <span class="st">"Qual o tesouro do jurista (ou seja, o diferencial quando comparado a um profissional da estatística, por exemplo) em pesquisas que envolvem ciência de dados no direito? Responda em uma frase."</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ],</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  temperature<span class="op">=</span><span class="fl">0.0</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(teste4.choices[<span class="dv">0</span>].message.content)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>O tesouro do jurista em pesquisas que envolvem ciência de dados no direito reside na sua capacidade de interpretar e contextualizar normas jurídicas, garantindo que a análise estatística seja aplicada de forma ética e relevante ao sistema legal.</code></pre>
+</div>
+</div>
+</section>
+<section id="desenvolvendo-prompts-para-anotação-de-documentos-jurídicos" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="desenvolvendo-prompts-para-anotação-de-documentos-jurídicos"><span class="header-section-number">12.2</span> Desenvolvendo prompts para anotação de documentos jurídicos</h2>
+<p>A anotação automática de documentos jurídicos utilizando modelos de linguagem aumenta significativamente a eficiência na anotação de documentos. No entanto, a qualidade dos resultados pode variar dependendo da formulação do prompt utilizado.</p>
+<p>Trata-se de uma área em desenvolvimento, então ainda não temos uma resposta final sobre como formular os prompts. No entanto, algumas dicas podem ser úteis:</p>
+<ol type="1">
+<li><p><strong>Escreva instruções claras e objetivas</strong>: O prompt deve ser o mais claro e específico possível. Experimente verificar com você ou outra pessoa se as instruções são compreensíveis e diretas.</p></li>
+<li><p><strong>Deixe claro quem é o assistente e qual seu papel</strong>: O modelo de linguagem é um assistente, e é importante deixar claro qual é o papel dele na tarefa. Por exemplo, “você é um assistente jurídico que realiza a análise de petições iniciais em processos cíveis, resumindo as informações mais importantes para posterior avaliação de profissionais da advocacia”.</p></li>
+<li><p><strong>Descreva o que o modelo deve esperar de entrada</strong>: Sempre que necessário, forneça contexto relevante ao modelo. Isso pode incluir a descrição do tipo de documento, o objetivo da anotação e as características específicas do caso em questão. Por exemplo, uma petição inicial de um processo é diferente de um tweet.</p></li>
+<li><p><strong>Especifique o formato de saída</strong>: Indicar o formato exato da resposta esperada é uma boa prática. Geralmente, pediremos para que a resposta seja em um JSON, e temos um parâmetro para forçar esse comportamento no modelo.</p></li>
+<li><p><strong>Inclua exemplos</strong>: Fornecer exemplos no prompt ajuda o modelo a entender o formato e o conteúdo esperado na resposta. O nome técnico disso é “<em>one shot</em>” ou “<em>few shot</em>” <em>learning</em>.</p></li>
+<li><p><strong>Teste com alguns casos</strong>: Sempre verifique se o prompt está funcionando com alguns casos antes de rodar para uma amostra grande, e faça ajustes caso necessário.</p></li>
+<li><p><strong>Pedir um resumo</strong>: Para tarefas complexas, pode ser útil pedir para o modelo de linguagem resumir a resposta em um parágrafo ou algumas frases, <strong>antes</strong> de realizar uma anotação em categorias. Isso pode aumentar a qualidade da resposta final.</p></li>
+</ol>
+<p><strong>Obs</strong>: você pode usar o ChatGPT para ajudar na criação de prompts. Isso economiza tempo e cria prompts eficazes.</p>
+<div id="cell-11" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>prompt_ruim <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">Classifique o documento abaixo nessas variáveis:</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">- faz parte do escopo?</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">- quais drogas estão envolvidas?</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">- quantidade de maconha em gramas</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">- quantidade de cocaína em gramas</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">- quantidade de crack em gramas</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">- sexo da pessoa acusada</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">- reincidente</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st">- decisão</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="st">- tipo de pena</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="st">- tempo da pena</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-12" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>prompt_otimizado <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">Você é um assistente de inteligência artificial que auxilia na anotação de sentenças judiciais do Tribunal de Justiça de São Paulo em processos envolvendo tráfico de drogas.</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">Você receberá o texto da sentença e deverá retornar um arquivo JSON, seguindo as regras abaixo:</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">- O processo faz parte do escopo da pesquisa? O caso deve: Ser um caso relacionado a tráfico de drogas; Envolver porte de maconha, crack ou cocaína; Envolver apenas uma pessoa acusada.</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="st">- Quantidade de maconha em gramas: Preencha apenas os números. Coloque 0 se o caso não envolve essa droga. Use "," como separador decimal. Se a decisão não menciona a quantidade em gramas, faça a conversão, seguindo a regra: 1 porção = 2 gramas.</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="st">- Quantidade de cocaína em gramas: Preencha apenas os números. Coloque 0 se o caso não envolve essa droga. Use "," como separador decimal. Se a decisão não menciona a quantidade em gramas, faça a conversão, seguindo a regra: 1 porção ou pino = 0,5 grama.</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="st">- Quantidade de crack em gramas: Preencha apenas os números. Coloque 0 se o caso não envolve essa droga. Use "," como separador decimal. Se a decisão não menciona a quantidade em gramas, faça a conversão, seguindo a regra: 1 porção = 0,1 grama.</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="st">- Decisão: pode ser procedente (condenação), improcedente / punibilidade extinta, ou parcialmente procedente / advertência.</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="st">- Tipo de pena: pode ser fechado, semiaberto ou aberto.</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="st">- Tempo da pena (em meses): Preencha apenas os números. Converta o tempo em meses. Por exemplo, 2 anos e 7 meses = 31 meses.</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="st">Retorne um arquivo JSON com as seguintes informações:</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="st">{</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="st"> "escopo": "sim/não",</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="st"> "maconha": "sim/não",</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="st"> "cocaina": "sim/não",</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="st"> "crack": "sim/não",</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="st"> "qtd_maconha": 0,</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="st"> "qtd_cocaina": 0,</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="st"> "qtd_crack": 0,</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="st"> "sexo": "masculino/feminino/não informado",</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="st"> "reincidente": "sim/não/não informado",</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="st"> "decisao": "procedente/improcedente/parcialmente procedente",</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="st"> "tipo_pena": "fechado/semiaberto/aberto",</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="st"> "tempo": 0</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="aplicando-prompt-em-um-caso" class="level3" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="aplicando-prompt-em-um-caso"><span class="header-section-number">12.2.1</span> Aplicando prompt em um caso</h3>
+<div id="cell-14" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>drogas <span class="op">=</span> pd.read_csv(<span class="st">"https://github.com/jtrecenti/main-cdad2/releases/download/data/drogas.csv"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>drogas.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 991 entries, 0 to 990
+Data columns (total 14 columns):
+ #   Column            Non-Null Count  Dtype  
+---  ------            --------------  -----  
+ 0   file              991 non-null    object 
+ 1   processo          991 non-null    object 
+ 2   pagina            991 non-null    int64  
+ 3   hora_coleta       0 non-null      float64
+ 4   duplicado         991 non-null    bool   
+ 5   classe            990 non-null    object 
+ 6   assunto           991 non-null    object 
+ 7   magistrado        991 non-null    object 
+ 8   comarca           991 non-null    object 
+ 9   foro              991 non-null    object 
+ 10  vara              991 non-null    object 
+ 11  disponibilizacao  991 non-null    object 
+ 12  julgado           991 non-null    object 
+ 13  cd_doc            991 non-null    object 
+dtypes: bool(1), float64(1), int64(1), object(11)
+memory usage: 101.7+ KB</code></pre>
+</div>
+</div>
+<div id="cell-15" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>processo <span class="op">=</span> <span class="st">'15005860220238260569'</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>julgado <span class="op">=</span> drogas[drogas[<span class="st">'processo'</span>]<span class="op">==</span>processo][<span class="st">'julgado'</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(julgado[:<span class="dv">2000</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>TRIBUNAL DE JUSTIÇA DO ESTADO DE SÃO PAULO COMARCA de Boituva Foro de Boituva 1ª Vara Rua Manoel dos Santos Freire, 161, Centro - CEP 18550-000, Fone: (15) 3263-2120, Boituva-SP - E-mail: boituva1@tjsp.jus.br 1500586-02.2023.8.26.0569 - lauda SENTENÇA Processo nº: 1500586-02.2023.8.26.0569 Classe - Assunto Ação Penal - Procedimento Ordinário - Tráfico de Drogas e Condutas Afins Autor: Justiça Pública Réu: ROSANA LEMES DE SOUZA Juiz(a) de Direito: Dr(a). Liliana Regina de Araujo Heidorn Abdala Vistos. ROSANA LEMES DE SOUZA foi denunciada como incursa no artigo 33, caput, c/c art. 40, inciso III, ambos da Lei 11.343/06, porque no dia 01 de julho de 2023, aproximadamente às 08h00min, na Estrada Tatuí/Iperó, Área Rural, Estabelecimento Prisional, na cidade de Iperó e comarca de Boituva, ROSANA LEMES DE SOUZA, qualificada a fls. 14 e indiciada a fls. 62, adquiriu e trazia consigo, para fornecer e entregar ao consumo de terceiros, 98,13g (noventa e oito gramas e treze centigramas) líquidos de maconha, acondicionados em 1 (uma) porção, conforme laudo pericial de fls. 31/33 e 106/108, substância entorpecente que determina dependência física e psíquica, sem autorização legal e regulamentar para tanto. Segundo o apurado, a denunciada estava no estabelecimento prisional de Iperó para realização de visitas, quando foi submetida à revista. Ao verificar o que tinha no inteiro de um pacote que a denunciada trazia consigo, foi localizada 1 (uma) porção de maconha no interior de 1 (um) absorvente. As circunstâncias em que se deram o flagrante, evidenciam a prática do tráfico de entorpecentes. Presa em flagrante, a ré foi beneficiada com a liberdade provisória mediante o cumprimento das medidas cautelares previstas no artigo 319, do C.P.P. (fl.89/91). Regularmente notificada (fl. 158), a ré apresentou defesa preliminar (fls.141/144). A denúncia foi recebida (fl. 150). Regularmente citada, foi realizada a instrução processual, com oitiva de duas testemunhas em comum e o interrogatório</code></pre>
+</div>
+</div>
+<div id="cell-16" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(julgado[<span class="op">-</span><span class="dv">2000</span>:])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>prisional, nos termos do artigo 40, inciso III, da Lei 11.343/2006, fixando-a definitivamente em 01 (um) ano, 11 (onze) meses e 10 (dez) dias, e 193 (cento e noventa e três) dias-multa. Vislumbro que a acusada faz jus ao benefício previsto nos artigos 43 e nos seguintes do Código Penal, substituo a pena privativa de liberdade em prestação de serviço à comunidade e 10 dias multa, nos termos do artigo 44, § 2º, do Código Penal, que será executada perante o Juízo das Execuções Criminais. Em caso de descumprimento, fixo o regime aberto para o início do cumprimento da pena. Pelo exposto JULGO PROCEDENTE a presente pretensão punitiva, e o faço para CONDENAR a ré ROSANA LEMES DE SOUZA à pena de 01 (um) ano, 11 (onze) meses e 10 (dez) dias, e 193 (cento e noventa e três) dias-multa, substituída por prestação de serviço à comunidade, na forma acima disposta, por infração ao artigo 33, caput, c/c art. 40, inciso III, ambos da Lei 11.343/06. Defiro recurso em liberdade. São parcas as informações acerca da situação financeira da ré, por isso arbitro o valor do dia-multa no seu mínimo legal, calculado sobre o salário mínimo da data dos fatos e atualizado até o dia do efetivo pagamento. Nos termos do artigo 32, parágrafos 1º e 2º, da Lei 11.343/06, AUTORIZO a incineração dos entorpecentes apreendidos, se ainda não providenciado. Condeno a acusada ao pagamento das custas equivalentes a 100 UFESP's, nos termos do artigo 4º, inciso III, item 5, § 9º, alínea “a” da Lei nº 11.608, de 29 de dezembro de 2003, obrigação que fica suspensa em atenção ao disposto nos artigos 11 e 12 da Lei nº 1.060/50, posto que beneficiários da justiça gratuita, pois defendidos por força do convênio Defensoria Pública/OAB. Arbitro os honorários advocatícios no valor máximo previsto em convênio. Expeça-se a devida certidão. Publicada em audiência. Saem todos intimados. Cumpra-se. Boituva, 19 de agosto de 2024. DOCUMENTO ASSINADO DIGITALMENTE NOS TERMOS DA LEI 11.419/2006, CONFORME IMPRESSÃO À MARGEM DIREITA</code></pre>
+</div>
+</div>
+<div id="cell-17" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classificar_decisao (prompt, julgado):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  completion <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"gpt-4o-mini"</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: prompt},</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>      {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: julgado}</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="fl">0.0</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> completion.choices[<span class="dv">0</span>].message.content</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-18" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>res_ruim <span class="op">=</span> classificar_decisao(prompt_ruim, julgado)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_ruim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- faz parte do escopo? Sim
+- quais drogas estão envolvidas? Maconha
+- quantidade de maconha em gramas: 98,13g
+- quantidade de cocaína em gramas: 0g
+- quantidade de crack em gramas: 0g
+- sexo da pessoa acusada: Feminino
+- reincidente: Não
+- decisão: Condenação
+- tipo de pena: Prestação de serviço à comunidade
+- tempo da pena: 1 ano, 11 meses e 10 dias</code></pre>
+</div>
+</div>
+<div id="cell-19" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>res_otimizado <span class="op">=</span> classificar_decisao(prompt_otimizado, julgado)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_otimizado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>```json
+{
+  "escopo": "sim",
+  "maconha": "sim",
+  "cocaina": "não",
+  "crack": "não",
+  "qtd_maconha": 98,
+  "qtd_cocaina": 0,
+  "qtd_crack": 0,
+  "sexo": "feminino",
+  "reincidente": "não",
+  "decisao": "procedente",
+  "tipo_pena": "aberto",
+  "tempo": 23
+}
+```</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="exercício" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="exercício"><span class="header-section-number">12.3</span> Exercício:</h2>
+<p>Teste o prompt otimizado para novos processos e compare com as classificações manuais</p>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>processo <span class="op">=</span> <span class="st">'&lt;processo aqui&gt;'</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>julgado <span class="op">=</span> drogas[drogas[<span class="st">'processo'</span>]<span class="op">==</span>processo][<span class="st">'julgado'</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>classificar_decisao(prompt_otimizado, julgado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="aula-05-até-aqui" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="aula-05-até-aqui"><span class="header-section-number">12.4</span> Aula 05 até aqui</h2>
+<hr>
+</section>
+<section id="aula-06" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="aula-06"><span class="header-section-number">12.5</span> Aula 06</h2>
+<p>Dá para melhorar um pouco mais ainda. Vamos forçar o resultado a um formato específico, que podemos transformar em um DataFrame python diretamente.</p>
+<div id="cell-24" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> JsonSchema(BaseModel):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  escopo: <span class="bu">str</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  maconha: <span class="bu">str</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  cocaina: <span class="bu">str</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  crack: <span class="bu">str</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  qtd_maconha: <span class="bu">float</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  qtd_cocaina: <span class="bu">float</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  qtd_crack: <span class="bu">float</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  sexo: <span class="bu">str</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  reincidente: <span class="bu">str</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  decisao: <span class="bu">str</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  tipo_pena: <span class="bu">str</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  tempo: <span class="bu">float</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classificar_decisao_df (prompt, julgado):</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  completion <span class="op">=</span> client.beta.chat.completions.parse(</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"gpt-4o-mini"</span>,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>    messages<span class="op">=</span>[</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>      {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: prompt},</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>      {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: julgado}</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    temperature<span class="op">=</span><span class="fl">0.0</span>,</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    response_format <span class="op">=</span> JsonSchema</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> completion.choices[<span class="dv">0</span>].message.parsed.<span class="bu">dict</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-25" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>res_otimizado_df <span class="op">=</span> classificar_decisao_df(prompt_otimizado, julgado)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_otimizado_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'escopo': 'sim', 'maconha': 'sim', 'cocaina': 'não', 'crack': 'não', 'qtd_maconha': 98.0, 'qtd_cocaina': 0.0, 'qtd_crack': 0.0, 'sexo': 'feminino', 'reincidente': 'não', 'decisao': 'procedente', 'tipo_pena': 'aberto', 'tempo': 22.0}</code></pre>
+</div>
+</div>
+<p>É possível converter para um DataFrame diretamente, veja:</p>
+<div id="cell-27" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame([res_otimizado_df])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">escopo</th>
+<th data-quarto-table-cell-role="th">maconha</th>
+<th data-quarto-table-cell-role="th">cocaina</th>
+<th data-quarto-table-cell-role="th">crack</th>
+<th data-quarto-table-cell-role="th">qtd_maconha</th>
+<th data-quarto-table-cell-role="th">qtd_cocaina</th>
+<th data-quarto-table-cell-role="th">qtd_crack</th>
+<th data-quarto-table-cell-role="th">sexo</th>
+<th data-quarto-table-cell-role="th">reincidente</th>
+<th data-quarto-table-cell-role="th">decisao</th>
+<th data-quarto-table-cell-role="th">tipo_pena</th>
+<th data-quarto-table-cell-role="th">tempo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>sim</td>
+<td>sim</td>
+<td>não</td>
+<td>não</td>
+<td>98.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>feminino</td>
+<td>não</td>
+<td>procedente</td>
+<td>aberto</td>
+<td>22.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Agora, podemos fazer isso para vários casos, com um laço:</p>
+<div id="cell-29" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>casos <span class="op">=</span> [</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'00029796520178260542'</span>,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'15289122520238260228'</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'15071822120248260228'</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'15003527020248260347'</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'15027831120238260542'</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'15010156220248260559'</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>resultados <span class="op">=</span> []</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> caso <span class="kw">in</span> casos:</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(caso)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>  txt_caso <span class="op">=</span> drogas[drogas[<span class="st">'processo'</span>] <span class="op">==</span> caso][<span class="st">'julgado'</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  res <span class="op">=</span> classificar_decisao_df(prompt_otimizado, txt_caso)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>  resultados.append(res)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>df_resultados <span class="op">=</span> pd.DataFrame(resultados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>00029796520178260542
+15289122520238260228
+15071822120248260228
+15003527020248260347
+15027831120238260542
+15010156220248260559</code></pre>
+</div>
+</div>
+<div id="cell-30" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df_resultados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">escopo</th>
+<th data-quarto-table-cell-role="th">maconha</th>
+<th data-quarto-table-cell-role="th">cocaina</th>
+<th data-quarto-table-cell-role="th">crack</th>
+<th data-quarto-table-cell-role="th">qtd_maconha</th>
+<th data-quarto-table-cell-role="th">qtd_cocaina</th>
+<th data-quarto-table-cell-role="th">qtd_crack</th>
+<th data-quarto-table-cell-role="th">sexo</th>
+<th data-quarto-table-cell-role="th">reincidente</th>
+<th data-quarto-table-cell-role="th">decisao</th>
+<th data-quarto-table-cell-role="th">tipo_pena</th>
+<th data-quarto-table-cell-role="th">tempo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>sim</td>
+<td>sim</td>
+<td>sim</td>
+<td>não</td>
+<td>63.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>masculino</td>
+<td>sim</td>
+<td>parcialmente procedente</td>
+<td>fechado</td>
+<td>84.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>sim</td>
+<td>sim</td>
+<td>sim</td>
+<td>não</td>
+<td>3.0</td>
+<td>11.0</td>
+<td>0.0</td>
+<td>masculino</td>
+<td>não</td>
+<td>procedente</td>
+<td>fechado</td>
+<td>32.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>sim</td>
+<td>sim</td>
+<td>sim</td>
+<td>não</td>
+<td>51.4</td>
+<td>18.0</td>
+<td>0.0</td>
+<td>masculino</td>
+<td>não</td>
+<td>procedente</td>
+<td>aberto</td>
+<td>20.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>sim</td>
+<td>não</td>
+<td>sim</td>
+<td>não</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>masculino</td>
+<td>não</td>
+<td>procedente</td>
+<td>aberto</td>
+<td>8.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>sim</td>
+<td>sim</td>
+<td>sim</td>
+<td>sim</td>
+<td>6.0</td>
+<td>9.0</td>
+<td>4.0</td>
+<td>masculino</td>
+<td>não</td>
+<td>procedente</td>
+<td>aberto</td>
+<td>20.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>sim</td>
+<td>sim</td>
+<td>sim</td>
+<td>não</td>
+<td>37.0</td>
+<td>12.0</td>
+<td>0.0</td>
+<td>masculino</td>
+<td>não</td>
+<td>parcialmente procedente</td>
+<td>aberto</td>
+<td>32.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Finalmente, podemos salvar o resultado em um arquivo CSV:</p>
+<div id="cell-32" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>df_resultados.to_csv(<span class="st">"resultados.csv"</span>, index <span class="op">=</span> <span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./10-corporativo.html" class="pagination-link" aria-label="Aplicações corporativas">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aplicações corporativas</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./resumo.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.55">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Organização de dados, frequências, proporções e taxas – cdad-book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-medidas-posicao-variabilidade.html" rel="next">
+<link href="./01-tipos-variaveis.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-organizacao-dados-taxas.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Organização de dados, frequências, proporções e taxas</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">cdad-book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introdução</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-tipos-variaveis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tipos de variáveis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-organizacao-dados-taxas.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Organização de dados, frequências, proporções e taxas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-medidas-posicao-variabilidade.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medidas de posição e variabilidade</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-amostras-populacoes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Amostras e populações</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-probabilidade-cnormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Probabilidade e curva normal</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-testes-hipoteses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Testes de hipóteses</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-correlacao-regressao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Correlação e regressão</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-modelos-classificacao.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Modelos de classificação</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-corporativo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aplicações corporativas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-openai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Classificação de documentos usando OpenAI GPT-4o-mini</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./resumo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">3.1</span> Introdução</a></li>
+  <li><a href="#conceitos" id="toc-conceitos" class="nav-link" data-scroll-target="#conceitos"><span class="header-section-number">3.2</span> Conceitos</a>
+  <ul class="collapse">
+  <li><a href="#frequência" id="toc-frequência" class="nav-link" data-scroll-target="#frequência"><span class="header-section-number">3.2.1</span> Frequência</a></li>
+  <li><a href="#frequência-relativa" id="toc-frequência-relativa" class="nav-link" data-scroll-target="#frequência-relativa"><span class="header-section-number">3.2.2</span> Frequência relativa</a></li>
+  <li><a href="#razão" id="toc-razão" class="nav-link" data-scroll-target="#razão"><span class="header-section-number">3.2.3</span> Razão</a></li>
+  <li><a href="#taxa" id="toc-taxa" class="nav-link" data-scroll-target="#taxa"><span class="header-section-number">3.2.4</span> Taxa</a></li>
+  </ul></li>
+  <li><a href="#aplicação" id="toc-aplicação" class="nav-link" data-scroll-target="#aplicação"><span class="header-section-number">3.3</span> Aplicação</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Organização de dados, frequências, proporções e taxas</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="cell-1" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="introdução" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">3.1</span> Introdução</h2>
+<p>Nessa análise, nosso interesse é estudar as decisões do TJSP em apelações criminais. Vamos estudar as quantidades, proporções e distribuições de decisões de acordo com as categorias de decisões.</p>
+<p><strong>Por que isso é importante?</strong> A maior parte dos dados no direito envolvem variáveis categóricas. Entender como esse tipo de dados funciona é fundamental para entender o que podemos e não podemos fazer nas nossas análises.</p>
+</section>
+<section id="conceitos" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="conceitos"><span class="header-section-number">3.2</span> Conceitos</h2>
+<p>Para cada conceito, vamos mostrar a definição, a fórmula matemática e o código em python para calcular.</p>
+<section id="frequência" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="frequência"><span class="header-section-number">3.2.1</span> Frequência</h3>
+<section id="definição" class="level4" data-number="3.2.1.1">
+<h4 data-number="3.2.1.1" class="anchored" data-anchor-id="definição"><span class="header-section-number">3.2.1.1</span> Definição</h4>
+<p>A <strong>frequência</strong> é a quantidade de ocorrências de uma observação, objeto, pessoa, processo, etc. Geralmente, está atrelada a variáveis categóricas, tanto nominais quanto ordinais.</p>
+</section>
+<section id="fórmula" class="level4" data-number="3.2.1.2">
+<h4 data-number="3.2.1.2" class="anchored" data-anchor-id="fórmula"><span class="header-section-number">3.2.1.2</span> Fórmula</h4>
+<p>A fórmula aqui é bem simples: basta contar a quantidade de vezes que cada categoria aparece. Geralmente, denotamos a frequência pela variável <span class="math inline">\(n_i\)</span>, sendo <span class="math inline">\(i\)</span> a categoria.</p>
+<p><span class="math display">\[n_i = \text{número de vezes que a categoria } i \text{ aparece}\]</span></p>
+</section>
+<section id="código" class="level4" data-number="3.2.1.3">
+<h4 data-number="3.2.1.3" class="anchored" data-anchor-id="código"><span class="header-section-number">3.2.1.3</span> Código</h4>
+<p>A frequência de uma variável pode ser rapidamente obtida com <code>value_counts()</code></p>
+<div id="cell-5" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>camaras.decisao.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>decisao
+Negaram                 5273
+Parcialmente            3691
+Provido                  716
+Punibilidade Extinta     238
+Outros                    66
+Não conhecido             16
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>Aqui, <span class="math inline">\(n_1\)</span> é 5273, <span class="math inline">\(n_2\)</span> é 3691 e assim por diante.</p>
+</section>
+</section>
+<section id="frequência-relativa" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="frequência-relativa"><span class="header-section-number">3.2.2</span> Frequência relativa</h3>
+<section id="definição-1" class="level4" data-number="3.2.2.1">
+<h4 data-number="3.2.2.1" class="anchored" data-anchor-id="definição-1"><span class="header-section-number">3.2.2.1</span> Definição</h4>
+<p>A <strong>frequência relativa</strong> é a proporção de ocorrências de uma observação, objeto, pessoa, processo, etc. em relação ao total de ocorrências. Também está atrelada a variáveis categóricas, tanto nominais quanto ordinais.</p>
+</section>
+<section id="fórmula-1" class="level4" data-number="3.2.2.2">
+<h4 data-number="3.2.2.2" class="anchored" data-anchor-id="fórmula-1"><span class="header-section-number">3.2.2.2</span> Fórmula</h4>
+<p>Basta dividir a frequência da categoria pela quantidade total de observações na amostra (<span class="math inline">\(N\)</span>). Denotamos a frequência relativa pela variável <span class="math inline">\(f_i\)</span>, sendo <span class="math inline">\(i\)</span> a categoria.</p>
+<p><span class="math display">\[f_i = \frac{n_i}{N}\]</span></p>
+</section>
+<section id="código-1" class="level4" data-number="3.2.2.3">
+<h4 data-number="3.2.2.3" class="anchored" data-anchor-id="código-1"><span class="header-section-number">3.2.2.3</span> Código</h4>
+<p>O argumento ‘normalize=’ permite obter a frequência relativa - não o total de ocorrências.</p>
+<div id="cell-7" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>camaras.decisao.value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>decisao
+Negaram                 0.5273
+Parcialmente            0.3691
+Provido                 0.0716
+Punibilidade Extinta    0.0238
+Outros                  0.0066
+Não conhecido           0.0016
+Name: proportion, dtype: float64</code></pre>
+</div>
+</div>
+<p>A frequência relativa, quando expressa na forma de porcentagem, também é chamada de <strong>proporção</strong>. A proporção de decisões negadas dentre todas as decisões é de 0.5273 (frequência relativa) ou 52.73% (proporção).</p>
+<p><strong>Obs</strong>: Você não precisa se prender muito a essa distinção rígida de frequência relativa e proporção. No mundo real, as pessoas usam os termos de forma intercambiável, e não há problema nenhum nisso.</p>
+<p><strong>Obs2</strong>: Quando calculamos todas as proporções/frequências relativas de uma variável categórica, a soma delas é 1 (ou 100%, se expressa em porcentagem). Isso é uma propriedade das proporções.</p>
+<p><strong>Obs3</strong>: Quando mostramos todas as proporções/frequências relativas de uma variável categórica, estamos mostrando a <strong>distribuição</strong> da variável. A distribuição é a forma como as categorias estão distribuídas em relação ao total de observações. Falaremos mais sobre isso quando discutirmos os conceitos de <em>estatística</em> e <em>probabilidade</em>.</p>
+</section>
+</section>
+<section id="razão" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="razão"><span class="header-section-number">3.2.3</span> Razão</h3>
+<p>Você percebeu que, para fazer a proporção, dividimos uma frequência pela quantidade total de observações? Isso é uma <strong>razão</strong>.</p>
+<section id="definição-2" class="level4" data-number="3.2.3.1">
+<h4 data-number="3.2.3.1" class="anchored" data-anchor-id="definição-2"><span class="header-section-number">3.2.3.1</span> Definição</h4>
+<p>A razão é a divisão entre duas quantidades de interesse. No caso da frequência relativa, estamos comparando a quantidade de vezes que uma categoria aparece com a quantidade total de observações. Mas a razão pode ser usada para comparar qualquer coisa.</p>
+</section>
+<section id="fórmula-2" class="level4" data-number="3.2.3.2">
+<h4 data-number="3.2.3.2" class="anchored" data-anchor-id="fórmula-2"><span class="header-section-number">3.2.3.2</span> Fórmula</h4>
+<p>Basta dividir a quantidade de interesse pela outra quantidade de interesse. Denotamos a razão pela variável <span class="math inline">\(r\)</span>.</p>
+<p><span class="math display">\[r = \frac{a}{b}\]</span></p>
+<p>Na fórmula, <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span> podem ser quaisquer números. No caso da frequência relativa, <span class="math inline">\(a\)</span> é a quantidade de vezes que uma categoria aparece e <span class="math inline">\(b\)</span> é a quantidade total de observações.</p>
+</section>
+<section id="código-2" class="level4" data-number="3.2.3.3">
+<h4 data-number="3.2.3.3" class="anchored" data-anchor-id="código-2"><span class="header-section-number">3.2.3.3</span> Código</h4>
+<p>A razão é obtida dividindo-se os dois números de interesse. Por exemplo, se quisermos saber quantos recursos relacionados a tráfico de drogas temos para cada recurso relacionado a furto, basta dividir a frequência de recursos de tráfico pela frequência de recursos de furto.</p>
+<div id="cell-9" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_colwidth'</span>, <span class="va">None</span>) <span class="co"># Mostrar todas as colunas</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>camaras.value_counts(<span class="st">'assunto'</span>).reset_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">assunto</th>
+<th data-quarto-table-cell-role="th">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins</td>
+<td>3082</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - Roubo Majorado</td>
+<td>1397</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - Furto Qualificado</td>
+<td>1122</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Furto</td>
+<td>577</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Trânsito</td>
+<td>458</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">115</td>
+<td>DIREITO PENAL - Crimes Praticados por Particular Contra a Administração em Geral - Subtração ou inutilização de livro ou documento</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">116</td>
+<td>DIREITO PENAL - Crimes Contra a Administração da Justiça - Favorecimento real</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">117</td>
+<td>DIREITO PENAL - Crimes Praticados por Particular Contra a Administração em Geral - "Lavagem" ou Ocultação de Bens, Direitos ou Valores Oriundos de Corrupção</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">118</td>
+<td>DIREITO PENAL - Crimes Praticados por Particular Contra a Administração em Geral - Contrabando ou descaminho</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">119</td>
+<td>Crimes Resultante de Preconceito de Raça ou de Cor</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+<p>120 rows × 2 columns</p>
+</div>
+</div>
+</div>
+<div id="cell-10" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>assuntos_trafico <span class="op">=</span> [</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins'</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>assuntos_furto <span class="op">=</span> [</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'DIREITO PENAL - Crimes contra o Patrimônio - Furto Qualificado'</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'DIREITO PENAL-Crimes contra o Patrimônio-Furto'</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>qt_trafico <span class="op">=</span> camaras[camaras.assunto.isin(assuntos_trafico)].shape[<span class="dv">0</span>]</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>qt_furto <span class="op">=</span> camaras[camaras.assunto.isin(assuntos_furto)].shape[<span class="dv">0</span>]</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>razao <span class="op">=</span> qt_trafico <span class="op">/</span> qt_furto</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>qt_trafico, qt_furto, razao</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>(3082, 1699, 1.8140082401412596)</code></pre>
+</div>
+</div>
+<p>Temos aproximadamente 1.81 recursos relacionados a tráfico para cada recurso relacionado a furto.</p>
+<p>Também podemos representar as razões multiplicando por valores constantes (usualmente potências de 10, como 100, 1000, etc). Por exemplo, a razão acima poderia ser expressa como 181 casos de tráfico para cada 100 casos de furto, ou 181:100.</p>
+</section>
+</section>
+<section id="taxa" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="taxa"><span class="header-section-number">3.2.4</span> Taxa</h3>
+<section id="definição-3" class="level4" data-number="3.2.4.1">
+<h4 data-number="3.2.4.1" class="anchored" data-anchor-id="definição-3"><span class="header-section-number">3.2.4.1</span> Definição</h4>
+<p>No inglês, <strong>rate</strong> é a divisão entre dois números com unidades de medidas diferentes (por exemplo, km/h). Já a razão <strong>ratio</strong> é a divisão entre dois números com a mesma unidade de medida (como o exemplo mostrado acima).</p>
+<p>Na prática, muitas vezes chamamos uma razão de taxa, mesmo que os números tenham a mesma unidade de medida. Isso acontece por vários motivos: um é a comodidade e questões culturais mesmo; outro é que na área de epidemiologia, a definição de taxa geralmente está atrelada a um denominador que varia no tempo (como, por exemplo, taxa de mortalidade, que varia no tempo porque a população varia no tempo).</p>
+<p>Um exemplo, muito usado em administração judiciária, é a <strong>taxa de congestionamento</strong>. Aqui, o numerador é o número de processos remanescentes no tribunal – fazendo-se a diferença entre o total de processos (novos + pendentes) e o total de processos baixados – e o denominador é o número total de processos (novos + pendentes).</p>
+<p>Outro exemplo é a taxa de reforma. O numerador é o número de decisões favoráveis ao recurso e o denominador é o número total de recursos baixados.</p>
+<p><strong>Obs:</strong> existem variações para a definição da taxa de reforma. Um exemplo é considerar no denominador apenas as decisões que poderiam ser reformadas, ou seja, as decisões de mérito.</p>
+</section>
+<section id="fórmula-3" class="level4" data-number="3.2.4.2">
+<h4 data-number="3.2.4.2" class="anchored" data-anchor-id="fórmula-3"><span class="header-section-number">3.2.4.2</span> Fórmula</h4>
+<p>A fórmula é a mesma da razão, mas a interpretação é diferente. Denotamos a taxa pela variável <span class="math inline">\(t\)</span>.</p>
+<p><span class="math display">\[t = \frac{a}{b}\]</span></p>
+<p>Na fórmula, <span class="math inline">\(a\)</span> e <span class="math inline">\(b\)</span> podem ser quaisquer números. No caso da taxa de reforma, <span class="math inline">\(a\)</span> é o número de decisões favoráveis e desfavoráveis e <span class="math inline">\(b\)</span> é o número total de decisões.</p>
+</section>
+<section id="código-3" class="level4" data-number="3.2.4.3">
+<h4 data-number="3.2.4.3" class="anchored" data-anchor-id="código-3"><span class="header-section-number">3.2.4.3</span> Código</h4>
+<p>A taxa é obtida dividindo-se os dois números de interesse. Por exemplo, se quisermos saber a taxa de reforma, basta dividir a frequência de decisões favoráveis pela frequência de decisões (total ou de mérito).</p>
+<div id="cell-12" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>qt_decisoes_total <span class="op">=</span> camaras.shape[<span class="dv">0</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>nm_decisoes_merito <span class="op">=</span> [<span class="st">'Negaram'</span>, <span class="st">'Parcialmente'</span>, <span class="st">'Provido'</span>]</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>qt_decisoes_merito <span class="op">=</span> camaras[camaras.decisao.isin(nm_decisoes_merito)].shape[<span class="dv">0</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>qt_decisoes_favoraveis <span class="op">=</span> camaras[camaras.decisao.isin([<span class="st">'Parcialmente'</span>, <span class="st">'Provido'</span>])].shape[<span class="dv">0</span>]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>tx_reforma_total <span class="op">=</span> qt_decisoes_favoraveis <span class="op">/</span> qt_decisoes_total</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>tx_reforma_merito <span class="op">=</span> qt_decisoes_favoraveis <span class="op">/</span> qt_decisoes_merito</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>tx_reforma_total, tx_reforma_merito</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>(0.4407, 0.45526859504132233)</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="aplicação" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="aplicação"><span class="header-section-number">3.3</span> Aplicação</h2>
+<p>A quantidade ou proporção de recursos negados nas câmaras criminais pode variar de acordo com o polo do Ministério Público no caso. Afinal, se um magistrado tem um viés mais ou menos favorável ao MP, a quantidade de recursos negados pode variar.</p>
+<div id="cell-15" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>358</code></pre>
+</div>
+</div>
+<div id="cell-16" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>4915</code></pre>
+</div>
+</div>
+<p>A frequência de recursos negados nos casos em que o MP recorreu (polo ativo) é 358. Quando o MP está no polo passivo, esse número é de 4915. O que isso revela sobre o viés do tribunal com relação ao MP? O fato de existirem menos recursos negados quando o MP recorre pode ser um indício de que o tribunal é mais favorável ao MP?</p>
+<p>Talvez a diferença seja apenas uma questão de quantidade de recursos interpostos pelo MP em relação ao polo passivo. Afinal, se o MP recorre em menos casos, é natural que haja menos recursos negados.</p>
+<p>A proporção de recursos negados para cada tipo de polo do MP é o que de fato deve ser comparado nesse caso.</p>
+<div id="cell-18" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> <span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(camaras[camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-19" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>P_ativo <span class="op">=</span> freq <span class="op">/</span> N</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>P_ativo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>0.44143033292231815</code></pre>
+</div>
+</div>
+<div id="cell-20" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> <span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(camaras[camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-21" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>P_passivo <span class="op">=</span> freq <span class="op">/</span> N</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>P_passivo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>0.5348786592665143</code></pre>
+</div>
+</div>
+<p>A proporção de negados quando o MP está no polo passivo é maior do que a proporção de negados no polo ativo. Isso pode ser um indício de que o tribunal é mais favorável ao MP quando este recorre. Claro que ainda existem muitos fatores a serem considerados (veremos mais para frente!).</p>
+<p>A partir de agora, vamos considerar somente os recursos onde o MP está no polo passivo. Também vamos considerar somente as decisões de mérito.</p>
+<div id="cell-23" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>camaras_mp_passivo <span class="op">=</span> (</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  camaras</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'polo_mp == "Passivo"'</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'decisao == ["Negaram", "Parcialmente", "Provido"]'</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Uma análise de interesse pode ser calcular a taxa de reforma por assunto do processo. Será que existe muita variação?</p>
+<p>Na análise abaixo, estimamos essas proporções, considerando apenas os assuntos com 30 ou mais decisões (tente pensar no motivo dessa decisão).</p>
+<div id="cell-25" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  camaras_mp_passivo</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'assunto'</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  .agg(</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    decisoes <span class="op">=</span> (<span class="st">'decisao'</span>, <span class="st">'count'</span>),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    reforma <span class="op">=</span> (<span class="st">'decisao'</span>, <span class="kw">lambda</span> x: (x.isin([<span class="st">'Provido'</span>, <span class="st">'Parcialmente'</span>])).mean())</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  .reset_index()</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'decisoes &gt;= 30'</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'reforma'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">assunto</th>
+<th data-quarto-table-cell-role="th">decisoes</th>
+<th data-quarto-table-cell-role="th">reforma</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">60</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - Latrocínio</td>
+<td>44</td>
+<td>0.568182</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">38</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Trânsito</td>
+<td>394</td>
+<td>0.530457</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">98</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Estelionato</td>
+<td>178</td>
+<td>0.511236</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">58</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - Furto Qualificado</td>
+<td>1008</td>
+<td>0.497024</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">52</td>
+<td>DIREITO PENAL - Crimes contra a Fé Pública - Uso de documento falso</td>
+<td>84</td>
+<td>0.488095</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">63</td>
+<td>DIREITO PENAL - Crimes contra o Patrimônio - Roubo Majorado</td>
+<td>1296</td>
+<td>0.475309</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">37</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins</td>
+<td>2787</td>
+<td>0.454970</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">96</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Apropriação indébita</td>
+<td>66</td>
+<td>0.439394</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">101</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Furto</td>
+<td>486</td>
+<td>0.413580</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">93</td>
+<td>DIREITO PENAL-Crimes contra a vida-Homicídio Qualificado</td>
+<td>77</td>
+<td>0.402597</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">68</td>
+<td>DIREITO PENAL - Lesão Corporal - Grave</td>
+<td>35</td>
+<td>0.400000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">39</td>
+<td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes do Sistema Nacional de Armas</td>
+<td>322</td>
+<td>0.397516</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">102</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Receptação</td>
+<td>385</td>
+<td>0.397403</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">103</td>
+<td>DIREITO PENAL-Crimes contra o Patrimônio-Roubo</td>
+<td>391</td>
+<td>0.388747</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">48</td>
+<td>DIREITO PENAL - Crimes contra a Fé Pública - Falsificação de documento público</td>
+<td>40</td>
+<td>0.375000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">89</td>
+<td>DIREITO PENAL-Crimes contra a liberdade pessoal-Ameaça</td>
+<td>229</td>
+<td>0.371179</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">65</td>
+<td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica</td>
+<td>193</td>
+<td>0.347150</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">66</td>
+<td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica-Contra a Mulher</td>
+<td>184</td>
+<td>0.336957</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>DIREITO PENAL - Contravenções Penais</td>
+<td>45</td>
+<td>0.333333</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">86</td>
+<td>DIREITO PENAL-Crimes contra a Propriedade Intelectual-Violação de direito autoral</td>
+<td>37</td>
+<td>0.297297</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Pela tabela, vemos que a taxa de reforma varia de 0.30 a 0.57. O assunto com maior taxa de reforma é o latrocínio, seguido por crimes de trânsito. Já o assunto com menor taxa de reforma é a violação de direito autoral.</p>
+<p>Outra análise de interesse é estudar a taxa de reforma por câmara. A tabela abaixo mostra isso. dessa vez, estamos mostrando apenas as câmaras com mais de 100 observações, para remover as câmaras extraordinárias.</p>
+<div id="cell-27" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>camara_reforma <span class="op">=</span> (</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  camaras_mp_passivo</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'camara'</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  .agg(</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    decisoes <span class="op">=</span> (<span class="st">'decisao'</span>, <span class="st">'count'</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    reforma <span class="op">=</span> (<span class="st">'decisao'</span>, <span class="kw">lambda</span> x: (x.isin([<span class="st">'Provido'</span>, <span class="st">'Parcialmente'</span>])).mean())</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  .reset_index()</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'decisoes &gt;= 100'</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'reforma'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>camara_reforma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dessa vez, a taxa de reforma varia de 0.12 até 0.79! Pela tabela, a câmara com maior taxa de reforma é a 12 e a câmara com menor taxa de reforma é a 4.</p>
+<p>Podemos ver esses dados graficamente:</p>
+<div id="cell-29" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sns.barplot(data<span class="op">=</span>camara_reforma, x<span class="op">=</span><span class="st">'reforma'</span>, y<span class="op">=</span><span class="st">'camara'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02-organizacao-dados-taxas_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Na apostila sobre visualização de dados, veremos como customizar esse gráfico.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-tipos-variaveis.html" class="pagination-link" aria-label="Tipos de variáveis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Tipos de variáveis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03-medidas-posicao-variabilidade.html" class="pagination-link" aria-label="Medidas de posição e variabilidade">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Medidas de posição e variabilidade</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
