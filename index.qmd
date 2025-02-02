@@ -1,5 +1,13 @@
 # Prefácio {.unnumbered}
 
-This is a Quarto book.
+::: {callout-warning}
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+O livro está em construção!
+
+:::
+
+A ideia deste livro é funcionar como material de apoio e estudos para a disciplina de Ciência de Dados no Direito II do curso de Direito do Insper.
+
+Quando o livro ficar pronto, poderemos utilizá-lo em outros contextos fora da sala de aula.
+
+Outro link de interesse do qual tirei ideias e conteúdos: <https://livro.abj.org.br>

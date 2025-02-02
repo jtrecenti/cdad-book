@@ -5,13 +5,12 @@ execute:
   freeze: auto
 
 book:
-  title: "cdad-book"
-  author: "Insper"
-  date: "22/01/2025"
+  title: "Ciência de Dados Aplicada ao Direito II"
+  author: "Julio Trecenti (Insper)"
+  date: "01/02/2025"
   chapters:
     - index.qmd
     - intro.qmd
-    - 01-tipos-variaveis.ipynb
     - 02-organizacao-dados-taxas.ipynb
     - 03-medidas-posicao-variabilidade.ipynb
     - 04-visualizacao-seaborn.ipynb
