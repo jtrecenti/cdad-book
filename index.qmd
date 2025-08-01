@@ -1,6 +1,6 @@
 # Prefácio {.unnumbered}
 
-::: {callout-warning}
+::: {.callout-warning}
 
 O livro está em construção!
 
@@ -11,3 +11,10 @@ A ideia deste livro é funcionar como material de apoio e estudos para a discipl
 Quando o livro ficar pronto, poderemos utilizá-lo em outros contextos fora da sala de aula.
 
 Outro link de interesse do qual tirei ideias e conteúdos: <https://livro.abj.org.br>
+
+## Autoria
+
+Este livro é colaborativo, desenvolvido inicialmente por mim (Julio), mas que está em constante evolução e melhoria. Outros colaboradores que contribuíram para o desenvolvimento do livro são:
+
+- Felippe Fortunato de Faria
+- Maria Eduarda Perruci

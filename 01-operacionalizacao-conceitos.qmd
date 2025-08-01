@@ -1,0 +1,107 @@
+---
+title: "Transformando conceitos jurídicos em hipóteses e dados"
+jupyter: python3
+---
+
+## Introdução
+
+A operacionalização de conceitos jurídicos é o processo de transformar ideias abstratas do direito em variáveis mensuráveis e analisáveis. Este capítulo explora como converter conceitos jurídicos complexos em dados que podem ser coletados, organizados e analisados estatisticamente.
+
+:::{.callout-note}
+
+**Por que isso é importante?**
+
+A operacionalização permite que conceitos abstratos sejam estudados na prática com dados reais, tomando cuidado para manter a validade e relevância jurídica das análises. Sem isso, podemos:
+
+- Planejar pesquisas que não são viáveis na prática
+- Realizar pesquisas completas, mas que não têm relevância jurídica
+- Desenvolver pesquisas que não são replicáveis por outros pesquisadores (o outro pesquisador pode ser você no futuro!)
+
+:::
+
+## O que é operacionalização?
+
+Operacionalizar uma pesquisa no direito é o esforço de tentar responder uma pergunta jurídica com evidências retiradas do mundo real. 
+
+Uma pergunta jurídica geralmente mora no **plano abstrato**. Podemos discuti-la do ponto de vista teórico e tomar conclusões, através da análise da lei, da doutrina, da literatura científica e debates entre especialistas. Não há nada de errado nesse tipo de abordagem! Na verdade, muitas vezes, essa é a melhor forma, e as vezes a única forma de responder a uma pergunta jurídica.
+
+No entanto, existem situações em que temos a oportunidade de coletar evidências do mundo real, e que podem ser usadas para responder uma pergunta jurídica, pelo menos em parte. Para isso, olhamos para o **plano empírico**, que é o mundo que podemos observar, sentir e algumas vezes até medir e quantificar. As evidências que observamos no mundo real nem sempre são relevantes para responder uma pergunta jurídica, e às vezes respondem às perguntas de forma indireta ou parcial. Por outro lado, as evidências empíricas são mais difíceis de questionar (contra fatos não há argumentos), produzindo insumos muito úteis para tomada de decisões (qual estratégia aplicar em um processo, o que provavelmente vai acontecer, qual a tendência do judiciário sobre um tema, etc).
+
+O processo de levar uma pergunta de pesquisa do plano abstrato para o plano empírico é o que chamamos de **operacionalização**. Como há perda de informação ao operacionalizar um conceito (nem sempre dá para medir o que queremos), é importante detalhar muito bem o processo todo, desde a definição da pergunta de pesquisa até a descrição de como os dados devem ser coletados e analisados.
+
+Os principais passos para operacionalizar um conceito jurídico são:
+
+1. **Definir claramente** a pergunta de pesquisa, relacionada ao problema que queremos resolver.
+2. **Descrever e pesquisar** os conceitos ou fenômenos jurídicos relacionados ao tema. Pense em um mapa mental sobre o conceito que está sendo estudado.
+3. **Estabelecer implicações observáveis** desses conceitos. Esse é o pulo do gato, que consegue estabelecer uma relação entre o conceito e aspectos observáveis. Geralmente é escrito em uma frase com a estrutura "se *[aspecto relacionado aos conceitos]*, então *[aspecto relacionado às variáveis]*".
+4. **Identificar variáveis**, que são os aspectos observáveis relacionados ao conceito, que podem ser medidos em casos reais. São as colunas de uma tabela de dados.
+5. **Propor uma hipótese**, que é uma afirmação escrita em termos das variáveis e que pode ser testada a partir de um conjunto de dados. Aqui, não precisamos nos preocupar com testes de hipóteses do ponto de vista estatístico (por exemplo, não é necessário formular uma hipótese nula e alternativa). Mas é importante que a hipótese seja formulada em termos das variáveis, para que seja possível testá-la depois de obter os dados.
+
+A @fig-operacionalizacao, retirada de @glauco (adaptado de @kellstedt2021fundamentos), ilustra o processo de operacionalização. A figura como a pesquisa empírica se desloca entre dois planos interligados. No plano da abstração (teórico), o pesquisador formula relações causais entre conceitos, com C1 influenciando C2 e C3 influenciando C4, construindo uma explicação geral do fenômeno. Essas relações conceituais são então traduzidas para o plano da observação (empírico) como hipóteses testáveis, nas quais variáveis observáveis (V1, V2) representam cada conceito e permitem medir o efeito proposto de forma aproximada. A seta sólida para baixo indica essa passagem da teoria para o teste (a operacionalização), enquanto a seta pontilhada de volta sugere que os resultados empíricos retroalimentam o arcabouço teórico: confirmando, refinando ou rejeitando as ideias iniciais.
+
+![Representação das etapas fundamentais de uma pesquisa empírica](operacionalizacao.png){#fig-operacionalizacao width="60%" align="center"}
+
+:::{.callout-note}
+
+Os passos apresentados acima são uma **simplificação**. Uma pesquisa não precisa ter uma pergunta e conceitos claros antes de observar os dados, especialmente em pesquisas *qualitativas*. Mesmo em pesquisas quantitativas, é possível realizar análises exploratórias de dados, que têm como objetivo identificar padrões e tendências nos dados, sem necessidade de uma pergunta prévia. Nosso foco, no entanto, é em pesquisas *quantitativas* confirmatórias, que requerem uma pergunta de pesquisa clara e conceitos claros antes da coleta e análise de dados.
+
+:::
+
+A operacionalização não pára aqui! Ainda precisamos delinear uma estratégia para coletar processos, construir os dados da análise, e, finalmente, realizar a análise estatística para testar a hipótese proposta. Ao estudar processos judiciais, no entanto, essa parte possui alguns fluxos e definições específicas, que são exploradas em detalhes nos capítulos seguintes.
+
+:::{.callout-tip}
+
+Ouça o [podcast](https://notebooklm.google.com/notebook/acf96107-2802-41e4-885a-26db27463e49/audio) baseado no livro [Desenho de Psquisa](https://repositorio.enap.gov.br/bitstream/1/3330/4/Livro_desenho_de_pesquisa%20%282%29.pdf) de @glauco.
+
+:::
+
+## Como fazer?
+
+O exemplo que vamos usar para ilustrar o processo de operacionalização é o do litígio frívolo. Nossa pergunta de pesquisa é: "A gratuidade judiciária contribui para o litígio frívolo?"
+
+**Conceito abstrato**: Litígio frívolo, que é um fenômeno jurídico que envolve processos que não têm justificativa legal e que são instaurados apenas para obter algum benefício. Mapa de conceitos mais completo na @fig-conceitos:
+
+:::{.column-screen-inset}
+![Mapa de conceitos relacionados ao tema](mapa-conceitos.png){#fig-conceitos}
+:::
+
+A partir do mapa de conceitos, podemos estabelecer relações conceituais entre os conceitos e variáveis observáveis. Por exemplo, podemos dizer que "se um processo é litígio frívolo, então ele tem grandes chances de derrota para a demandante". Isso é uma implicação observável! Note que, à esquerda da frase, temos uma parte do conceito (litígio frívolo), e à direita, temos uma variável observável (derrota no processo). Podemos fazer o mesmo com a gratuidade judiciária: "se um processo tem gratuidade judiciária concedida, então ele tem potencialmente é frívolo, implicando em maiores chances de derrota para a demandante do que um processo sem gratuidade judiciária".
+
+Com isso, podemos formular uma hipótese: "se um processo tem gratuidade judiciária concedida, então ele tem maiores chances de derrota para a demandante do que um processo sem gratuidade judiciária". Note que, aqui, tudo é observável: podemos identificar se um processo tem gratuidade judiciária concedida, e podemos identificar se um processo tem derrota para a demandante.
+
+Finalmente, as variáveis. Podemos definir isso em um `DataFrame`:
+
+```{python}
+#| label: fig-dados
+#| code-fold: true
+
+import pandas as pd
+import numpy as np
+from reactable import Reactable, embed_css
+
+embed_css()
+
+np.random.seed(42)
+n_processos = 10
+
+processos = pd.DataFrame({
+    'id_processo': range(1, n_processos + 1),
+    'gratuidade_judiciaria': np.random.choice([0, 1], n_processos),
+    'resultado': np.random.choice([0, 1], n_processos)
+})
+
+Reactable(processos)
+```
+
+
+## Boas práticas
+
+1. **Documente suas escolhas**: Explique por que escolheu determinadas variáveis
+2. **Teste diferentes operacionalizações**: Compare resultados usando diferentes medidas
+3. **Considere o contexto**: O que funciona para um tribunal pode não funcionar para outro
+4. **Valide com especialistas**: Consulte juristas sobre a adequação das medidas
+5. **Seja transparente sobre limitações**: Reconheça o que sua operacionalização não captura
+
+## Conclusão
+
+A operacionalização é um passo fundamental na pesquisa empírica em direito. Ela permite que conceitos abstratos sejam estudados de forma sistemática e rigorosa, mas requer cuidado para manter a validade e relevância jurídica das análises.

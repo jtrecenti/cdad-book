@@ -5,22 +5,34 @@ execute:
   freeze: auto
 
 book:
-  title: "Ciência de Dados Aplicada ao Direito II"
+  title: "Ciência de Dados Aplicada ao Direito"
   author: "Julio Trecenti (Insper)"
-  date: "01/02/2025"
+  date: "23/07/2025"
   chapters:
     - index.qmd
-    - intro.qmd
-    - 02-organizacao-dados-taxas.ipynb
-    - 03-medidas-posicao-variabilidade.ipynb
-    - 04-visualizacao-seaborn.ipynb
-    - 05-amostras-populacoes.ipynb
-    - 06-probabilidade-cnormal.ipynb
-    - 07-testes-hipoteses.ipynb
-    - 08-correlacao-regressao.ipynb
-    - 09-modelos-classificacao.ipynb
-    - 10-corporativo.ipynb
-    - 11-openai.ipynb
+    - 00-introducao.qmd
+    - part: "Planejando pesquisa e construindo dados"
+      chapters:
+        - 01-operacionalizacao-conceitos.qmd
+        - 02-fontes-dados-judiciario.qmd
+        - 03-raspagem-dados.qmd
+        - 04-tecnicas-amostragem.qmd
+        - 05-tipos-dados.qmd
+        - 06-construcao-limpeza-dados.qmd
+    - part: "Análise estatística"
+      chapters:
+        - 07-medidas-posicao-variabilidade.qmd
+        - 08-visualizacao-dados-juridicos.qmd
+        - 09-correlacao-causalidade.qmd
+        - 10-probabilidade-distribuicoes.qmd
+        - 11-intervalo-confianca.qmd
+        - 12-testes-hipoteses.qmd
+    - part: "Técnicas estatísticas e aplicações"
+      chapters:
+        - 13-analise-regressao.qmd
+        - 14-modelos-classificacao.qmd
+        - 15-modelagem-tempos-processos.qmd
+        - 16-aplicacoes-corporativas.qmd
     - resumo.qmd
     - refs.qmd
 
@@ -32,5 +44,3 @@ format:
 
 filters:
   - pyodide
-
-

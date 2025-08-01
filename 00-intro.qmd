@@ -1,0 +1,33 @@
+# Introdução
+
+A análise de dados se tornou um pilar fundamental na tomada de decisão no campo do direito. Com o crescente volume de processos, a digitalização dos processos judiciais, a necessidade de compreender grandes volumes de informações e o recente avanço da Inteligência Artificial (IA), a aplicação correta de conceitos estatísticos em bases de dados jurídicas se tornou uma habilidade que hoje é um diferencial, mas que amanhã será um requisito para profissionais do direito.
+
+O presente material foi elaborado com o objetivo de fornecer um guia estruturado para o aprendizado e a aplicação de conceitos fundamentais em ciência de dados aplicada para os profissionais do direito do futuro. O livro aborda desde o planejamento, coleta e organização de dados jurídicos até o uso de modelos de aprendizado estatístico de máquina para tirar conclusões que contribuem com a tomada de decisão no direito.
+
+## Objetivo do livro
+
+Este livro deve ser visto como um _manual_, não como um _tratado_. Nosso objetivo é discutir o ***como fazer*** uma pesquisa jurimétrica, desvendando o que está por trás do planejamento, coleta de dados, análise de dados, sempre com o foco em tirar conclusões que contribuem com a tomada de decisão no direito. O livro não tem como objetivo discutir ***o que é*** nem ***o que não é*** ciência de dados aplicada ao direito, jurimetria, IA aplicada ao direito, ou termos similares.
+
+Nosso foco é a análise de dados de **processos judiciais**. No universo da jurimetria, podemos analisar dados de processos administrativos, como os dados de conselhos administrativos, agências de controle e boletins de ocorrência. Podemos também fazer análises jurimétricas que nem envolvem processos, como a análise de leis e regulamentos, ou o estudo da tomada de decisão, ou provas estatísticas em casos específicos. Nosso foco, no entanto, é na análise dos processos judiciais, estudando suas características, como tempo e resultado, a partir do momento em que eles entram no sistema judiciário e ganham um número identificador. Os dados do sistema judiciário apresentam uma estrutura bem definida, permitindo a elaboração de estratégias de coleta e análise de dados padronizadas.
+
+Com relação à parte da estatística, nosso foco está nas **aplicações**, não no método. O objetivo é trabalhar apenas os conceitos básicos, suficientes para resolver problemas práticos, utilizando técnicas mais comuns e que sejam diretamente aplicáveis no ambiente jurídico. Em certas situações, precisamos tratar de modelos sofisticados, como modelos preditivos e análise de sobrevivência, que são apresentados sem aprofundamento estatístico.
+
+Na parte de programação, optamos por apresentar as aplicações em *Python*, uma linguagem de programação que é amplamente utilizada no ambiente jurídico e que possui uma sintaxe simples e intuitiva. Outra linguagem muito utilizada na jurimetria é o *R*, que é uma linguagem de programação própria para ciência de dados, e que poderia certamente ser a base de códigos do livro também[^footr]. O livro **não é um tutorial de python**, e possui como pré-requisito conhecimento básico de programação (listas, loops, funções, bibliotecas comuns como `pandas`, `requests`, etc).
+
+[^footr]: Se você quiser fazer uma versão do livro em R, [entre em contato](mailto:julioazt@insper.edu.br)!
+
+## Público-alvo
+
+Este material é destinado a estudantes, profissionais e pesquisadores que desejam aprofundar seus conhecimentos em análise de dados e estatística aplicada no direito. Profissionais da ciência de dados podem tirar proveito do livro identificando algumas aplicações comuns e quais métodos estatísticos aplicar, além de conhecer estratégias para coletar e construir dados jurídicos. Profissionais do direito podem tirar proveito do livro identificando como operacionalizar uma pesquisa jurimétrica, transformando uma pergunta jurídica em resultados concretos.
+
+## Estrutura
+
+O livro é dividido em três partes principais:
+
+1. **Construção de dados**: Capítulos 1 a 5. Discutimos como coletar e construir dados jurídicos, utilizando Python e bibliotecas especializadas para manipulação, visualização e modelagem de dados.
+2. **Análise estatística**: Capítulos 6 a 12. Discutimos como analisar dados jurídicos, utilizando Python e bibliotecas especializadas para manipulação, visualização e modelagem de dados.
+3. **Técnicas estatísticas**: Capítulos 13 a 16. Discutimos como aplicar técnicas estatísticas para analisar dados jurídicos, utilizando Python e bibliotecas especializadas para manipulação, visualização e modelagem de dados.
+
+Ao final de cada capítulo, temos um resumo e uma lista de exercícios para que você possa praticar o que aprendeu.
+
+Boa leitura!

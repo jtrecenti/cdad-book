@@ -1,0 +1,621 @@
+---
+title: "Medidas de posição e variabilidade"
+jupyter: python3
+---
+
+## Introdução
+
+Neste capítulo, buscaremos estudar o tempo que o TJSP leva para julgar apelações criminais. Para isso, começaremos compreendendo o que é uma distribuição, o que chamamos de estatística e como podemos extrair essas informações a partir dos nossos dados.
+
+Por que isso é importante? As estatísticas descritivas -- estatísticas relevantes extraídas a partir dos nossos dados - nos ajudam a compreender melhor uma variável quantitativa de interesse, simplificando a análise de grandes volumes de dados. No Direito, por exemplo, quando um advogado deseja saber quanto tempo, em média, leva um processo para ser julgado, ele está, na verdade, buscando uma estatística descritiva que represente esse comportamento de maneira resumida.
+
+## Conceitos fundamentais
+
+Antes de entendermos a aplicabilidade e a importância do estudo proposto neste capítulo, é fundamental esclarecer os conceitos que serão abordados e explicados a seguir:
+
+- **Média**: Medida de tendência central mais conhecida, mas sensível a valores extremos
+- **Mediana**: Valor central que divide os dados em duas metades iguais
+- **Quantis**: Valores que dividem um conjunto de dados ordenado em partes iguais
+- **Variância e Desvio Padrão**: Medidas de variabilidade dos dados
+
+## Medidas de posição (tendência central)
+
+### A média: conceito e limitações
+
+**O que é?**
+
+Uma das primeiras estatísticas descritivas que costumamos lembrar quando queremos resumir um fenômeno de forma simples e direta é a média. Ela aparece em todos os cantos da vida --- inclusive na faculdade. Sabe quando bate aquela dúvida existencial: *"Será que estou indo bem?"* Lá está ela, a média das suas notas, esperando para te dar uma resposta. E claro, vem o clássico raciocínio otimista: *"Se eu tirar 9 na próxima prova, dá pra salvar a média e escapar da DP!"* (Spoiler: às vezes dá certo... às vezes não).
+
+Mas a média também aparece em contextos menos dramáticos --- tipo na hora de descobrir *"Qual é a média de idade da galera da festa?"*
+
+Seja nos boletins, nas festas ou no Direito --- que é o nosso foco neste livro --- a média é uma ferramenta importante para resumir dados. Na prática, ela é calculada somando todos os valores e dividindo o total pela quantidade de observações. Simples, direto, e (quase sempre) revelador.
+
+Não é novidade para ninguém, por exemplo, que o Judiciário brasileiro costuma ser lento --- essa fama ele carrega com certa constância. Mas será que conseguimos enxergar essa morosidade por meio da média? A resposta é: sim, com certeza! Basta pensarmos na média de processos conclusos por ano no Brasil.
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+
+# Exemplo das sugestões: valores de causa com outliers
+np.random.seed(42)
+
+# Simulando 1000 processos com alguns valores extremos
+valores_normais = np.random.lognormal(8, 1.5, 990)  # 99% dos valores
+valores_extremos = np.array([250_000_000] * 10)     # 1% de valores extremos (como no exemplo)
+
+valores_causa = np.concatenate([valores_normais, valores_extremos])
+
+# Calculando a média
+media_com_outliers = np.mean(valores_causa)
+media_sem_outliers = np.mean(valores_normais)
+
+print("=== ANÁLISE DA MÉDIA ===")
+print(f"Média com outliers: R$ {media_com_outliers:,.2f}")
+print(f"Média sem outliers: R$ {media_sem_outliers:,.2f}")
+print(f"Diferença: R$ {media_com_outliers - media_sem_outliers:,.2f}")
+
+# Neste exemplo, se calculássemos apressadamente a média, chegaríamos à conclusão de que 
+# os processos possuem, em média, cerca de R$ 250 milhões como valor da causa.
+print(f"\nMédia dos valores de causa: R$ {media_com_outliers/1_000_000:.1f} milhões")
+print("Impressionante, certo? Parece até que todos os processos")
+print("envolvem disputas bilionárias dignas de capas de jornal.")
+print("\nMas... novamente, errado.")
+print("\nA média é altamente sensível a valores extremos. Basta um ou dois")
+print("processos com valores absurdamente altos para puxar a média lá para cima")
+print("e dar a impressão equivocada de que todos os casos têm o mesmo perfil.")
+```
+
+### A mediana: uma alternativa robusta
+
+**O que é?**
+
+Como mencionamos na seção anterior, a média costuma ser bastante reveladora. Mas nem sempre ela conta toda a verdade. Para entender isso melhor, vamos a um exemplo simples --- e um pouco provocador.
+
+Suponha que queremos analisar o tempo médio que cada juiz leva para proferir uma decisão. Imaginemos os seguintes dados (ignorando, por ora, a complexidade dos casos e a quantidade de processos com cada juiz):
+
+| **Juízes** | **Dias para decisão** |
+|-------------|------------------------|
+| Juiz 1      | 20                     |
+| Juiz 2      | 25                     |
+| Juiz 3      | 28                     |
+| Juiz 4      | 180                    |
+
+Se calcularmos a média desse grupo, chegaremos a um valor de 64 dias. À primeira vista, poderíamos concluir que os juízes deste tribunal levam, em média, dois meses para decidir. Ótimo, certo?
+
+> **Errado.**
+
+Esse exemplo ilustra uma armadilha clássica da média: ela é extremamente sensível a valores extremos. O desempenho do Juiz 4, que demorou 180 dias, "puxa" a média para cima e distorce a percepção do grupo como um todo. Mesmo sendo um cálculo estatisticamente correto, a média, nesse caso, acaba sendo... bem, enganosa.
+
+É por isso que, quando lidamos com dados assim, precisamos recorrer a outras medidas descritivas que sejam mais robustas frente a esse tipo de distorção. Assim, em distribuições que apresentam valores atípicos ou extremos, a mediana costuma ser uma estatística mais apropriada do que a média. Isso porque ela é menos sensível a distorções causadas por esses valores fora da curva.
+
+Se retomarmos aquele exemplo e, em vez da média, calculássemos a mediana, chegaríamos a uma conclusão bem diferente: a tendência central das decisões nesse tribunal específico estaria em torno de 26 dias (a média entre 25 e 28, os dois valores centrais). Ou seja, uma visão muito mais próxima da realidade da maioria dos juízes --- e que não é influenciada pelo desempenho atípico de um único caso fora da curva.
+
+A mediana é menos sensível a valores extremos e frequentemente mais representativa em dados jurídicos.
+
+```{python}
+# Calculando mediana
+mediana_com_outliers = np.median(valores_causa)
+mediana_sem_outliers = np.median(valores_normais)
+
+print("\n=== ANÁLISE DA MEDIANA ===")
+print(f"Mediana com outliers: R$ {mediana_com_outliers:,.2f}")
+print(f"Mediana sem outliers: R$ {mediana_sem_outliers:,.2f}")
+print(f"Diferença: R$ {mediana_com_outliers - mediana_sem_outliers:,.2f}")
+
+print(f"\nNuma situação como essa, a estatística mais adequada é a mediana.")
+print(f"Se a calculássemos aqui, descobriríamos que o valor central da distribuição")
+print(f"--- ou seja, aquele que melhor representa a maioria dos processos ---")
+print(f"é de cerca de R$ {mediana_com_outliers:,.2f}.")
+print(f"\nIsso nos mostra que, na realidade, a maior parte dos processos")
+print(f"envolve valores muito mais modestos, e que os casos bilionários")
+print(f"são raríssimas exceções.")
+print(f"\nOu seja: embora a média seja uma ferramenta poderosa, ela pode ser")
+print(f"enganosa em cenários com grandes disparidades. A mediana, nesse caso,")
+print(f"nos devolve uma fotografia mais honesta da realidade.")
+```
+
+### Visualizando o impacto dos outliers
+
+```{python}
+fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+
+# Histograma dos dados completos
+axes[0].hist(valores_causa, bins=50, alpha=0.7, color='lightblue', edgecolor='black')
+axes[0].axvline(media_com_outliers, color='red', linestyle='--', linewidth=2, label=f'Média: R$ {media_com_outliers/1_000_000:.1f}M')
+axes[0].axvline(mediana_com_outliers, color='green', linestyle='--', linewidth=2, label=f'Mediana: R$ {mediana_com_outliers:,.0f}')
+axes[0].set_title('Distribuição Completa (com outliers)')
+axes[0].set_xlabel('Valor da Causa (R$)')
+axes[0].set_ylabel('Frequência')
+axes[0].legend()
+
+# Histograma sem outliers
+axes[1].hist(valores_normais, bins=50, alpha=0.7, color='lightcoral', edgecolor='black')
+axes[1].axvline(media_sem_outliers, color='red', linestyle='--', linewidth=2, label=f'Média: R$ {media_sem_outliers:,.0f}')
+axes[1].axvline(mediana_sem_outliers, color='green', linestyle='--', linewidth=2, label=f'Mediana: R$ {mediana_sem_outliers:,.0f}')
+axes[1].set_title('Distribuição sem outliers')
+axes[1].set_xlabel('Valor da Causa (R$)')
+axes[1].set_ylabel('Frequência')
+axes[1].legend()
+
+# Boxplot comparativo
+dados_boxplot = [valores_normais, valores_causa]
+axes[2].boxplot(dados_boxplot, labels=['Sem outliers', 'Com outliers'])
+axes[2].set_title('Boxplot Comparativo')
+axes[2].set_ylabel('Valor da Causa (R$)')
+axes[2].set_yscale('log')  # Escala logarítmica para visualizar melhor
+
+plt.tight_layout()
+plt.show()
+```
+
+### A moda: para dados categóricos
+
+```{python}
+# Exemplo com tipos de decisão (dados categóricos)
+np.random.seed(42)
+decisoes = np.random.choice([
+    'Negaram provimento', 
+    'Parcialmente provido', 
+    'Provido', 
+    'Punibilidade extinta',
+    'Outros'
+], 1000, p=[0.55, 0.25, 0.12, 0.05, 0.03])
+
+# Calculando moda
+from scipy.stats import mode
+moda_resultado = mode(decisoes, keepdims=True)
+moda_valor = moda_resultado.mode[0]
+moda_frequencia = moda_resultado.count[0]
+
+print("=== ANÁLISE DA MODA ===")
+print(f"Moda: {moda_valor}")
+print(f"Frequência: {moda_frequencia} ({moda_frequencia/len(decisoes)*100:.1f}%)")
+
+# Distribuição completa
+decisoes_df = pd.Series(decisoes).value_counts()
+print(f"\nDistribuição completa:")
+for decisao, freq in decisoes_df.items():
+    print(f"  {decisao}: {freq} ({freq/len(decisoes)*100:.1f}%)")
+```
+
+## Quantis e percentis: uma análise detalhada
+
+Seguindo o exemplo detalhado das sugestões sobre quantis:
+
+```{python}
+# Usando o exemplo específico das sugestões
+# Simulando dados de valores de causa ordenados
+np.random.seed(42)
+valores_exemplo = np.array([1000, 2000, 5000, 8000, 12000, 15000, 20000, 25000, 30000, 50000])
+
+print("=== QUANTIS E PERCENTIS ===")
+print("Valores ordenados:", valores_exemplo)
+print(f"Número de observações (n): {len(valores_exemplo)}")
+
+# Calculando quantis específicos
+quantis_interesse = [0.25, 0.5, 0.75, 0.85, 0.9, 0.95]
+
+print(f"\nQuantis calculados:")
+for q in quantis_interesse:
+    valor_quantil = np.quantile(valores_exemplo, q)
+    print(f"Q({q:.2f}) = R$ {valor_quantil:,.2f}")
+
+# Exemplo manual do cálculo do quantil 85% (seguindo as sugestões)
+print(f"\n=== CÁLCULO MANUAL DO QUANTIL 85% ===")
+n = len(valores_exemplo)
+posicao_85 = 0.85 * (n - 1)
+print(f"Posição: 0.85 × ({n} - 1) = {posicao_85}")
+
+if posicao_85 == int(posicao_85):
+    # Posição exata
+    q85_manual = valores_exemplo[int(posicao_85)]
+    print(f"Posição exata: Q(0.85) = {q85_manual}")
+else:
+    # Interpolação necessária
+    pos_inferior = int(posicao_85)
+    pos_superior = pos_inferior + 1
+    peso = posicao_85 - pos_inferior
+    
+    valor_inferior = valores_exemplo[pos_inferior]
+    valor_superior = valores_exemplo[pos_superior]
+    
+    q85_manual = valor_inferior + peso * (valor_superior - valor_inferior)
+    
+    print(f"Posição não exata - interpolação necessária:")
+    print(f"  Posição inferior: {pos_inferior} → R$ {valor_inferior:,.2f}")
+    print(f"  Posição superior: {pos_superior} → R$ {valor_superior:,.2f}")
+    print(f"  Peso: {peso:.1f}")
+    print(f"  Cálculo: {valor_inferior:,.2f} + {peso:.1f} × ({valor_superior:,.2f} - {valor_inferior:,.2f})")
+    print(f"  Q(0.85) = R$ {q85_manual:,.2f}")
+
+# Comparando com numpy
+q85_numpy = np.quantile(valores_exemplo, 0.85)
+print(f"\nComparação:")
+print(f"  Cálculo manual: R$ {q85_manual:,.2f}")
+print(f"  NumPy: R$ {q85_numpy:,.2f}")
+```
+
+### Interpretação prática dos quantis
+
+```{python}
+# Aplicando quantis aos dados de valores de causa
+quantis_valores_causa = [0, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 1.0]
+
+print("=== INTERPRETAÇÃO DOS QUANTIS - VALORES DE CAUSA ===")
+for q in quantis_valores_causa:
+    valor = np.quantile(valores_normais, q)  # Usando dados sem outliers para interpretação mais clara
+    print(f"Q({q:.2f}) = R$ {valor:,.2f} → {q*100:.0f}% dos processos têm valor ≤ R$ {valor:,.2f}")
+
+# Visualização dos quantis
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
+
+# Histograma com quantis marcados
+ax1.hist(valores_normais, bins=50, alpha=0.7, color='lightblue', edgecolor='black', density=True)
+for q in [0.25, 0.5, 0.75]:
+    valor_q = np.quantile(valores_normais, q)
+    ax1.axvline(valor_q, color='red', linestyle='--', alpha=0.8, 
+                label=f'Q({q:.2f}) = R$ {valor_q:,.0f}')
+ax1.set_title('Quantis na Distribuição')
+ax1.set_xlabel('Valor da Causa (R$)')
+ax1.set_ylabel('Densidade')
+ax1.legend()
+
+# Boxplot detalhado
+bp = ax2.boxplot(valores_normais, patch_artist=True)
+bp['boxes'][0].set_facecolor('lightblue')
+
+# Adicionando labels aos quartis
+q1, mediana, q3 = np.quantile(valores_normais, [0.25, 0.5, 0.75])
+ax2.text(1.1, q1, f'Q1: R$ {q1:,.0f}', verticalalignment='center')
+ax2.text(1.1, mediana, f'Mediana: R$ {mediana:,.0f}', verticalalignment='center')
+ax2.text(1.1, q3, f'Q3: R$ {q3:,.0f}', verticalalignment='center')
+
+ax2.set_title('Boxplot com Quartis')
+ax2.set_ylabel('Valor da Causa (R$)')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Medidas de variabilidade
+
+### Amplitude
+
+```{python}
+print("=== MEDIDAS DE VARIABILIDADE ===")
+
+# Amplitude
+amplitude = np.max(valores_normais) - np.min(valores_normais)
+print(f"Amplitude: R$ {amplitude:,.2f}")
+print(f"  Valor mínimo: R$ {np.min(valores_normais):,.2f}")
+print(f"  Valor máximo: R$ {np.max(valores_normais):,.2f}")
+
+# Problema da amplitude: muito sensível a outliers
+amplitude_com_outliers = np.max(valores_causa) - np.min(valores_causa)
+print(f"\nAmplitude com outliers: R$ {amplitude_com_outliers:,.2f}")
+print("A amplitude é muito sensível a valores extremos!")
+```
+
+### Amplitude Interquartil (IQR)
+
+```{python}
+# Amplitude Interquartil - mais robusta
+q1 = np.quantile(valores_normais, 0.25)
+q3 = np.quantile(valores_normais, 0.75)
+iqr = q3 - q1
+
+print(f"\n=== AMPLITUDE INTERQUARTIL (IQR) ===")
+print(f"Q1 (25%): R$ {q1:,.2f}")
+print(f"Q3 (75%): R$ {q3:,.2f}")
+print(f"IQR: R$ {iqr:,.2f}")
+print(f"\nInterpretação: 50% dos valores centrais variam em R$ {iqr:,.2f}")
+
+# IQR é mais robusta a outliers
+q1_outliers = np.quantile(valores_causa, 0.25)
+q3_outliers = np.quantile(valores_causa, 0.75)
+iqr_outliers = q3_outliers - q1_outliers
+
+print(f"\nComparação com outliers:")
+print(f"  IQR sem outliers: R$ {iqr:,.2f}")
+print(f"  IQR com outliers: R$ {iqr_outliers:,.2f}")
+print(f"  Diferença: R$ {abs(iqr_outliers - iqr):,.2f}")
+```
+
+### Variância e Desvio Padrão
+
+```{python}
+# Variância e desvio padrão
+variancia = np.var(valores_normais, ddof=1)  # ddof=1 para amostra
+desvio_padrao = np.std(valores_normais, ddof=1)
+
+print(f"\n=== VARIÂNCIA E DESVIO PADRÃO ===")
+print(f"Variância: {variancia:,.2f}")
+print(f"Desvio padrão: R$ {desvio_padrao:,.2f}")
+
+# Interpretação do desvio padrão
+media_valores = np.mean(valores_normais)
+print(f"\nInterpretação:")
+print(f"  Média: R$ {media_valores:,.2f}")
+print(f"  Desvio padrão: R$ {desvio_padrao:,.2f}")
+print(f"  Aproximadamente 68% dos valores estão entre:")
+print(f"    R$ {media_valores - desvio_padrao:,.2f} e R$ {media_valores + desvio_padrao:,.2f}")
+
+# Verificando a regra empírica
+dentro_1dp = np.sum((valores_normais >= media_valores - desvio_padrao) & 
+                    (valores_normais <= media_valores + desvio_padrao))
+percentual_1dp = dentro_1dp / len(valores_normais) * 100
+
+print(f"  Verificação: {percentual_1dp:.1f}% dos valores estão nesse intervalo")
+```
+
+### Coeficiente de Variação
+
+```{python}
+# Coeficiente de variação - medida relativa
+cv = (desvio_padrao / media_valores) * 100
+
+print(f"\n=== COEFICIENTE DE VARIAÇÃO ===")
+print(f"CV: {cv:.1f}%")
+
+# Interpretação do CV
+if cv < 15:
+    interpretacao = "baixa variabilidade"
+elif cv < 30:
+    interpretacao = "variabilidade moderada"
+else:
+    interpretacao = "alta variabilidade"
+
+print(f"Interpretação: {interpretacao}")
+
+# Comparando diferentes conjuntos de dados
+# Exemplo: tempo de tramitação vs valor da causa
+tempos_tramitacao = np.random.exponential(365, 1000)  # média de 1 ano
+media_tempo = np.mean(tempos_tramitacao)
+dp_tempo = np.std(tempos_tramitacao, ddof=1)
+cv_tempo = (dp_tempo / media_tempo) * 100
+
+print(f"\nComparação de variabilidade:")
+print(f"  Valores de causa - CV: {cv:.1f}%")
+print(f"  Tempo de tramitação - CV: {cv_tempo:.1f}%")
+
+if cv_tempo > cv:
+    print("  O tempo de tramitação é mais variável que os valores de causa")
+else:
+    print("  Os valores de causa são mais variáveis que o tempo de tramitação")
+```
+
+## Análise de assimetria e curtose
+
+```{python}
+# Medidas de forma da distribuição
+assimetria = stats.skew(valores_normais)
+curtose = stats.kurtosis(valores_normais)
+
+print(f"\n=== MEDIDAS DE FORMA ===")
+print(f"Assimetria: {assimetria:.3f}")
+print(f"Curtose: {curtose:.3f}")
+
+# Interpretação da assimetria
+if assimetria > 0.5:
+    interp_assim = "distribuição assimétrica à direita (cauda longa à direita)"
+elif assimetria < -0.5:
+    interp_assim = "distribuição assimétrica à esquerda (cauda longa à esquerda)"
+else:
+    interp_assim = "distribuição aproximadamente simétrica"
+
+print(f"Assimetria: {interp_assim}")
+
+# Interpretação da curtose
+if curtose > 0:
+    interp_curt = "distribuição mais pontiaguda que a normal (leptocúrtica)"
+elif curtose < 0:
+    interp_curt = "distribuição mais achatada que a normal (platicúrtica)"
+else:
+    interp_curt = "distribuição similar à normal (mesocúrtica)"
+
+print(f"Curtose: {interp_curt}")
+```
+
+## Comparação de grupos
+
+```{python}
+# Exemplo: Comparando valores por tipo de processo
+np.random.seed(42)
+
+# Simulando dados por tipo de processo
+tipos_processo = ['Civil', 'Criminal', 'Trabalhista']
+dados_por_tipo = {}
+
+for tipo in tipos_processo:
+    if tipo == 'Civil':
+        # Processos cíveis tendem a ter valores maiores
+        dados_por_tipo[tipo] = np.random.lognormal(9, 1.5, 300)
+    elif tipo == 'Criminal':
+        # Processos criminais geralmente não têm valor da causa
+        dados_por_tipo[tipo] = np.random.lognormal(6, 1, 200)
+    else:  # Trabalhista
+        # Processos trabalhistas têm valores intermediários
+        dados_por_tipo[tipo] = np.random.lognormal(8, 1.2, 250)
+
+# Calculando estatísticas por grupo
+print("=== COMPARAÇÃO POR TIPO DE PROCESSO ===")
+estatisticas_comparacao = []
+
+for tipo, valores in dados_por_tipo.items():
+    stats_tipo = {
+        'Tipo': tipo,
+        'N': len(valores),
+        'Média': np.mean(valores),
+        'Mediana': np.median(valores),
+        'Desvio Padrão': np.std(valores, ddof=1),
+        'CV (%)': (np.std(valores, ddof=1) / np.mean(valores)) * 100,
+        'Q1': np.quantile(valores, 0.25),
+        'Q3': np.quantile(valores, 0.75),
+        'IQR': np.quantile(valores, 0.75) - np.quantile(valores, 0.25)
+    }
+    estatisticas_comparacao.append(stats_tipo)
+
+df_comparacao = pd.DataFrame(estatisticas_comparacao)
+print(df_comparacao.round(2))
+```
+
+### Visualização comparativa
+
+```{python}
+# Visualizações comparativas
+fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+
+# 1. Boxplots comparativos
+dados_boxplot = [dados_por_tipo[tipo] for tipo in tipos_processo]
+bp = axes[0,0].boxplot(dados_boxplot, labels=tipos_processo, patch_artist=True)
+cores = ['lightblue', 'lightcoral', 'lightgreen']
+for patch, cor in zip(bp['boxes'], cores):
+    patch.set_facecolor(cor)
+axes[0,0].set_title('Distribuição por Tipo de Processo')
+axes[0,0].set_ylabel('Valor da Causa (R$)')
+axes[0,0].set_yscale('log')
+
+# 2. Histogramas sobrepostos
+for i, (tipo, valores) in enumerate(dados_por_tipo.items()):
+    axes[0,1].hist(np.log10(valores), bins=30, alpha=0.6, 
+                   label=tipo, color=cores[i], density=True)
+axes[0,1].set_title('Distribuições Sobrepostas (Log₁₀)')
+axes[0,1].set_xlabel('Log₁₀(Valor da Causa)')
+axes[0,1].set_ylabel('Densidade')
+axes[0,1].legend()
+
+# 3. Comparação de médias
+medias = [np.mean(dados_por_tipo[tipo]) for tipo in tipos_processo]
+axes[1,0].bar(tipos_processo, medias, color=cores, alpha=0.8)
+axes[1,0].set_title('Média por Tipo de Processo')
+axes[1,0].set_ylabel('Valor Médio (R$)')
+for i, v in enumerate(medias):
+    axes[1,0].text(i, v, f'R$ {v:,.0f}', ha='center', va='bottom')
+
+# 4. Comparação de variabilidade (CV)
+cvs = [(np.std(dados_por_tipo[tipo], ddof=1) / np.mean(dados_por_tipo[tipo])) * 100 
+       for tipo in tipos_processo]
+axes[1,1].bar(tipos_processo, cvs, color=cores, alpha=0.8)
+axes[1,1].set_title('Coeficiente de Variação por Tipo')
+axes[1,1].set_ylabel('CV (%)')
+for i, v in enumerate(cvs):
+    axes[1,1].text(i, v, f'{v:.1f}%', ha='center', va='bottom')
+
+plt.tight_layout()
+plt.show()
+```
+
+## Aplicações práticas no direito
+
+### 1. Análise de tempos processuais
+
+```{python}
+# Exemplo prático: análise de tempos de tramitação
+np.random.seed(42)
+
+# Simulando tempos por instância
+tempos_primeira_instancia = np.random.exponential(450, 500)  # ~15 meses
+tempos_segunda_instancia = np.random.exponential(300, 300)   # ~10 meses
+tempos_tribunais_superiores = np.random.exponential(180, 100)  # ~6 meses
+
+print("=== ANÁLISE DE TEMPOS PROCESSUAIS ===")
+
+instancias = {
+    '1ª Instância': tempos_primeira_instancia,
+    '2ª Instância': tempos_segunda_instancia,
+    'Tribunais Superiores': tempos_tribunais_superiores
+}
+
+for nome, tempos in instancias.items():
+    media_dias = np.mean(tempos)
+    mediana_dias = np.median(tempos)
+    dp_dias = np.std(tempos, ddof=1)
+    
+    print(f"\n{nome}:")
+    print(f"  Tempo médio: {media_dias:.0f} dias ({media_dias/30:.1f} meses)")
+    print(f"  Tempo mediano: {mediana_dias:.0f} dias ({mediana_dias/30:.1f} meses)")
+    print(f"  Desvio padrão: {dp_dias:.0f} dias")
+    print(f"  75% dos processos são julgados em até: {np.quantile(tempos, 0.75):.0f} dias")
+```
+
+### 2. Meta 2 do CNJ: Análise de congestionamento
+
+```{python}
+# Simulando dados de congestionamento por tribunal
+tribunais = ['TJSP', 'TJRJ', 'TJMG', 'TJRS', 'TJPR']
+np.random.seed(42)
+
+# Taxa de congestionamento (% de processos não julgados)
+taxas_congestionamento = np.random.beta(7, 3, len(tribunais)) * 100  # Entre 0 e 100%
+
+dados_congestionamento = pd.DataFrame({
+    'Tribunal': tribunais,
+    'Taxa_Congestionamento': taxas_congestionamento
+})
+
+print("=== ANÁLISE DE CONGESTIONAMENTO (META 2 CNJ) ===")
+print(dados_congestionamento.round(1))
+
+# Estatísticas descritivas
+taxa_media = np.mean(taxas_congestionamento)
+taxa_mediana = np.median(taxas_congestionamento)
+taxa_dp = np.std(taxas_congestionamento, ddof=1)
+
+print(f"\nEstatísticas das taxas de congestionamento:")
+print(f"  Média: {taxa_media:.1f}%")
+print(f"  Mediana: {taxa_mediana:.1f}%")
+print(f"  Desvio padrão: {taxa_dp:.1f}%")
+print(f"  Amplitude: {np.max(taxas_congestionamento) - np.min(taxas_congestionamento):.1f}%")
+
+# Meta do CNJ (exemplo: reduzir congestionamento para menos de 70%)
+meta_cnj = 70
+tribunais_acima_meta = np.sum(taxas_congestionamento > meta_cnj)
+print(f"\nTribunais acima da meta de {meta_cnj}%: {tribunais_acima_meta} de {len(tribunais)}")
+```
+
+## Resumo e boas práticas
+
+```{python}
+print("=== RESUMO: QUANDO USAR CADA MEDIDA ===")
+print("""
+MEDIDAS DE POSIÇÃO:
+• Média: Quando os dados são simétricos e sem outliers extremos
+• Mediana: Preferível para dados assimétricos ou com outliers
+• Moda: Para dados categóricos ou identificar valores mais frequentes
+
+MEDIDAS DE VARIABILIDADE:
+• Amplitude: Medida simples, mas sensível a outliers
+• IQR: Robusta a outliers, boa para dados assimétricos
+• Desvio padrão: Quando os dados são aproximadamente normais
+• Coeficiente de variação: Para comparar variabilidade entre grupos diferentes
+
+QUANTIS:
+• Quartis: Dividem os dados em 4 partes iguais
+• Percentis: Úteis para estabelecer metas e benchmarks
+• Decis: Para análises mais detalhadas da distribuição
+""")
+
+# Exemplo final: relatório completo
+print("\n=== RELATÓRIO ESTATÍSTICO COMPLETO ===")
+print("Análise dos valores de causa (sem outliers):")
+print(f"• Número de observações: {len(valores_normais):,}")
+print(f"• Média: R$ {np.mean(valores_normais):,.2f}")
+print(f"• Mediana: R$ {np.median(valores_normais):,.2f}")
+print(f"• Desvio padrão: R$ {np.std(valores_normais, ddof=1):,.2f}")
+print(f"• Coeficiente de variação: {(np.std(valores_normais, ddof=1)/np.mean(valores_normais))*100:.1f}%")
+print(f"• Quartis:")
+print(f"  - Q1: R$ {np.quantile(valores_normais, 0.25):,.2f}")
+print(f"  - Q2 (Mediana): R$ {np.quantile(valores_normais, 0.5):,.2f}")
+print(f"  - Q3: R$ {np.quantile(valores_normais, 0.75):,.2f}")
+print(f"• Amplitude Interquartil: R$ {np.quantile(valores_normais, 0.75) - np.quantile(valores_normais, 0.25):,.2f}")
+print(f"• Assimetria: {stats.skew(valores_normais):.3f}")
+```
+
+## Conclusão
+
+As medidas de posição e variabilidade são ferramentas essenciais para compreender dados jurídicos. A escolha adequada dessas medidas depende da natureza dos dados e dos objetivos da análise. Em contextos jurídicos, onde outliers são comuns, medidas robustas como a mediana e o IQR frequentemente fornecem insights mais confiáveis que a média e o desvio padrão.
+
+O próximo capítulo abordará técnicas de visualização específicas para dados jurídicos, complementando a análise numérica apresentada aqui.
