@@ -7,6 +7,7 @@ Guia de contribuição para o livro "Ciência de Dados Aplicada ao Direito" dese
 Este livro está organizado em três partes principais conforme definido no `_quarto.yml`:
 
 ### Parte I: Planejando pesquisa e construindo dados
+
 - Operacionalização de conceitos
 - Fontes de dados judiciário
 - Raspagem de dados
@@ -15,6 +16,7 @@ Este livro está organizado em três partes principais conforme definido no `_qu
 - Construção e limpeza de dados
 
 ### Parte II: Análise estatística
+
 - Medidas de posição e variabilidade
 - Visualização de dados jurídicos
 - Correlação e causalidade
@@ -23,6 +25,7 @@ Este livro está organizado em três partes principais conforme definido no `_qu
 - Testes de hipóteses
 
 ### Parte III: Técnicas estatísticas e aplicações
+
 - Análise de regressão
 - Modelos de classificação
 - Modelagem de tempos de processos
@@ -31,32 +34,32 @@ Este livro está organizado em três partes principais conforme definido no `_qu
 ## Status dos Documentos
 
 ### Documentos Existentes
+
+- [ ] `00-intro.qmd` - Capítulo de introdução
 - [x] `index.qmd` - Página inicial
 - [x] `01-operacionalizacao-conceitos.qmd`
-- [x] `02-fontes-dados-judiciario.qmd`
-- [x] `03-raspagem-dados.qmd`
-- [x] `04-tecnicas-amostragem.qmd`
-- [x] `05-tipos-dados.qmd`
-- [x] `06-construcao-limpeza-dados.qmd`
+- [ ] `02-fontes-dados-judiciario.qmd`
+- [ ] `03-raspagem-dados.qmd`
+- [ ] `04-tecnicas-amostragem.qmd`
+- [ ] `05-tipos-dados.qmd`
+- [ ] `06-construcao-limpeza-dados.qmd`
 - [x] `07-medidas-posicao-variabilidade.qmd`
-- [x] `08-visualizacao-dados-juridicos.qmd`
-- [x] `09-correlacao-causalidade.qmd`
-- [x] `10-probabilidade-distribuicoes.qmd`
-- [x] `11-intervalo-confianca.qmd`
-- [x] `12-testes-hipoteses.qmd`
-- [x] `13-analise-regressao.qmd`
-- [x] `14-modelos-classificacao.qmd`
-- [x] `15-modelagem-tempos-processos.qmd`
-- [x] `16-aplicacoes-corporativas.qmd`
-- [x] `resumo.qmd`
+- [ ] `08-visualizacao-dados-juridicos.qmd`
+- [ ] `09-correlacao-causalidade.qmd`
+- [ ] `10-probabilidade-distribuicoes.qmd`
+- [ ] `11-intervalo-confianca.qmd`
+- [ ] `12-testes-hipoteses.qmd`
+- [ ] `13-analise-regressao.qmd`
+- [ ] `14-modelos-classificacao.qmd`
+- [ ] `15-modelagem-tempos-processos.qmd`
+- [ ] `16-aplicacoes-corporativas.qmd`
+- [ ] `resumo.qmd`
 - [x] `refs.qmd`
-
-### Documentos Pendentes
-- [ ] `00-introducao.qmd` - Capítulo de introdução
 
 ## Configuração do Ambiente de Desenvolvimento
 
 ### Pré-requisitos
+
 - Python 3.11+
 - Quarto CLI
 - Git
@@ -66,6 +69,7 @@ Este livro está organizado em três partes principais conforme definido no `_qu
 Este projeto utiliza `uv` para gerenciamento de dependências Python. Siga os passos abaixo:
 
 #### 1. Instalar uv
+
 ```bash
 # Windows
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -75,6 +79,7 @@ pip install uv
 ```
 
 #### 2. Configurar ambiente virtual
+
 ```bash
 # Clonar o repositório
 git clone <url-do-repositorio>
@@ -90,13 +95,15 @@ uv venv
 source .venv/bin/activate
 
 # Instalar dependências
-uv pip install -r pyproject.toml
+uv sync
 ```
 
 #### 3. Instalar Quarto
+
 Baixe e instale o Quarto CLI em: https://quarto.org/docs/get-started/
 
 ### Verificar Instalação
+
 ```bash
 # Verificar Quarto
 quarto --version
@@ -115,6 +122,7 @@ O projeto utiliza a extensão Quarto Live para criar exercícios interativos em 
 ### Configuração do Quarto Live
 
 A extensão já está configurada no `_quarto.yml`:
+
 ```yaml
 filters:
   - pyodide
@@ -123,7 +131,8 @@ filters:
 ### Criando Exercícios Interativos
 
 #### Exemplo Básico
-```markdown
+
+````
 ```{pyodide-python}
 # Código executável
 import pandas as pd
@@ -137,10 +146,11 @@ dados = pd.DataFrame({
 
 print(dados.head())
 ```
-```
+````
 
 #### Exercício com Entrada do Usuário
-```markdown
+
+````markdown
 ```{pyodide-python}
 #| exercise: ex_1
 #| autorun: false
@@ -156,10 +166,11 @@ media_tempo = ___
 
 print(f"Tempo médio: {media_tempo} dias")
 ```
-```
+````
 
 #### Exercício com Solução
-```markdown
+
+````markdown
 ```{pyodide-python}
 #| exercise: ex_1
 #| solution: true
@@ -171,7 +182,7 @@ media_tempo = df['tempo_dias'].mean()
 
 print(f"Tempo médio: {media_tempo} dias")
 ```
-```
+````
 
 ### Boas Práticas para Exercícios
 
@@ -183,39 +194,34 @@ print(f"Tempo médio: {media_tempo} dias")
 ## Fluxo de Contribuição
 
 ### 1. Preparação
+
 ```bash
 # Criar branch para nova funcionalidade
-git checkout -b feature/nome-da-funcionalidade
+git checkout -b feat/nome-da-funcionalidade
 
 # Ou para correções
 git checkout -b fix/nome-da-correcao
 ```
 
 ### 2. Desenvolvimento
+
 - Edite os arquivos `.qmd` relevantes
 - Adicione exercícios interativos quando apropriado
 - Teste localmente com `quarto render`
 
-### 3. Revisão Local
-```bash
-# Renderizar e visualizar
-quarto render
-quarto preview
+### 3. Submissão
 
-# Verificar no navegador em http://localhost:xxxx
-```
-
-### 4. Submissão
 ```bash
 # Commit das alterações
 git add .
 git commit -m "feat: adiciona exercícios interativos no capítulo X"
 
 # Push da branch
-git push origin feature/nome-da-funcionalidade
+git push origin feat/nome-da-funcionalidade
 ```
 
-### 5. Pull Request
+### 4. Pull Request
+
 - Crie PR no GitHub
 - Descreva as alterações realizadas
 - Aguarde revisão e deploy automático
@@ -242,6 +248,8 @@ on:
     branches: 
       - main
       - 'ref/**'
+      - 'feat/**'
+      - 'fix/**'
   pull_request:
     branches: 
       - main
@@ -299,7 +307,7 @@ jobs:
 ### Acessando Previews
 
 - **Site principal**: `https://usuario.github.io/cdad-book/`
-- **Preview de branch**: `https://usuario.github.io/cdad-book/ref/nome-da-branch/`
+- **Preview de branch**: `https://usuario.github.io/cdad-book/<ref|feat|fix>/nome-da-branch/`
 
 ## Estrutura de Arquivos
 
@@ -309,7 +317,7 @@ cdad-book/
 ├── pyproject.toml        # Dependências Python
 ├── uv.lock              # Lock file do uv
 ├── index.qmd            # Página inicial
-├── 00-introducao.qmd    # [PENDENTE] Introdução
+├── 00-introducao.qmd    # Introdução
 ├── 01-*.qmd             # Capítulos da Parte I
 ├── 07-*.qmd             # Capítulos da Parte II  
 ├── 13-*.qmd             # Capítulos da Parte III
@@ -324,7 +332,8 @@ cdad-book/
 ## Padrões de Código
 
 ### Estrutura de Capítulos
-```markdown
+
+````markdown
 # Título do Capítulo
 
 ## Objetivos de Aprendizagem
@@ -340,19 +349,23 @@ cdad-book/
 ```
 
 ## Exercícios
+
 ```{pyodide-python}
 #| exercise: ex_nome
 # Exercício interativo
 ```
 
 ## Resumo
+
 [Pontos principais]
 
 ## Referências
+
 [Bibliografia específica]
-```
+````
 
 ### Nomenclatura
+
 - Arquivos: `XX-nome-do-capitulo.qmd`
 - Exercícios: `ex_capitulo_numero`
 - Imagens: `assets/capitulo-XX/nome-imagem.png`
@@ -360,10 +373,11 @@ cdad-book/
 ## Suporte
 
 Para dúvidas ou problemas:
+
 1. Consulte a documentação do Quarto: https://quarto.org
 2. Documentação do Quarto Live: https://r-wasm.github.io/quarto-live/
 3. Abra uma issue no repositório do projeto
 
 ## Licença
 
-Este projeto está sob licença [especificar licença].
+Este projeto está sob licença MIT.
