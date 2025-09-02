@@ -1,7 +1,11 @@
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: 
+      - main
+      - 'ref/**'
+      - 'feat/**'
+      - 'fix/**'
 
 name: Quarto Publish
 
@@ -17,9 +21,39 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render and Publish
+      - name: Install Python and Dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies with uv
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv sync
+
+      - name: Render and Publish to gh-pages
+        if: github.ref == 'refs/heads/main'
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Render for Preview
+        if: startsWith(github.ref, 'refs/heads/ref/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/')
+        run: |
+          source .venv/bin/activate
+          quarto render
+
+      - name: Deploy Preview Branch
+        if: startsWith(github.ref, 'refs/heads/ref/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/')
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_book
+          destination_dir: ${{ github.ref_name }}
+          keep_files: true

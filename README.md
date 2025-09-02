@@ -241,67 +241,65 @@ O projeto está configurado para deploy automático de branches com prefixo `/re
 O workflow de deploy está configurado em `.github/workflows/_publish.yml`:
 
 ```yaml
-name: Publish Quarto Book
-
 on:
+  workflow_dispatch:
   push:
     branches: 
       - main
       - 'ref/**'
       - 'feat/**'
       - 'fix/**'
-  pull_request:
-    branches: 
-      - main
+
+name: Quarto Publish
 
 jobs:
-  publish:
+  build-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pages: write
-      id-token: write
-    
+      contents: write
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Install uv
-      run: pip install uv
-    
-    - name: Setup dependencies
-      run: |
-        uv venv
-        source .venv/bin/activate
-        uv pip install -r pyproject.toml
-    
-    - name: Setup Quarto
-      uses: quarto-dev/quarto-actions/setup@v2
-    
-    - name: Render Book
-      run: |
-        source .venv/bin/activate
-        quarto render
-    
-    - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main'
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./_book
-    
-    - name: Deploy Preview
-      if: startsWith(github.ref, 'refs/heads/ref/')
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./_book
-        destination_dir: ${{ github.ref_name }}
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Install Python and Dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install dependencies with uv
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv sync
+
+      - name: Render and Publish to gh-pages
+        if: github.ref == 'refs/heads/main'
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Render for Preview
+        if: startsWith(github.ref, 'refs/heads/ref/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/')
+        run: |
+          source .venv/bin/activate
+          quarto render
+
+      - name: Deploy Preview Branch
+        if: startsWith(github.ref, 'refs/heads/ref/') || startsWith(github.ref, 'refs/heads/feat/') || startsWith(github.ref, 'refs/heads/fix/')
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_book
+          destination_dir: ${{ github.ref_name }}
+          keep_files: true
 ```
 
 ### Acessando Previews
