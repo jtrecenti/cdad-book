@@ -102,7 +102,51 @@ feedback
 
 ## Exercício 3
 
-Hello World
+#| label: ex_3_solution
+#| eval: true
+#| echo: false
+
+import pandas as pd
+
+# --- Garantir que exista coluna 'ano' ---
+if "ano" not in camaras.columns:
+    # candidatas comuns que podem conter datas/anos no dataset
+    candidatos_data = [
+        "data", "data_da_sessao", "data_sessão", "data_sessao",
+        "data_votacao", "data_votação", "date", "dt", "timestamp",
+        "ano", "year"
+    ]
+    converted = False
+    for c in candidatos_data:
+        if c in camaras.columns:
+            # tenta converter para datetime e extrair ano
+            try:
+                camaras["ano"] = pd.to_datetime(camaras[c], errors="coerce").dt.year
+                if camaras["ano"].notna().any():
+                    converted = True
+                    break
+            except Exception:
+                # se não der para converter, continua procurando
+                continue
+    if not converted:
+        # nenhuma coluna de data/ano encontrada -> abortar com mensagem clara
+        raise KeyError(
+            "Coluna 'ano' não encontrada em `camaras` e nenhuma coluna de data candidata pôde ser convertida.\n"
+            f"Colunas disponíveis: {list(camaras.columns)}"
+        )
+
+# agora filtra pelos anos 2020 e 2021 (remoção de NaNs antes)
+df_20_21 = camaras[camaras["ano"].isin([2020, 2021])].copy()
+# garantir que o DataFrame não ficou vazio por causa de NaNs
+df_20_21 = df_20_21[df_20_21["ano"].notna()]
+
+# total de votos_sim por ano (usar .get para evitar KeyError se coluna não existir)
+if "votos_sim" not in df_20_21.columns:
+    raise KeyError("Coluna 'votos_sim' não encontrada em `camaras`. Colunas: " + ", ".join(camaras.columns))
+
+total_por_ano = df_20_21.groupby("ano", as_index=False)["votos_sim"].sum().sort_values("ano")
+total_por_ano
+
 
 ## Exercício 4
 
