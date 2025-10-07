@@ -1,8 +1,7 @@
 on:
   workflow_dispatch:
-  pull_request:
-    paths:
-      - '12-exercicios.qmd'
+  pull_request_target:
+    types: [opened, synchronize, reopened]
 
 name: Deploy Preview
 
@@ -12,18 +11,33 @@ jobs:
     outputs:
       should_deploy: ${{ steps.check.outputs.should_deploy }}
     steps:
-      - name: Check out repository
+      - name: Check out base branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+
+      - name: Check out PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: head
 
       - name: Check modified files
         id: check
         run: |
+          cd head
           # Get list of changed files
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
           echo "Changed files:"
           echo "$CHANGED_FILES"
+          
+          # Security check: ensure workflow files weren't modified
+          if echo "$CHANGED_FILES" | grep -q "^\.github/workflows/"; then
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+            echo "❌ Workflow files were modified. Deploy preview blocked for security."
+            exit 0
+          fi
           
           # Check if only 12-exercicios.qmd was modified
           if [ "$CHANGED_FILES" = "12-exercicios.qmd" ]; then
@@ -44,6 +58,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+          fetch-depth: 1
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
