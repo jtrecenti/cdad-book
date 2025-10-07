@@ -102,7 +102,30 @@ feedback
 
 ## Exercício 3
 
-Hello World
+## Exercício 3 — Filtragem e estatísticas por ano
+**Enunciado.** Usando o dataset `camaras` (carregado no `setup`), crie um DataFrame contendo apenas as votações dos anos **2020** e **2021**. Em seguida:
+1. Calcule o total de `votos_sim` por `ano`.
+2. Mostre o top-3 partidos com maior soma de `votos_sim` no período (2020–2021).
+
+```{python}
+#| label: ex_3_solution
+#| eval: false
+#| echo: true
+
+# Exemplo de solução (não executado no CI)
+# df_20_21 = camaras[camaras["ano"].isin([2020, 2021])]
+# total_por_ano = df_20_21.groupby("ano", as_index=False)["votos_sim"].sum().sort_values("ano")
+# total_por_ano
+```
+
+```{python}
+#| label: ex_3_top_partidos
+#| eval: false
+#| echo: true
+
+# top_partidos = df_20_21.groupby("partido", as_index=False)["votos_sim"].sum().sort_values("votos_sim", ascending=False).head(3)
+# top_partidos
+```
 
 ## Exercício 4
 
