@@ -105,5 +105,16 @@ feedback
 Hello World
 
 ## Exercício 4
+# Exercício 3: solução (padrão; deixe visível ou esconda se preferir)
+#| label: ex_3_solution
+#| eval: true
+#| echo: false
+
+# filtrar por anos
+df_20_21 = camaras[camaras["ano"].isin([2020, 2021])]
+
+# total de votos_sim por ano
+total_por_ano = df_20_21.groupby("ano", as_index=False)["votos_sim"].sum().sort_values("ano")
+total_por_ano
 
 ## Exercício 5
