@@ -58,3 +58,4 @@ docker-compose.override.yml
 
 # livro renderizado
 _book
+**/*.quarto_ipynb
