@@ -24,7 +24,10 @@ jobs:
         run: uv python install 3.12
 
       - name: Install Python dependencies
-        run: uv sync
+        run: |
+          uv venv
+          source .venv/bin/activate
+          uv sync
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
@@ -32,3 +35,4 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          QUARTO_PYTHON: .venv/bin/python
