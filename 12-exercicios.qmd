@@ -102,8 +102,50 @@ feedback
 
 ## Exercício 3
 
-Hello World
+```{pyodide}
+#| setup: true
+#| exercise: ex_1
+# aqui, podemos criar uma variável que será usada nos exercícios
+x = 1 + 1
+```
 
+
+Imprima as três primeiras linhas
+
+```{pyodide}
+#| exercise: ex_3
+camaras.head()
+```
+
+::: { .hint exercise="ex_1"}
+::: { .callout-note collapse="false"}
+## Hint 1
+
+Queremos as três primeiras linhas!
+:::
+:::
+
+::: { .hint exercise="ex_1"}
+::: { .callout-note collapse="false"}
+## Hint 2
+
+O número de linhas é definido dentro da função .head().
+
+:::
+:::
+
+::: { .solution exercise="ex_1" }
+::: { .callout-tip collapse="false"}
+## Solução:
+
+Coloque o .head(3)!
+
+```python
+camaras.head(3)
+```
+
+:::
+:::
 ## Exercício 4
 
 ## Exercício 5
