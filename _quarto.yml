@@ -2,7 +2,7 @@ project:
   type: book
 
 execute:
-  freeze: auto
+  freeze: false
 
 book:
   title: "Ciência de Dados Aplicada ao Direito II"
@@ -21,13 +21,14 @@ book:
     - 09-modelos-classificacao.ipynb
     - 10-corporativo.ipynb
     - 11-openai.ipynb
+    - 12-exercicios.qmd
     - resumo.qmd
     - refs.qmd
 
 bibliography: references.bib
 
 format:
-  html:
+  live-html:
     theme: cosmo
 
 filters:

@@ -1,0 +1,107 @@
+---
+title: Exercícios
+format: live-html
+---
+
+## Exemplo de exercício
+
+Faça a soma dar 5.
+
+```{pyodide}
+#| setup: true
+#| exercise: ex_1
+# aqui, podemos criar uma variável que será usada nos exercícios
+x = 1 + 1
+```
+
+```{pyodide}
+#| exercise: ex_1
+x + ______
+```
+
+::: { .hint exercise="ex_1"}
+::: { .callout-note collapse="false"}
+## Hint 1
+
+Queremos somar o valor 3!
+:::
+:::
+
+::: { .hint exercise="ex_1"}
+::: { .callout-note collapse="false"}
+## Hint 2
+
+Lembre-se, o valor é 3.
+
+:::
+:::
+
+::: { .solution exercise="ex_1" }
+::: { .callout-tip collapse="false"}
+## Solução:
+
+Coloque o valor 3!
+
+```python
+x + 3
+```
+
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_1
+#| check: true
+feedback = None
+if (result == 5):
+  feedback = { "correct": True, "message": "Parabéns!" }
+else:
+  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+feedback
+```
+
+## Exercício 2
+
+Fazer um filtro na base das câmaras para selecionar apenas as câmaras ordinárias.
+
+Leitura dos dados:
+
+```{python}
+import pandas as pd
+camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+
+camaras.value_counts('camara').reset_index()
+```
+
+```{pyodide}
+#| setup: true
+#| exercise: ex_2
+
+import pandas as pd
+camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+```
+
+```{pyodide}
+#| exercise: ex_2
+camaras[camaras['camara'].str.contains('________')]
+```
+
+
+```{pyodide}
+#| exercise: ex_2
+#| check: true
+
+n = camaras[camaras['camara'].str.contains('Direito Criminal')].shape[0]
+feedback = None
+if (result.shape[0] == n):
+  feedback = { "correct": True, "message": "Parabéns!" }
+else:
+  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+feedback
+```
+
+## Exercício 3
+
+## Exercício 4
+
+## Exercício 5
