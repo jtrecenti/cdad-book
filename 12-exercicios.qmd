@@ -102,7 +102,28 @@ feedback
 
 ## Exercício 3
 
-Hello World
+## Exercício 3 — Filtrar câmaras criminais
+
+**Objetivo:** Filtrar as linhas da base `camaras` em que o nome da câmara contenha uma determinada palavra.
+
+```{python}
+#| type: exercise
+#| title: Filtrar câmaras criminais
+#| hint: Use o método .str.contains() para buscar um texto dentro da coluna "camara".
+
+# Filtre as linhas que contenham "Criminal" no nome da câmara.
+# Substitua os sublinhados (______) pela palavra desejada.
+camaras[camaras["camara"].str.contains("_______")]
+```
+
+```{python}
+#| type: solution
+
+# Exemplo de solução:
+# Filtra todas as câmaras cujo nome contém a palavra "Criminal".
+camaras[camaras["camara"].str.contains("Criminal")]
+```
+
 
 ## Exercício 4
 
