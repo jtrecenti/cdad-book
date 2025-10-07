@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -69,14 +69,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./06-probabilidade-cnormal.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -104,7 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -122,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +167,9 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Ciência de Dados Aplicada ao Direito II</a> 
     </div>
@@ -200,8 +207,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-visualizacao-plotnine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com plotnine</span></span></a>
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -248,8 +255,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12-exercicios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exercícios</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./resumo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -310,14 +323,14 @@ window.Quarto = {
 
 
 <div id="cell-1" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-2" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="introdução" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">7.1</span> Introdução</h2>
@@ -342,7 +355,7 @@ window.Quarto = {
 <h4 data-number="7.2.1.1" class="anchored" data-anchor-id="aplicação-no-python"><span class="header-section-number">7.2.1.1</span> Aplicação no python</h4>
 <p>No python, podemos calcular o intervalo de confiança fazendo as seguintes operações:</p>
 <div id="cell-4" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tempos <span class="op">=</span> camaras.tempo</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tempos <span class="op">=</span> camaras.tempo</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>media <span class="op">=</span> tempos.mean()</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sd <span class="op">=</span> tempos.std()</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> stats.norm.ppf(<span class="fl">0.975</span>)</span>
@@ -350,21 +363,21 @@ window.Quarto = {
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>vl_intervalo <span class="op">=</span> z <span class="op">*</span> sd <span class="op">/</span> np.sqrt(n)</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>media <span class="op">-</span> vl_intervalo, media <span class="op">+</span> vl_intervalo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>media <span class="op">-</span> vl_intervalo, media <span class="op">+</span> vl_intervalo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="45">
 <pre><code>(3.136057807684683, 3.221624914728558)</code></pre>
 </div>
 </div>
 <p>Também é possível usar a função <code>norm.interval</code> do módulo <code>scipy.stats</code> para calcular o intervalo de confiança. Nessa função, o primeiro argumento é o nível de confiança, o segundo é a média amostral e o terceiro é o erro padrão (desvio padrão da amostra dividido pelo número de observações). O retorno é uma tupla com os limites inferior e superior do intervalo de confiança.</p>
 <div id="cell-6" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stats.norm.interval(confidence<span class="op">=</span><span class="fl">0.95</span>, loc<span class="op">=</span>media, scale<span class="op">=</span>stats.sem(tempos, nan_policy<span class="op">=</span><span class="st">'omit'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stats.norm.interval(confidence<span class="op">=</span><span class="fl">0.95</span>, loc<span class="op">=</span>media, scale<span class="op">=</span>stats.sem(tempos, nan_policy<span class="op">=</span><span class="st">'omit'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="46">
 <pre><code>(3.136055668346555, 3.221627054066686)</code></pre>
 </div>
 </div>
 <p>Também é possível usar a função <code>t.interval</code> do módulo <code>scipy.stats</code> para calcular o intervalo de confiança. Nesse caso, o primeiro argumento é o nível de confiança, o segundo é o tamanho da amostra menos um, o terceiro é a média amostral e o quarto é o erro padrão.</p>
 <div id="cell-8" class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>stats.t.interval(confidence<span class="op">=</span><span class="fl">0.95</span>, df<span class="op">=</span>n<span class="op">-</span><span class="dv">1</span>, loc<span class="op">=</span>media, scale<span class="op">=</span>stats.sem(tempos, nan_policy<span class="op">=</span><span class="st">'omit'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>stats.t.interval(confidence<span class="op">=</span><span class="fl">0.95</span>, df<span class="op">=</span>n<span class="op">-</span><span class="dv">1</span>, loc<span class="op">=</span>media, scale<span class="op">=</span>stats.sem(tempos, nan_policy<span class="op">=</span><span class="st">'omit'</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="47">
 <pre><code>(3.136050488583062, 3.221632233830179)</code></pre>
 </div>
@@ -384,13 +397,13 @@ window.Quarto = {
 <p>Note que utilizamos o valor <span class="math inline">\(\hat p (1-\hat p)\)</span> no lugar de <span class="math inline">\(S\)</span>. Isso acontece porque a variância da distribuição de Bernoulli é dada por <span class="math inline">\(p (1 - p)\)</span>, fato que não vamos demostrar aqui. Então, substituímos o valor de <span class="math inline">\(p\)</span>, desconhecido, pelo valor de <span class="math inline">\(\hat p\)</span>, que é a estimativa amostral da proporção. Aqui também fazemos uso do Teorema de Slutsky para afirmar que a distribuição amostral da proporção seja aproximadamente normal.</p>
 <p>Mas existe um segundo jeito de fazer intervalo de confiança para proporções. Esse jeito é baseado no valor máximo que a variância da proporção pode assumir. Vamos ver o gráfico dessa função:</p>
 <div id="cell-11" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> variancia_bernoulli(p):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> variancia_bernoulli(p):</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> p <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> p)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>p_seq <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">200</span>)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.plot(p_seq, variancia_bernoulli(p_seq))</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="fl">0.5</span>, color <span class="op">=</span> <span class="st">'black'</span>, linestyle <span class="op">=</span> <span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="fl">0.5</span>, color <span class="op">=</span> <span class="st">'black'</span>, linestyle <span class="op">=</span> <span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -407,7 +420,7 @@ window.Quarto = {
 <h4 data-number="7.2.2.1" class="anchored" data-anchor-id="aplicação-no-python-1"><span class="header-section-number">7.2.2.1</span> Aplicação no python</h4>
 <p>Agora, vamos ver os intervalos de confiança para proporção no python:</p>
 <div id="cell-13" class="cell" data-execution_count="48">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>desfavoravel <span class="op">=</span> camaras.decisao <span class="op">==</span> <span class="st">'Negaram'</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>desfavoravel <span class="op">=</span> camaras.decisao <span class="op">==</span> <span class="st">'Negaram'</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>p_hat <span class="op">=</span> desfavoravel.mean()</span>
@@ -418,7 +431,7 @@ window.Quarto = {
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_otimista, p_hat <span class="op">+</span> intervalo_otimista)</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_conservador, p_hat <span class="op">+</span> intervalo_conservador)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_conservador, p_hat <span class="op">+</span> intervalo_conservador)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.5175147983958988 0.5370852016041012
 0.5175001800772997 0.5370998199227003</code></pre>
@@ -426,7 +439,7 @@ window.Quarto = {
 </div>
 <p>Como a amostra é grande, os intervalos otimista e conservador são praticamente iguais. Vamos ver com uma amostra pequena:</p>
 <div id="cell-15" class="cell" data-execution_count="49">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>desfavoravel <span class="op">=</span> camaras.sample(<span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">42</span>).decisao <span class="op">==</span> <span class="st">'Negaram'</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>desfavoravel <span class="op">=</span> camaras.sample(<span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">42</span>).decisao <span class="op">==</span> <span class="st">'Negaram'</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>p_hat <span class="op">=</span> desfavoravel.mean()</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -436,7 +449,7 @@ window.Quarto = {
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_otimista, p_hat <span class="op">+</span> intervalo_otimista)</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_conservador, p_hat <span class="op">+</span> intervalo_conservador)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_conservador, p_hat <span class="op">+</span> intervalo_conservador)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.6574273078376688 0.6759060254956645
 0.6568668467439663 0.6764664865893669</code></pre>
@@ -444,7 +457,7 @@ window.Quarto = {
 </div>
 <p>Ainda assim, os intervalos são bem próximos. Isso ocorre porque a proporção observada é próxima a 0.5, então o intervalo conservador fica parecido com o otimista. Ao estudar uma informação mais rara, como a probabilidade de maioria nas decisões colegiadas, temos:</p>
 <div id="cell-17" class="cell" data-execution_count="50">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>maioria <span class="op">=</span> camaras.sample(<span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">3</span>).unanimidade <span class="op">==</span> <span class="st">'Maioria'</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>maioria <span class="op">=</span> camaras.sample(<span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">3</span>).unanimidade <span class="op">==</span> <span class="st">'Maioria'</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>p_hat <span class="op">=</span> maioria.mean()</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -454,7 +467,7 @@ window.Quarto = {
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_otimista, p_hat <span class="op">+</span> intervalo_otimista)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_conservador, p_hat <span class="op">+</span> intervalo_conservador)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_hat <span class="op">-</span> intervalo_conservador, p_hat <span class="op">+</span> intervalo_conservador)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.029815090309067926 0.03685157635759874
 0.02353351341063306 0.043133153256033605</code></pre>
@@ -462,12 +475,12 @@ window.Quarto = {
 </div>
 <p>Agora, vamos às funções mais diretas do python, que nos dão o intervalo de confiança para proporção. Aqui, não tem muito como fugir do cálculo da variância da Bernoulli.</p>
 <div id="cell-19" class="cell" data-execution_count="59">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>ic_otimista <span class="op">=</span> stats.norm.interval(confidence<span class="op">=</span><span class="fl">0.95</span>, loc<span class="op">=</span>p_hat, scale<span class="op">=</span>np.sqrt(variancia_bernoulli(p_hat) <span class="op">/</span> <span class="bu">len</span>(camaras)))</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>ic_conservador <span class="op">=</span> stats.norm.interval(confidence<span class="op">=</span><span class="fl">0.95</span>, loc<span class="op">=</span>p_hat, scale<span class="op">=</span><span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">/</span>np.sqrt(<span class="bu">len</span>(camaras)))</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ic_otimista)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ic_conservador)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ic_conservador)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(0.029815090309067926, 0.03685157635759874)
 (0.02353351341063306, 0.043133153256033605)</code></pre>
@@ -482,7 +495,7 @@ window.Quarto = {
 <p>O teste de hipótese busca responder à seguinte pergunta: há evidências suficientes nos dados para fazer uma afirmação sobre a população? Por exemplo, se observarmos que as taxas de recursos negados em uma câmara é 67,8% e em outra câmara é 70,4%, podemos afirmar que a primeira câmara nega mais casos? Ou essa diferença é devida ao acaso?</p>
 <p>Vamos ver esse exemplo no python:</p>
 <div id="cell-22" class="cell" data-execution_count="50">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'03ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'03ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>camaras_filtrado <span class="op">=</span> (</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
@@ -499,12 +512,12 @@ window.Quarto = {
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  .reset_index(names<span class="op">=</span><span class="st">'camara'</span>)</span>
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="50">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -515,13 +528,13 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>03ª Câmara de Direito Criminal</td>
 <td>528</td>
 <td>0.678030</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>635</td>
 <td>0.703937</td>
@@ -534,7 +547,7 @@ window.Quarto = {
 </div>
 <p>Uma forma de resolver esse problema é calculando o intervalo de confiança para cada uma das proporções e verificando se os intervalos se sobrepõem. Se eles não se sobrepõem, podemos afirmar que as proporções são diferentes. Se eles se sobrepõem, não podemos afirmar nada. Vamos calcular usando o intervalo otimista:</p>
 <div id="cell-24" class="cell" data-execution_count="51">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic <span class="op">=</span> (</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  proporcoes</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  .assign(</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    int_otimista <span class="op">=</span> <span class="kw">lambda</span> x: stats.norm.ppf(<span class="fl">0.975</span>) <span class="op">*</span> np.sqrt((x.p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x.p)) <span class="op">/</span> x.n),</span>
@@ -543,12 +556,12 @@ window.Quarto = {
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="51">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -562,7 +575,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>03ª Câmara de Direito Criminal</td>
 <td>528</td>
 <td>0.678030</td>
@@ -571,7 +584,7 @@ window.Quarto = {
 <td>0.717884</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>635</td>
 <td>0.703937</td>
@@ -586,8 +599,8 @@ window.Quarto = {
 </div>
 </div>
 <div id="cell-25" class="cell" data-execution_count="53">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sns.pointplot(data <span class="op">=</span> camaras_filtrado, x <span class="op">=</span> <span class="st">'camara'</span>, y <span class="op">=</span> <span class="st">'negaram'</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.69</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sns.pointplot(data <span class="op">=</span> camaras_filtrado, x <span class="op">=</span> <span class="st">'camara'</span>, y <span class="op">=</span> <span class="st">'negaram'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.69</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -600,7 +613,7 @@ window.Quarto = {
 <p>Note que os intervalos se sobrepõem, então, estatisticamente, não podemos afirmar que as proporções são diferentes.</p>
 <p>Agora vamos ver um exemplo com outras câmaras.</p>
 <div id="cell-27" class="cell" data-execution_count="54">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'04ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'04ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>camaras_filtrado <span class="op">=</span> (</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
@@ -617,12 +630,12 @@ window.Quarto = {
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  .reset_index(names<span class="op">=</span><span class="st">'camara'</span>)</span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="54">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -633,13 +646,13 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>04ª Câmara de Direito Criminal</td>
 <td>534</td>
 <td>0.872659</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>635</td>
 <td>0.703937</td>
@@ -652,7 +665,7 @@ window.Quarto = {
 </div>
 <p>Agora, as proporções estão bem distantes. Vamos calcular o intervalo de confiança para essas proporções:</p>
 <div id="cell-29" class="cell" data-execution_count="55">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic <span class="op">=</span> (</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  proporcoes</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  .assign(</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    int_otimista <span class="op">=</span> <span class="kw">lambda</span> x: stats.norm.ppf(<span class="fl">0.975</span>) <span class="op">*</span> np.sqrt((x.p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>x.p)) <span class="op">/</span> x.n),</span>
@@ -661,12 +674,12 @@ window.Quarto = {
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>proporcoes_com_ic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="55">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -680,7 +693,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>04ª Câmara de Direito Criminal</td>
 <td>534</td>
 <td>0.872659</td>
@@ -689,7 +702,7 @@ window.Quarto = {
 <td>0.900933</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>635</td>
 <td>0.703937</td>
@@ -705,8 +718,8 @@ window.Quarto = {
 </div>
 <p>Finalmente, vamos ver isso graficamente:</p>
 <div id="cell-31" class="cell" data-execution_count="56">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sns.pointplot(data <span class="op">=</span> camaras_filtrado, x <span class="op">=</span> <span class="st">'camara'</span>, y <span class="op">=</span> <span class="st">'negaram'</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.80</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sns.pointplot(data <span class="op">=</span> camaras_filtrado, x <span class="op">=</span> <span class="st">'camara'</span>, y <span class="op">=</span> <span class="st">'negaram'</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.80</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -749,7 +762,7 @@ window.Quarto = {
 <h3 data-number="7.3.3" class="anchored" data-anchor-id="teste-para-duas-proporções"><span class="header-section-number">7.3.3</span> Teste para duas proporções</h3>
 <p>Vamos voltar ao exemplo da diferença entre a proporção de negados. Faremos um teste de hipóteses para cada situação (o caso em que os intervalos de confiança se sobrepõem e o caso em que os intervalos de confiança não se sobrepõem). Para cada um deles, faremos um exemplo com o cálculo do valor-p e outro exemplo com simulação, para entender o acontecimento “por acaso”.</p>
 <div id="cell-34" class="cell" data-execution_count="60">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'03ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'03ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>camaras_filtrado <span class="op">=</span> (</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
@@ -766,12 +779,12 @@ window.Quarto = {
 <span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  .reset_index(names<span class="op">=</span><span class="st">'camara'</span>)</span>
 <span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="60">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -783,14 +796,14 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>03ª Câmara de Direito Criminal</td>
 <td>528</td>
 <td>358</td>
 <td>0.678030</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>635</td>
 <td>447</td>
@@ -810,11 +823,11 @@ window.Quarto = {
 <h4 data-number="7.3.3.1" class="anchored" data-anchor-id="cálculo-do-valor-p"><span class="header-section-number">7.3.3.1</span> Cálculo do valor-p</h4>
 <p>Para calcular o valor-p, utilizamos a função <code>chi2_contingency</code> do módulo <code>scipy.stats</code>. Essa é, na verdade, uma função para fazer o teste qui-quadrado de independência, mas podemos utilizá-la para fazer o teste de diferença de proporções. O retorno é uma tupla com a estatística de teste, o valor-p, o grau de liberdade e a tabela de contingência esperada.</p>
 <div id="cell-36" class="cell" data-execution_count="63">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>contagens <span class="op">=</span> np.array(proporcoes[[<span class="st">'n_negaram'</span>, <span class="st">'n'</span>]])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>contagens <span class="op">=</span> np.array(proporcoes[[<span class="st">'n_negaram'</span>, <span class="st">'n'</span>]])</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>prop_test <span class="op">=</span> stats.chi2_contingency(contagens)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>prop_test.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>prop_test.pvalue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="63">
 <pre><code>0.7183537580673838</code></pre>
 </div>
@@ -822,7 +835,7 @@ window.Quarto = {
 <p>Esse número significa que, se a hipótese nula fosse verdadeira, a probabilidade de observar uma diferença tão grande ou maior do que a observada seria de 72%. Como esse valor é bem alto, realmente parece que poderia ter acontecido por acaso. Por esse motivo, não rejeitamos a hipótese nula e podemos afirmar que as proporções são iguais. Note que essa é a mesma conclusão que chegamos ao calcular o intervalo de confiança.</p>
 <p>No caso do teste comparando as câmaras 8 e 12, temos:</p>
 <div id="cell-38" class="cell" data-execution_count="64">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'12ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'12ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>camaras_filtrado <span class="op">=</span> (</span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
@@ -839,12 +852,12 @@ window.Quarto = {
 <span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  .reset_index(names<span class="op">=</span><span class="st">'camara'</span>)</span>
 <span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="64">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -856,14 +869,14 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>635</td>
 <td>447</td>
 <td>0.703937</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>12ª Câmara de Direito Criminal</td>
 <td>521</td>
 <td>103</td>
@@ -877,11 +890,11 @@ window.Quarto = {
 </div>
 <p>E agora o teste de hipótese:</p>
 <div id="cell-40" class="cell" data-execution_count="68">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>contagens <span class="op">=</span> np.array(proporcoes[[<span class="st">'n_negaram'</span>, <span class="st">'n'</span>]])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>contagens <span class="op">=</span> np.array(proporcoes[[<span class="st">'n_negaram'</span>, <span class="st">'n'</span>]])</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>prop_test <span class="op">=</span> stats.chi2_contingency(contagens)</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>prop_test.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>prop_test.pvalue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="68">
 <pre><code>8.238913311602198e-26</code></pre>
 </div>
@@ -889,7 +902,7 @@ window.Quarto = {
 <p>Nessa situação, o valor-p é muito baixo, então rejeitamos a hipótese nula e podemos afirmar que as proporções são diferentes. Note que, novamente, essa é a mesma conclusão que chegamos ao calcular o intervalo de confiança.</p>
 <p>Existem situações, no entanto, que podemos ficar em dúvida. Vejamos um exemplo, agora com as câmaras 8 e 9</p>
 <div id="cell-42" class="cell" data-execution_count="98">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'06ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'06ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>]</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>camaras_filtrado <span class="op">=</span> (</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
@@ -906,12 +919,12 @@ window.Quarto = {
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>  .reset_index(names<span class="op">=</span><span class="st">'camara'</span>)</span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>proporcoes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="98">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -923,14 +936,14 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>06ª Câmara de Direito Criminal</td>
 <td>664</td>
 <td>550</td>
 <td>0.828313</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>635</td>
 <td>447</td>
@@ -944,11 +957,11 @@ window.Quarto = {
 </div>
 <p>Vejamos o valor do teste:</p>
 <div id="cell-44" class="cell" data-execution_count="170">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>contagens <span class="op">=</span> np.array(proporcoes[[<span class="st">'n_negaram'</span>, <span class="st">'n'</span>]])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>contagens <span class="op">=</span> np.array(proporcoes[[<span class="st">'n_negaram'</span>, <span class="st">'n'</span>]])</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>prop_test <span class="op">=</span> stats.chi2_contingency(contagens)</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>prop_test.pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>prop_test.pvalue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="170">
 <pre><code>0.05950837666339642</code></pre>
 </div>
@@ -967,7 +980,7 @@ window.Quarto = {
 <p><span class="math inline">\(H_1\)</span>: a distribuição de decisões é diferente em alguma das câmaras</p>
 <p>No python, podemos fazer o teste de qui-quadrado com a mesma função de antes: <code>chi2_contingency</code> do módulo <code>scipy.stats</code>. O retorno é uma tupla com a estatística de teste, o valor-p, o grau de liberdade e a tabela de contingência esperada.</p>
 <div id="cell-47" class="cell" data-execution_count="248">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'03ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>, <span class="st">'12ª Câmara de Direito Criminal'</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>exemplos_camaras <span class="op">=</span> [<span class="st">'03ª Câmara de Direito Criminal'</span>, <span class="st">'08ª Câmara de Direito Criminal'</span>, <span class="st">'12ª Câmara de Direito Criminal'</span>]</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>camaras_filtrado <span class="op">=</span> (</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
@@ -978,12 +991,12 @@ window.Quarto = {
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>tabela_contingencia <span class="op">=</span> pd.crosstab(index<span class="op">=</span>camaras_filtrado[<span class="st">'camara'</span>], columns<span class="op">=</span>camaras_filtrado[<span class="st">'decisao'</span>])</span>
 <span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>tabela_contingencia</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>tabela_contingencia</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="248">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">decisao</th>
@@ -1000,19 +1013,19 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">03ª Câmara de Direito Criminal</td>
+<th data-quarto-table-cell-role="th">03ª Câmara de Direito Criminal</th>
 <td>358</td>
 <td>140</td>
 <td>10</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">08ª Câmara de Direito Criminal</td>
+<th data-quarto-table-cell-role="th">08ª Câmara de Direito Criminal</th>
 <td>447</td>
 <td>156</td>
 <td>7</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">12ª Câmara de Direito Criminal</td>
+<th data-quarto-table-cell-role="th">12ª Câmara de Direito Criminal</th>
 <td>103</td>
 <td>321</td>
 <td>75</td>
@@ -1025,12 +1038,12 @@ window.Quarto = {
 </div>
 <p>Veja que as proporções são parecidas entre as câmaras 03 e 08, mas bem diferente na câmara 12:</p>
 <div id="cell-49" class="cell" data-execution_count="254">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>tabela_contingencia.div(tabela_contingencia.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>tabela_contingencia.div(tabela_contingencia.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="254">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th">decisao</th>
@@ -1047,19 +1060,19 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">03ª Câmara de Direito Criminal</td>
+<th data-quarto-table-cell-role="th">03ª Câmara de Direito Criminal</th>
 <td>0.704724</td>
 <td>0.275591</td>
 <td>0.019685</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">08ª Câmara de Direito Criminal</td>
+<th data-quarto-table-cell-role="th">08ª Câmara de Direito Criminal</th>
 <td>0.732787</td>
 <td>0.255738</td>
 <td>0.011475</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">12ª Câmara de Direito Criminal</td>
+<th data-quarto-table-cell-role="th">12ª Câmara de Direito Criminal</th>
 <td>0.206413</td>
 <td>0.643287</td>
 <td>0.150301</td>
@@ -1072,9 +1085,9 @@ window.Quarto = {
 </div>
 <p>Agora, procedemos com o teste:</p>
 <div id="cell-51" class="cell" data-execution_count="255">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>chi2 <span class="op">=</span> stats.chi2_contingency(tabela_contingencia)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>chi2 <span class="op">=</span> stats.chi2_contingency(tabela_contingencia)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>chi2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>chi2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="255">
 <pre><code>Chi2ContingencyResult(statistic=403.3146570240564, pvalue=5.346841438716827e-86, dof=4, expected_freq=array([[285.25912183, 193.83797155,  28.90290662],
        [342.53555968, 232.75819419,  34.70624613],
@@ -1097,19 +1110,19 @@ window.Quarto = {
 <p><span class="math inline">\(H_0\)</span>: a média de idade dos relatores que vieram do quinto constitucional é igual à média de idade dos relatores que não vieram do quinto constitucional</p>
 <p><span class="math inline">\(H_1\)</span>: a média de idade dos relatores que vieram do quinto constitucional é diferente da média de idade dos relatores que não vieram do quinto constitucional</p>
 <div id="cell-55" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>relatores <span class="op">=</span> camaras.drop_duplicates(<span class="st">'relator'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>relatores <span class="op">=</span> camaras.drop_duplicates(<span class="st">'relator'</span>)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  relatores</span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'rel_quinto'</span>)</span>
 <span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  .agg(n <span class="op">=</span> (<span class="st">'relator'</span>, <span class="bu">len</span>), media <span class="op">=</span> (<span class="st">'rel_idade'</span>, <span class="st">'mean'</span>), sd <span class="op">=</span> (<span class="st">'rel_idade'</span>, <span class="st">'std'</span>))</span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  .reset_index(names<span class="op">=</span><span class="st">'rel_quinto'</span>)</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1121,14 +1134,14 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>não</td>
 <td>88</td>
 <td>67.173987</td>
 <td>5.911481</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>sim</td>
 <td>21</td>
 <td>65.910368</td>
@@ -1142,8 +1155,8 @@ window.Quarto = {
 </div>
 <p>Olhando os dados, parece que a média de idades é bem parecida. Vamos fazer o gráfico com os intervalos de confiança:</p>
 <div id="cell-57" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>sns.pointplot(data <span class="op">=</span> relatores, x <span class="op">=</span> <span class="st">'rel_quinto'</span>, y <span class="op">=</span> <span class="st">'rel_idade'</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">66.5</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>sns.pointplot(data <span class="op">=</span> relatores, x <span class="op">=</span> <span class="st">'rel_quinto'</span>, y <span class="op">=</span> <span class="st">'rel_idade'</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">66.5</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1154,13 +1167,13 @@ window.Quarto = {
 </div>
 <p>De fato, os intervalos de confiança se sobrepõem. Vamos fazer o teste de hipóteses, usando a função <code>ttest_ind</code>:</p>
 <div id="cell-59" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  relatores.rel_idade[relatores.rel_quinto <span class="op">==</span> <span class="st">'sim'</span>],</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  relatores.rel_idade[relatores.rel_quinto <span class="op">==</span> <span class="st">'não'</span>],</span>
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  nan_policy<span class="op">=</span><span class="st">'omit'</span></span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>ttest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>ttest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>TtestResult(statistic=-0.8574885189308531, pvalue=0.3931095647661792, df=106.0)</code></pre>
 </div>
@@ -1171,7 +1184,7 @@ window.Quarto = {
 <p><span class="math inline">\(H_1\)</span>: a média de idade dos relatores que vieram da USP é diferente da média de idade dos relatores que vieram de outras universidades</p>
 <p>Vamos fazer o gráfico com os intervalos de confiança:</p>
 <div id="cell-61" class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># o nome da faculdade de direito pode aparecer de diversas formas</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># o nome da faculdade de direito pode aparecer de diversas formas</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>usp <span class="op">=</span> [<span class="st">'Faculdade de Direito da Universidade de São Paulo'</span>, <span class="st">'Faculdade de Direto da Universidade de São Paulo'</span>, <span class="st">'Universidade de São Paulo'</span>]</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>relatores_usp <span class="op">=</span> (</span>
@@ -1180,7 +1193,7 @@ window.Quarto = {
 <span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>sns.pointplot(data <span class="op">=</span> relatores_usp, x <span class="op">=</span> <span class="st">'usp'</span>, y <span class="op">=</span> <span class="st">'rel_idade'</span>)</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">66.55</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">66.55</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1191,13 +1204,13 @@ window.Quarto = {
 </div>
 <p>É por muito pouco, mas parece que as médias são diferentes. Vamos fazer o teste de hipóteses:</p>
 <div id="cell-63" class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ttest <span class="op">=</span> stats.ttest_ind(</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  relatores_usp.rel_idade[relatores_usp.usp <span class="op">==</span> <span class="st">'USP'</span>],</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  relatores_usp.rel_idade[<span class="op">~</span>(relatores_usp.usp <span class="op">==</span> <span class="st">'USP'</span>)],</span>
 <span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  nan_policy<span class="op">=</span><span class="st">'omit'</span></span>
 <span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>ttest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>ttest</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="41">
 <pre><code>TtestResult(statistic=-2.663336219551609, pvalue=0.00894402839660715, df=106.0)</code></pre>
 </div>
@@ -1209,7 +1222,7 @@ window.Quarto = {
 <h3 data-number="7.3.6" class="anchored" data-anchor-id="extra-simulação"><span class="header-section-number">7.3.6</span> (extra) Simulação</h3>
 <p>O que significa, na prática, a tal da “ocorrência ao acaso”? Vamos mostrar isso através de uma simulação. Vamos simular 1000 vezes a proporção de negados em duas câmaras. Para isso, no entanto, precisamos supor que a hipótese nula é verdadeira, ou seja, que as proporções são iguais. Vamos supor que a proporção das duas câmaras é 60%.</p>
 <div id="cell-66" class="cell" data-execution_count="206">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> amostra_diferenca(prop1, prop2, n<span class="op">=</span><span class="dv">1000</span>):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> amostra_diferenca(prop1, prop2, n<span class="op">=</span><span class="dv">1000</span>):</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># faz uma amostra com os</span></span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  camara1 <span class="op">=</span> np.random.choice([<span class="dv">0</span>,<span class="dv">1</span>], n, p<span class="op">=</span>[<span class="dv">1</span><span class="op">-</span>prop1,prop1])</span>
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  camara2 <span class="op">=</span> np.random.choice([<span class="dv">0</span>,<span class="dv">1</span>], n, p<span class="op">=</span>[<span class="dv">1</span><span class="op">-</span>prop2,prop2])</span>
@@ -1226,15 +1239,15 @@ window.Quarto = {
 <span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'diferenca'</span>: diferenca,</span>
 <span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'valor_p'</span>: valor_p</span>
 <span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>  }, index<span class="op">=</span>[<span class="dv">0</span>])</span>
-<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-67" class="cell" data-execution_count="208">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>amostra_diferenca(<span class="fl">0.6</span>, <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>amostra_diferenca(<span class="fl">0.6</span>, <span class="fl">0.6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="208">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1246,7 +1259,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.602</td>
 <td>0.628</td>
 <td>-0.026</td>
@@ -1260,18 +1273,18 @@ window.Quarto = {
 </div>
 <p>vamos fazer essa conta mil vezes:</p>
 <div id="cell-69" class="cell" data-execution_count="209">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  amostras.append(amostra_diferenca(<span class="fl">0.6</span>, <span class="fl">0.6</span>))</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat(amostras)</span>
 <span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="209">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1283,77 +1296,77 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.589</td>
 <td>0.609</td>
 <td>-0.020</td>
 <td>0.386014</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.579</td>
 <td>0.610</td>
 <td>-0.031</td>
 <td>0.171856</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.582</td>
 <td>0.603</td>
 <td>-0.021</td>
 <td>0.362750</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.590</td>
 <td>0.592</td>
 <td>-0.002</td>
 <td>0.963724</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.605</td>
 <td>0.601</td>
 <td>0.004</td>
 <td>0.890948</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.613</td>
 <td>0.616</td>
 <td>-0.003</td>
 <td>0.926790</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.595</td>
 <td>0.584</td>
 <td>0.011</td>
 <td>0.649429</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.587</td>
 <td>0.600</td>
 <td>-0.013</td>
 <td>0.584865</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.583</td>
 <td>0.595</td>
 <td>-0.012</td>
 <td>0.617133</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.599</td>
 <td>0.606</td>
 <td>-0.007</td>
@@ -1368,8 +1381,8 @@ window.Quarto = {
 </div>
 <p>Agora, fazemos um histograma das diferenças:</p>
 <div id="cell-71" class="cell" data-execution_count="210">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1380,14 +1393,14 @@ window.Quarto = {
 </div>
 <p>Veja como, nesse caso, a diferença fica centrada no zero. Nessa simulação, se extrairmos os quantis de 2,5% e 97,5%, temos o intervalo de confiança simulado para essa diferença. Veja que ela contém o zero:</p>
 <div id="cell-73" class="cell" data-execution_count="186">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="186">
 <pre><code>array([-0.041025,  0.041   ])</code></pre>
 </div>
 </div>
 <p>E veja que interessante, a proporção de vezes em que, ao fazer o teste de hipóteses, rejeitaríamos a hipótese nula:</p>
 <div id="cell-75" class="cell" data-execution_count="212">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="212">
 <pre><code>0.053</code></pre>
 </div>
@@ -1395,18 +1408,18 @@ window.Quarto = {
 <p>Ou seja, em aproximadamente 5% das amostras, nós rejeitaríamos a hipótese nula, mesmo ela sendo verdadeira. Isso é o erro do tipo I, que é o nível de significância que escolhemos.</p>
 <p>Agora, vamos para um exemplo onde as proporções são diferentes, 60% e 70%:</p>
 <div id="cell-78" class="cell" data-execution_count="213">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  amostras.append(amostra_diferenca(<span class="fl">0.7</span>, <span class="fl">0.6</span>))</span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat(amostras)</span>
 <span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="213">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1418,77 +1431,77 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.702</td>
 <td>0.605</td>
 <td>0.097</td>
 <td>6.449431e-06</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.698</td>
 <td>0.586</td>
 <td>0.112</td>
 <td>2.251830e-07</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.671</td>
 <td>0.611</td>
 <td>0.060</td>
 <td>5.956293e-03</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.732</td>
 <td>0.582</td>
 <td>0.150</td>
 <td>2.243348e-12</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.695</td>
 <td>0.614</td>
 <td>0.081</td>
 <td>1.686924e-04</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.689</td>
 <td>0.597</td>
 <td>0.092</td>
 <td>2.166091e-05</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.700</td>
 <td>0.606</td>
 <td>0.094</td>
 <td>1.250206e-05</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.696</td>
 <td>0.596</td>
 <td>0.100</td>
 <td>3.671498e-06</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.691</td>
 <td>0.592</td>
 <td>0.099</td>
 <td>4.889018e-06</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.681</td>
 <td>0.614</td>
 <td>0.067</td>
@@ -1503,8 +1516,8 @@ window.Quarto = {
 </div>
 <p>O histograma fica assim:</p>
 <div id="cell-80" class="cell" data-execution_count="214">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1515,7 +1528,7 @@ window.Quarto = {
 </div>
 <p>E o intervalo de confiança simulado fica assim:</p>
 <div id="cell-82" class="cell" data-execution_count="215">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="215">
 <pre><code>array([0.059975, 0.141   ])</code></pre>
 </div>
@@ -1523,7 +1536,7 @@ window.Quarto = {
 <p>Veja que dessa vez o intervalo não contém o zero. Ou seja, a diferença é estatisticamente diferente de zero.</p>
 <p>Agora, veja a proporção de vezes que o valor-p é menor de 5%:</p>
 <div id="cell-85" class="cell" data-execution_count="216">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="216">
 <pre><code>1.0</code></pre>
 </div>
@@ -1531,18 +1544,18 @@ window.Quarto = {
 <p>Todas as vezes! Ou seja, em 100% das amostras, rejeitaríamos a hipótese nula, o que é esperado, já que ela é falsa.</p>
 <p>Agora vamos para um exemplo onde as proporções são diferentes, mas não muito, 60% e 62%:</p>
 <div id="cell-88" class="cell" data-execution_count="217">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  amostras.append(amostra_diferenca(<span class="fl">0.62</span>, <span class="fl">0.60</span>))</span>
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat(amostras)</span>
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="217">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1554,77 +1567,77 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.623</td>
 <td>0.615</td>
 <td>0.008</td>
 <td>0.747217</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.611</td>
 <td>0.584</td>
 <td>0.027</td>
 <td>0.235815</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.625</td>
 <td>0.614</td>
 <td>0.011</td>
 <td>0.645114</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.599</td>
 <td>0.594</td>
 <td>0.005</td>
 <td>0.855337</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.650</td>
 <td>0.625</td>
 <td>0.025</td>
 <td>0.264270</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.644</td>
 <td>0.609</td>
 <td>0.035</td>
 <td>0.116030</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.625</td>
 <td>0.604</td>
 <td>0.021</td>
 <td>0.358177</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.618</td>
 <td>0.599</td>
 <td>0.019</td>
 <td>0.409579</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.625</td>
 <td>0.601</td>
 <td>0.024</td>
 <td>0.291009</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.592</td>
 <td>0.591</td>
 <td>0.001</td>
@@ -1639,8 +1652,8 @@ window.Quarto = {
 </div>
 <p>O histograma fica assim:</p>
 <div id="cell-90" class="cell" data-execution_count="218">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1651,7 +1664,7 @@ window.Quarto = {
 </div>
 <p>E o intervalo de confiança simulado fica assim:</p>
 <div id="cell-92" class="cell" data-execution_count="219">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="219">
 <pre><code>array([-0.022,  0.065])</code></pre>
 </div>
@@ -1659,25 +1672,25 @@ window.Quarto = {
 <p>Veja que dessa vez o intervalo não contém o zero. Ou seja, a diferença é estatisticamente diferente de zero.</p>
 <p>Agora, veja a proporção de vezes que o valor-p é menor de 5%:</p>
 <div id="cell-95" class="cell" data-execution_count="220">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="220">
 <pre><code>0.15</code></pre>
 </div>
 </div>
 <p>Nesse caso, não há evidências suficientes para rejeitar a hipótese nula. Isso é o que ocorre quando temos uma diferença na população que é muito pequena. Mas tem um jeito de detectar essa diferença, que é aumentando o tamanho da amostra. Vamos ver isso. Considere que, ao invés de 1000 observações, temos 5000:</p>
 <div id="cell-97" class="cell" data-execution_count="239">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>amostras <span class="op">=</span> []</span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>):</span>
 <span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  amostras.append(amostra_diferenca(<span class="fl">0.62</span>, <span class="fl">0.60</span>, <span class="dv">5000</span>))</span>
 <span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.concat(amostras)</span>
 <span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="239">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1689,77 +1702,77 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6302</td>
 <td>0.5914</td>
 <td>0.0388</td>
 <td>0.000075</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6274</td>
 <td>0.6010</td>
 <td>0.0264</td>
 <td>0.007121</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6206</td>
 <td>0.5982</td>
 <td>0.0224</td>
 <td>0.022898</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6198</td>
 <td>0.6014</td>
 <td>0.0184</td>
 <td>0.062009</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6196</td>
 <td>0.5982</td>
 <td>0.0214</td>
 <td>0.029845</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6194</td>
 <td>0.6086</td>
 <td>0.0108</td>
 <td>0.276297</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6134</td>
 <td>0.6060</td>
 <td>0.0074</td>
 <td>0.460526</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6222</td>
 <td>0.5976</td>
 <td>0.0246</td>
 <td>0.012379</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6134</td>
 <td>0.6092</td>
 <td>0.0042</td>
 <td>0.681590</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.6146</td>
 <td>0.6072</td>
 <td>0.0074</td>
@@ -1774,8 +1787,8 @@ window.Quarto = {
 </div>
 <p>O histograma fica assim:</p>
 <div id="cell-99" class="cell" data-execution_count="240">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">'diferenca'</span>, kde<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>plt.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1786,7 +1799,7 @@ window.Quarto = {
 </div>
 <p>E o intervalo de confiança simulado fica assim:</p>
 <div id="cell-101" class="cell" data-execution_count="241">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>np.quantile(df.diferenca, [<span class="fl">0.025</span>, <span class="fl">0.975</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="241">
 <pre><code>array([0.0018, 0.0388])</code></pre>
 </div>
@@ -1794,7 +1807,7 @@ window.Quarto = {
 <p>Veja que dessa vez o intervalo não contém o zero. Ou seja, a diferença é estatisticamente diferente de zero.</p>
 <p>Agora, veja a proporção de vezes que o valor-p é menor de 5%:</p>
 <div id="cell-104" class="cell" data-execution_count="243">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>(df.valor_p <span class="op">&lt;</span> <span class="fl">0.05</span>).mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="243">
 <pre><code>0.536</code></pre>
 </div>
@@ -1810,7 +1823,7 @@ window.Quarto = {
 <p>A origem disso está na suposição sobre a <strong>distribuição de probabilidades da variável</strong> de interesse. Quando supomos que a variável de interesse é normal, existe um resultado mostrando que a média amostral (<span class="math inline">\(\bar X\)</span>) dividida pelo desvio padrão amostral (<span class="math inline">\(S\)</span>) e multiplicada por uma constante <strong>segue uma distribuição t de Student</strong>. Essa constante é chamada de <strong>graus de liberdade</strong> e no caso que estamos estudando é dada por <span class="math inline">\(n-1\)</span>, onde <span class="math inline">\(n\)</span> é o tamanho da amostra.</p>
 <p>Vamos desenhar a t-student para alguns valores de <span class="math inline">\(n\)</span>, comparando-a com a distribuição normal.</p>
 <div id="cell-107" class="cell" data-execution_count="62">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>valores_n <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>valores_n <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>]</span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">1000</span>)</span>
 <span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1837,7 +1850,7 @@ window.Quarto = {
 <span id="cb70-25"><a href="#cb70-25" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.assign(t_pdf <span class="op">=</span> stats.t.pdf(x, df <span class="op">=</span> valores_n[<span class="dv">3</span>] <span class="op">-</span> <span class="dv">1</span>))</span>
 <span id="cb70-26"><a href="#cb70-26" aria-hidden="true" tabindex="-1"></a>sns.lineplot(ax <span class="op">=</span> axes[<span class="dv">1</span>,<span class="dv">1</span>], data <span class="op">=</span> df, x <span class="op">=</span> <span class="st">'x'</span>, y <span class="op">=</span> <span class="st">"densidade"</span>, label<span class="op">=</span><span class="st">"Normal"</span>)</span>
 <span id="cb70-27"><a href="#cb70-27" aria-hidden="true" tabindex="-1"></a>sns.lineplot(ax <span class="op">=</span> axes[<span class="dv">1</span>,<span class="dv">1</span>], data <span class="op">=</span> df, x <span class="op">=</span> <span class="st">'x'</span>, y <span class="op">=</span> <span class="st">'t_pdf'</span>, label<span class="op">=</span><span class="st">"t-student"</span>)</span>
-<span id="cb70-28"><a href="#cb70-28" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb70-28"><a href="#cb70-28" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1858,7 +1871,7 @@ window.Quarto = {
 <h4 data-number="7.3.7.1" class="anchored" data-anchor-id="aplicação-no-python-2"><span class="header-section-number">7.3.7.1</span> Aplicação no python</h4>
 <p>No python, podemos fazer o intervalo de confiança com t-score fazendo as seguintes operações:</p>
 <div id="cell-109" class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>tempos <span class="op">=</span> camaras.tempo</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>tempos <span class="op">=</span> camaras.tempo</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>media <span class="op">=</span> tempos.mean()</span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>sd <span class="op">=</span> tempos.std()</span>
 <span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> stats.norm.ppf(<span class="fl">0.975</span>)</span>
@@ -1867,14 +1880,14 @@ window.Quarto = {
 <span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>vl_intervalo_t <span class="op">=</span> tscore <span class="op">*</span> sd <span class="op">/</span> np.sqrt(n)</span>
 <span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>media <span class="op">-</span> vl_intervalo_t, media <span class="op">+</span> vl_intervalo_t</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a>media <span class="op">-</span> vl_intervalo_t, media <span class="op">+</span> vl_intervalo_t</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <pre><code>(3.1360526281801846, 3.2216300942330562)</code></pre>
 </div>
 </div>
 <p>Como nossa amostra é grande, o resultado é praticamente o mesmo. Vamos ver com uma amostra pequena, comparando com o z-score:</p>
 <div id="cell-111" class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>tempos <span class="op">=</span> camaras.sample(<span class="dv">20</span>, random_state<span class="op">=</span><span class="dv">42</span>).tempo</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>tempos <span class="op">=</span> camaras.sample(<span class="dv">20</span>, random_state<span class="op">=</span><span class="dv">42</span>).tempo</span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>media <span class="op">=</span> tempos.mean()</span>
 <span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>sd <span class="op">=</span> tempos.std()</span>
@@ -1888,7 +1901,7 @@ window.Quarto = {
 <span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>vl_intervalo_t <span class="op">=</span> tscore <span class="op">*</span> sd <span class="op">/</span> np.sqrt(n)</span>
 <span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(media <span class="op">-</span> vl_intervalo_z, media <span class="op">+</span> vl_intervalo_z)</span>
-<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(media <span class="op">-</span> vl_intervalo_t, media <span class="op">+</span> vl_intervalo_t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(media <span class="op">-</span> vl_intervalo_t, media <span class="op">+</span> vl_intervalo_t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2.037385709232428 4.425311073792897
 1.9563287310545743 4.5063680519707505</code></pre>
@@ -1897,11 +1910,36 @@ window.Quarto = {
 <p>Veja como o intervalo de confiança da normal é mais “otimista” do que o intervalo de confiança da t-student. Isso ocorre porque a t-student é mais larga, refletindo a incerteza adicional devido à variância amostral, enquanto a normal é mais estreita e faz uso de teoremas de convergência para aproximar a distribuição amostral da média.</p>
 
 
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section>
 </section>
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -1953,13 +1991,14 @@ window.Quarto = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

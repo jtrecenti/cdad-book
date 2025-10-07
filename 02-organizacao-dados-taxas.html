@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -69,14 +69,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -104,7 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -122,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +167,9 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Ciência de Dados Aplicada ao Direito II</a> 
     </div>
@@ -200,8 +207,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-visualizacao-plotnine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com plotnine</span></span></a>
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -248,8 +255,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12-exercicios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exercícios</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./resumo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -303,11 +316,11 @@ window.Quarto = {
 
 
 <div id="cell-1" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-2" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="introdução" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">2.1</span> Introdução</h2>
@@ -332,7 +345,7 @@ window.Quarto = {
 <h4 data-number="2.2.1.3" class="anchored" data-anchor-id="código"><span class="header-section-number">2.2.1.3</span> Código</h4>
 <p>A frequência de uma variável pode ser rapidamente obtida com <code>value_counts()</code></p>
 <div id="cell-5" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>camaras.decisao.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>camaras.decisao.value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>decisao
 Negaram                 5273
@@ -362,7 +375,7 @@ Name: count, dtype: int64</code></pre>
 <h4 data-number="2.2.2.3" class="anchored" data-anchor-id="código-1"><span class="header-section-number">2.2.2.3</span> Código</h4>
 <p>O argumento ‘normalize=’ permite obter a frequência relativa - não o total de ocorrências.</p>
 <div id="cell-7" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>camaras.decisao.value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>camaras.decisao.value_counts(normalize<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>decisao
 Negaram                 0.5273
@@ -397,14 +410,14 @@ Name: proportion, dtype: float64</code></pre>
 <h4 data-number="2.2.3.3" class="anchored" data-anchor-id="código-2"><span class="header-section-number">2.2.3.3</span> Código</h4>
 <p>A razão é obtida dividindo-se os dois números de interesse. Por exemplo, se quisermos saber quantos recursos relacionados a tráfico de drogas temos para cada recurso relacionado a furto, basta dividir a frequência de recursos de tráfico pela frequência de recursos de furto.</p>
 <div id="cell-9" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_colwidth'</span>, <span class="va">None</span>) <span class="co"># Mostrar todas as colunas</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_colwidth'</span>, <span class="va">None</span>) <span class="co"># Mostrar todas as colunas</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>camaras.value_counts(<span class="st">'assunto'</span>).reset_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>camaras.value_counts(<span class="st">'assunto'</span>).reset_index()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -414,57 +427,57 @@ Name: proportion, dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins</td>
 <td>3082</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - Roubo Majorado</td>
 <td>1397</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - Furto Qualificado</td>
 <td>1122</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Furto</td>
 <td>577</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Trânsito</td>
 <td>458</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">115</td>
+<th data-quarto-table-cell-role="th">115</th>
 <td>DIREITO PENAL - Crimes Praticados por Particular Contra a Administração em Geral - Subtração ou inutilização de livro ou documento</td>
 <td>1</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">116</td>
+<th data-quarto-table-cell-role="th">116</th>
 <td>DIREITO PENAL - Crimes Contra a Administração da Justiça - Favorecimento real</td>
 <td>1</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">117</td>
+<th data-quarto-table-cell-role="th">117</th>
 <td>DIREITO PENAL - Crimes Praticados por Particular Contra a Administração em Geral - "Lavagem" ou Ocultação de Bens, Direitos ou Valores Oriundos de Corrupção</td>
 <td>1</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">118</td>
+<th data-quarto-table-cell-role="th">118</th>
 <td>DIREITO PENAL - Crimes Praticados por Particular Contra a Administração em Geral - Contrabando ou descaminho</td>
 <td>1</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">119</td>
+<th data-quarto-table-cell-role="th">119</th>
 <td>Crimes Resultante de Preconceito de Raça ou de Cor</td>
 <td>1</td>
 </tr>
@@ -476,7 +489,7 @@ Name: proportion, dtype: float64</code></pre>
 </div>
 </div>
 <div id="cell-10" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>assuntos_trafico <span class="op">=</span> [</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>assuntos_trafico <span class="op">=</span> [</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins'</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>]</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -491,7 +504,7 @@ Name: proportion, dtype: float64</code></pre>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>razao <span class="op">=</span> qt_trafico <span class="op">/</span> qt_furto</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>qt_trafico, qt_furto, razao</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>qt_trafico, qt_furto, razao</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>(3082, 1699, 1.8140082401412596)</code></pre>
 </div>
@@ -520,7 +533,7 @@ Name: proportion, dtype: float64</code></pre>
 <h4 data-number="2.2.4.3" class="anchored" data-anchor-id="código-3"><span class="header-section-number">2.2.4.3</span> Código</h4>
 <p>A taxa é obtida dividindo-se os dois números de interesse. Por exemplo, se quisermos saber a taxa de reforma, basta dividir a frequência de decisões favoráveis pela frequência de decisões (total ou de mérito).</p>
 <div id="cell-12" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>qt_decisoes_total <span class="op">=</span> camaras.shape[<span class="dv">0</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>qt_decisoes_total <span class="op">=</span> camaras.shape[<span class="dv">0</span>]</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>nm_decisoes_merito <span class="op">=</span> [<span class="st">'Negaram'</span>, <span class="st">'Parcialmente'</span>, <span class="st">'Provido'</span>]</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -530,7 +543,7 @@ Name: proportion, dtype: float64</code></pre>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>tx_reforma_total <span class="op">=</span> qt_decisoes_favoraveis <span class="op">/</span> qt_decisoes_total</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>tx_reforma_merito <span class="op">=</span> qt_decisoes_favoraveis <span class="op">/</span> qt_decisoes_merito</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>tx_reforma_total, tx_reforma_merito</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>tx_reforma_total, tx_reforma_merito</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>(0.4407, 0.45526859504132233)</code></pre>
 </div>
@@ -542,13 +555,13 @@ Name: proportion, dtype: float64</code></pre>
 <h2 data-number="2.3" class="anchored" data-anchor-id="aplicação"><span class="header-section-number">2.3</span> Aplicação</h2>
 <p>A quantidade ou proporção de recursos negados nas câmaras criminais pode variar de acordo com o polo do Ministério Público no caso. Afinal, se um magistrado tem um viés mais ou menos favorável ao MP, a quantidade de recursos negados pode variar.</p>
 <div id="cell-15" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>358</code></pre>
 </div>
 </div>
 <div id="cell-16" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>4915</code></pre>
 </div>
@@ -557,23 +570,23 @@ Name: proportion, dtype: float64</code></pre>
 <p>Talvez a diferença seja apenas uma questão de quantidade de recursos interpostos pelo MP em relação ao polo passivo. Afinal, se o MP recorre em menos casos, é natural que haja menos recursos negados.</p>
 <p>A proporção de recursos negados para cada tipo de polo do MP é o que de fato deve ser comparado nesse caso.</p>
 <div id="cell-18" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> <span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(camaras[camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> <span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(camaras[camaras.polo_mp <span class="op">==</span> <span class="st">"Ativo"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-19" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>P_ativo <span class="op">=</span> freq <span class="op">/</span> N</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>P_ativo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>P_ativo <span class="op">=</span> freq <span class="op">/</span> N</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>P_ativo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>0.44143033292231815</code></pre>
 </div>
 </div>
 <div id="cell-20" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> <span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(camaras[camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> <span class="bu">len</span>(camaras[(camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>) <span class="op">&amp;</span> (camaras.decisao <span class="op">==</span> <span class="st">"Negaram"</span>)])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(camaras[camaras.polo_mp <span class="op">==</span> <span class="st">"Passivo"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-21" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>P_passivo <span class="op">=</span> freq <span class="op">/</span> N</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>P_passivo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>P_passivo <span class="op">=</span> freq <span class="op">/</span> N</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>P_passivo</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>0.5348786592665143</code></pre>
 </div>
@@ -581,16 +594,16 @@ Name: proportion, dtype: float64</code></pre>
 <p>A proporção de negados quando o MP está no polo passivo é maior do que a proporção de negados no polo ativo. Isso pode ser um indício de que o tribunal é mais favorável ao MP quando este recorre. Claro que ainda existem muitos fatores a serem considerados (veremos mais para frente!).</p>
 <p>A partir de agora, vamos considerar somente os recursos onde o MP está no polo passivo. Também vamos considerar somente as decisões de mérito.</p>
 <div id="cell-23" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>camaras_mp_passivo <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>camaras_mp_passivo <span class="op">=</span> (</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  camaras</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'polo_mp == "Passivo"'</span>)</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'decisao == ["Negaram", "Parcialmente", "Provido"]'</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Uma análise de interesse pode ser calcular a taxa de reforma por assunto do processo. Será que existe muita variação?</p>
 <p>Na análise abaixo, estimamos essas proporções, considerando apenas os assuntos com 30 ou mais decisões (tente pensar no motivo dessa decisão).</p>
 <div id="cell-25" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  camaras_mp_passivo</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'assunto'</span>)</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  .agg(</span>
@@ -600,12 +613,12 @@ Name: proportion, dtype: float64</code></pre>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  .reset_index()</span>
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'decisoes &gt;= 30'</span>)</span>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'reforma'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="33">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -616,121 +629,121 @@ Name: proportion, dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">60</td>
+<th data-quarto-table-cell-role="th">60</th>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - Latrocínio</td>
 <td>44</td>
 <td>0.568182</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">38</td>
+<th data-quarto-table-cell-role="th">38</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Trânsito</td>
 <td>394</td>
 <td>0.530457</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">98</td>
+<th data-quarto-table-cell-role="th">98</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Estelionato</td>
 <td>178</td>
 <td>0.511236</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">58</td>
+<th data-quarto-table-cell-role="th">58</th>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - Furto Qualificado</td>
 <td>1008</td>
 <td>0.497024</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">52</td>
+<th data-quarto-table-cell-role="th">52</th>
 <td>DIREITO PENAL - Crimes contra a Fé Pública - Uso de documento falso</td>
 <td>84</td>
 <td>0.488095</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">63</td>
+<th data-quarto-table-cell-role="th">63</th>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - Roubo Majorado</td>
 <td>1296</td>
 <td>0.475309</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">37</td>
+<th data-quarto-table-cell-role="th">37</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins</td>
 <td>2787</td>
 <td>0.454970</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">96</td>
+<th data-quarto-table-cell-role="th">96</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Apropriação indébita</td>
 <td>66</td>
 <td>0.439394</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">101</td>
+<th data-quarto-table-cell-role="th">101</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Furto</td>
 <td>486</td>
 <td>0.413580</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">93</td>
+<th data-quarto-table-cell-role="th">93</th>
 <td>DIREITO PENAL-Crimes contra a vida-Homicídio Qualificado</td>
 <td>77</td>
 <td>0.402597</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">68</td>
+<th data-quarto-table-cell-role="th">68</th>
 <td>DIREITO PENAL - Lesão Corporal - Grave</td>
 <td>35</td>
 <td>0.400000</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">39</td>
+<th data-quarto-table-cell-role="th">39</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes do Sistema Nacional de Armas</td>
 <td>322</td>
 <td>0.397516</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">102</td>
+<th data-quarto-table-cell-role="th">102</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Receptação</td>
 <td>385</td>
 <td>0.397403</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">103</td>
+<th data-quarto-table-cell-role="th">103</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Roubo</td>
 <td>391</td>
 <td>0.388747</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">48</td>
+<th data-quarto-table-cell-role="th">48</th>
 <td>DIREITO PENAL - Crimes contra a Fé Pública - Falsificação de documento público</td>
 <td>40</td>
 <td>0.375000</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">89</td>
+<th data-quarto-table-cell-role="th">89</th>
 <td>DIREITO PENAL-Crimes contra a liberdade pessoal-Ameaça</td>
 <td>229</td>
 <td>0.371179</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">65</td>
+<th data-quarto-table-cell-role="th">65</th>
 <td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica</td>
 <td>193</td>
 <td>0.347150</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">66</td>
+<th data-quarto-table-cell-role="th">66</th>
 <td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica-Contra a Mulher</td>
 <td>184</td>
 <td>0.336957</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>DIREITO PENAL - Contravenções Penais</td>
 <td>45</td>
 <td>0.333333</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">86</td>
+<th data-quarto-table-cell-role="th">86</th>
 <td>DIREITO PENAL-Crimes contra a Propriedade Intelectual-Violação de direito autoral</td>
 <td>37</td>
 <td>0.297297</td>
@@ -744,7 +757,7 @@ Name: proportion, dtype: float64</code></pre>
 <p>Pela tabela, vemos que a taxa de reforma varia de 0.30 a 0.57. O assunto com maior taxa de reforma é o latrocínio, seguido por crimes de trânsito. Já o assunto com menor taxa de reforma é a violação de direito autoral.</p>
 <p>Outra análise de interesse é estudar a taxa de reforma por câmara. A tabela abaixo mostra isso. dessa vez, estamos mostrando apenas as câmaras com mais de 100 observações, para remover as câmaras extraordinárias.</p>
 <div id="cell-27" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>camara_reforma <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>camara_reforma <span class="op">=</span> (</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  camaras_mp_passivo</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'camara'</span>)</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  .agg(</span>
@@ -756,12 +769,12 @@ Name: proportion, dtype: float64</code></pre>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'reforma'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>camara_reforma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>camara_reforma</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Dessa vez, a taxa de reforma varia de 0.12 até 0.79! Pela tabela, a câmara com maior taxa de reforma é a 12 e a câmara com menor taxa de reforma é a 4.</p>
 <p>Podemos ver esses dados graficamente:</p>
 <div id="cell-29" class="cell" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sns.barplot(data<span class="op">=</span>camara_reforma, x<span class="op">=</span><span class="st">'reforma'</span>, y<span class="op">=</span><span class="st">'camara'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sns.barplot(data<span class="op">=</span>camara_reforma, x<span class="op">=</span><span class="st">'reforma'</span>, y<span class="op">=</span><span class="st">'camara'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -773,9 +786,34 @@ Name: proportion, dtype: float64</code></pre>
 <p>Na apostila sobre visualização de dados, veremos como customizar esse gráfico.</p>
 
 
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -827,13 +865,14 @@ Name: proportion, dtype: float64</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -69,14 +69,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./07-testes-hipoteses.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -104,7 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -122,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +167,9 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Ciência de Dados Aplicada ao Direito II</a> 
     </div>
@@ -200,8 +207,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-visualizacao-plotnine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com plotnine</span></span></a>
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -248,8 +255,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12-exercicios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exercícios</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./resumo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -310,7 +323,7 @@ window.Quarto = {
 
 
 <div id="cell-1" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># para gráficos</span></span>
@@ -321,17 +334,17 @@ window.Quarto = {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.stats <span class="im">as</span> stats</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># para modelos estatísticos</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-2" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>camaras.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>camaras.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -357,7 +370,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>00013452120188260535</td>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - R...</td>
 <td>01ª Câmara de Direito Criminal</td>
@@ -378,7 +391,7 @@ window.Quarto = {
 <td>não</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>00647287520158260050</td>
 <td>DIREITO PENAL - Crimes Previstos na Legislação...</td>
 <td>07ª Câmara de Direito Criminal</td>
@@ -399,7 +412,7 @@ window.Quarto = {
 <td>não</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>00039169220148260150</td>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Aprop...</td>
 <td>14ª Câmara de Direito Criminal</td>
@@ -453,18 +466,18 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 <h3 data-number="8.2.1" class="anchored" data-anchor-id="exemplo-no-python"><span class="header-section-number">8.2.1</span> Exemplo no python</h3>
 <p>Vamos calcular a correlação entre a idade de um desembargador e o tempo de magistratura.</p>
 <div id="cell-4" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>relatores <span class="op">=</span> (</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>relatores <span class="op">=</span> (</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  camaras</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  .drop_duplicates(<span class="st">'relator'</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'rel_idade.isnull() == False and rel_tempo_magistratura.isnull() == False'</span>, engine<span class="op">=</span><span class="st">'python'</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>relatores.head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>relatores.head(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -490,7 +503,7 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>00013452120188260535</td>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - R...</td>
 <td>01ª Câmara de Direito Criminal</td>
@@ -511,7 +524,7 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 <td>não</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>00647287520158260050</td>
 <td>DIREITO PENAL - Crimes Previstos na Legislação...</td>
 <td>07ª Câmara de Direito Criminal</td>
@@ -532,7 +545,7 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 <td>não</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>00039169220148260150</td>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Aprop...</td>
 <td>14ª Câmara de Direito Criminal</td>
@@ -560,7 +573,7 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 </div>
 <p>Agora vamos fazer um gráfico de dispersão</p>
 <div id="cell-6" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>relatores, x<span class="op">=</span><span class="st">'rel_idade'</span>, y<span class="op">=</span><span class="st">'rel_tempo_magistratura'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>relatores, x<span class="op">=</span><span class="st">'rel_idade'</span>, y<span class="op">=</span><span class="st">'rel_tempo_magistratura'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -571,18 +584,18 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 </div>
 <p>Note que parece existir uma relação linear entre as variáveis. Vamos calcular a correlação para confirmar essa hipótese.</p>
 <div id="cell-8" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">=</span> relatores[<span class="st">'rel_idade'</span>].corr(relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">=</span> relatores[<span class="st">'rel_idade'</span>].corr(relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>correlacao</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>correlacao</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>0.6476657995825739</code></pre>
 </div>
 </div>
 <p>Note que a correlação é uma função comutativa, ou seja, a correlação entre x e y é a mesma que a correlação entre y e x:</p>
 <div id="cell-10" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>correlacao_2 <span class="op">=</span> relatores[<span class="st">'rel_tempo_magistratura'</span>].corr(relatores[<span class="st">'rel_idade'</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>correlacao_2 <span class="op">=</span> relatores[<span class="st">'rel_tempo_magistratura'</span>].corr(relatores[<span class="st">'rel_idade'</span>])</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>correlacao_2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>correlacao_2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>0.6476657995825738</code></pre>
 </div>
@@ -590,9 +603,9 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 <p>Como testar a significância da correlação? Para isso, podemos usar um teste de hipóteses. A hipótese nula é que a correlação é igual a 0, e a hipótese alternativa é que a correlação é diferente de 0. O teste de hipóteses para a correlação é um teste t de Student, já que temos um resultado bem parecido com o teste de comparação de médias.</p>
 <p>Para isso, utilizamos o método <code>pearsonr</code> da biblioteca <code>scipy.stats</code>. Esse método retorna a correlação e o p-valor do teste de hipóteses.</p>
 <div id="cell-12" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>corr, p_value <span class="op">=</span> stats.pearsonr(relatores[<span class="st">'rel_idade'</span>], relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>corr, p_value <span class="op">=</span> stats.pearsonr(relatores[<span class="st">'rel_idade'</span>], relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>corr, p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>corr, p_value</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>(0.6476657995825736, 5.235066377782658e-12)</code></pre>
 </div>
@@ -607,12 +620,12 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 <p><img src="https://abjur.github.io/obsCRSFN/relatorio/obs_crsfn_abj_files/figure-html/multas-comparacao-1.png" width="800"></p>
 <p>No nosso caso das câmaras, podemos investigar os outliers aplicando alguma regra para detectar os casos:</p>
 <div id="cell-15" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>relatores.query(<span class="st">'rel_tempo_magistratura &lt; 32'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>relatores.query(<span class="st">'rel_tempo_magistratura &lt; 32'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -638,7 +651,7 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">31</td>
+<th data-quarto-table-cell-role="th">31</th>
 <td>30376156820138260405</td>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Recep...</td>
 <td>06ª Câmara de Direito Criminal</td>
@@ -659,7 +672,7 @@ r = \frac{cov(x, y)}{\sqrt{var(x)var(y)}}
 <td>sim</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">93</td>
+<th data-quarto-table-cell-role="th">93</th>
 <td>00421315820128260005</td>
 <td>DIREITO PENAL - Lesão Corporal - Decorrente de...</td>
 <td>12ª Câmara de Direito Criminal</td>
@@ -711,84 +724,84 @@ y = \beta_0 + \beta_1x + \epsilon
 <p>No nosso caso, a variável dependente é o tempo de magistratura e a variável independente é a idade do desembargador. A pergunta de pesquisa é: o tempo de magistratura é influenciado pela idade do desembargador? Intuitivamente, parece que sim, já que desembargadores mais velhos tendem a ter mais tempo de magistratura. Também vimos que a correlação entre as variáveis é positiva, o que corrobora essa intuição. Agora, vamos <strong>quantificar</strong> essa relação.</p>
 <p>Para ajustar nossa regressão, vamos utilizar um novo pacote: o <code>statsmodels</code>. O <code>statsmodels</code> é uma biblioteca de Python que permite fazer análises estatísticas mais avançadas, como regressão, séries de tempo, entre outros. A função que vamos usar por enquanto é a <code>ols</code>, que significa Ordinary Least Squares, ou Mínimos Quadrados Ordinários. Essa função ajusta uma regressão linear simples aos dados.</p>
 <div id="cell-18" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>modelo <span class="op">=</span> smf.ols(<span class="st">'rel_tempo_magistratura ~ rel_idade'</span>, data<span class="op">=</span>relatores).fit()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>modelo <span class="op">=</span> smf.ols(<span class="st">'rel_tempo_magistratura ~ rel_idade'</span>, data<span class="op">=</span>relatores).fit()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>modelo.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>modelo.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <caption>OLS Regression Results</caption>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<th data-quarto-table-cell-role="th">Dep. Variable:</th>
 <td>rel_tempo_magistratura</td>
-<td data-quarto-table-cell-role="th">R-squared:</td>
+<th data-quarto-table-cell-role="th">R-squared:</th>
 <td>0.419</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Model:</td>
+<th data-quarto-table-cell-role="th">Model:</th>
 <td>OLS</td>
-<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<th data-quarto-table-cell-role="th">Adj. R-squared:</th>
 <td>0.413</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Method:</td>
+<th data-quarto-table-cell-role="th">Method:</th>
 <td>Least Squares</td>
-<td data-quarto-table-cell-role="th">F-statistic:</td>
+<th data-quarto-table-cell-role="th">F-statistic:</th>
 <td>63.59</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Date:</td>
+<th data-quarto-table-cell-role="th">Date:</th>
 <td>Sun, 07 Apr 2024</td>
-<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<th data-quarto-table-cell-role="th">Prob (F-statistic):</th>
 <td>5.24e-12</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Time:</td>
+<th data-quarto-table-cell-role="th">Time:</th>
 <td>20:01:05</td>
-<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<th data-quarto-table-cell-role="th">Log-Likelihood:</th>
 <td>-237.78</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">No. Observations:</td>
+<th data-quarto-table-cell-role="th">No. Observations:</th>
 <td>90</td>
-<td data-quarto-table-cell-role="th">AIC:</td>
+<th data-quarto-table-cell-role="th">AIC:</th>
 <td>479.6</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<th data-quarto-table-cell-role="th">Df Residuals:</th>
 <td>88</td>
-<td data-quarto-table-cell-role="th">BIC:</td>
+<th data-quarto-table-cell-role="th">BIC:</th>
 <td>484.6</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Df Model:</td>
+<th data-quarto-table-cell-role="th">Df Model:</th>
 <td>1</td>
-<td data-quarto-table-cell-role="th"></td>
+<th data-quarto-table-cell-role="th"></th>
 <td></td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<th data-quarto-table-cell-role="th">Covariance Type:</th>
 <td>nonrobust</td>
-<td data-quarto-table-cell-role="th"></td>
+<th data-quarto-table-cell-role="th"></th>
 <td></td>
 </tr>
 </tbody>
 </table>
 
 
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
 <td></td>
-<td data-quarto-table-cell-role="th">coef</td>
-<td data-quarto-table-cell-role="th">std err</td>
-<td data-quarto-table-cell-role="th">t</td>
-<td data-quarto-table-cell-role="th">P&gt;|t|</td>
-<td data-quarto-table-cell-role="th">[0.025</td>
-<td data-quarto-table-cell-role="th">0.975]</td>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+<th data-quarto-table-cell-role="th">[0.025</th>
+<th data-quarto-table-cell-role="th">0.975]</th>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Intercept</td>
+<th data-quarto-table-cell-role="th">Intercept</th>
 <td>6.2034</td>
 <td>4.070</td>
 <td>1.524</td>
@@ -797,7 +810,7 @@ y = \beta_0 + \beta_1x + \epsilon
 <td>14.291</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">rel_idade</td>
+<th data-quarto-table-cell-role="th">rel_idade</th>
 <td>0.4789</td>
 <td>0.060</td>
 <td>7.974</td>
@@ -809,30 +822,30 @@ y = \beta_0 + \beta_1x + \epsilon
 </table>
 
 
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Omnibus:</td>
+<th data-quarto-table-cell-role="th">Omnibus:</th>
 <td>35.274</td>
-<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
+<th data-quarto-table-cell-role="th">Durbin-Watson:</th>
 <td>2.006</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
+<th data-quarto-table-cell-role="th">Prob(Omnibus):</th>
 <td>0.000</td>
-<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
+<th data-quarto-table-cell-role="th">Jarque-Bera (JB):</th>
 <td>92.330</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Skew:</td>
+<th data-quarto-table-cell-role="th">Skew:</th>
 <td>-1.346</td>
-<td data-quarto-table-cell-role="th">Prob(JB):</td>
+<th data-quarto-table-cell-role="th">Prob(JB):</th>
 <td>8.93e-21</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Kurtosis:</td>
+<th data-quarto-table-cell-role="th">Kurtosis:</th>
 <td>7.168</td>
-<td data-quarto-table-cell-role="th">Cond. No.</td>
+<th data-quarto-table-cell-role="th">Cond. No.</th>
 <td>762.</td>
 </tr>
 </tbody>
@@ -849,11 +862,11 @@ y = \beta_0 + \beta_1x + \epsilon
 <p>O <span class="math inline">\(R^2\)</span> varia de 0 a 1, e quanto mais próximo de 1, melhor o modelo se ajusta aos dados. O <span class="math inline">\(R^2\)</span> é uma medida de qualidade do modelo, e é muito importante para avaliar a qualidade de um modelo de regressão.</p>
 <p>Você pode se perguntar: a interpretação <span class="math inline">\(R^2\)</span> e do coeficiente de correlação são muito parecidos, não é? A única diferença é que o <span class="math inline">\(R^2\)</span> é sempre positivo, enquanto a correlação pode ser negativa. E de fato essa intuição faz sentido: para uma regressão linear simples (ou seja, com uma variável independente), o <span class="math inline">\(R^2\)</span> é o quadrado da correlação entre as variáveis:</p>
 <div id="cell-20" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">=</span> relatores[<span class="st">'rel_idade'</span>].corr(relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">=</span> relatores[<span class="st">'rel_idade'</span>].corr(relatores[<span class="st">'rel_tempo_magistratura'</span>])</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> modelo.rsquared</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">**</span> <span class="dv">2</span>, r2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>correlacao <span class="op">**</span> <span class="dv">2</span>, r2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>(0.4194709879489347, 0.41947098794893445)</code></pre>
 </div>
@@ -861,7 +874,7 @@ y = \beta_0 + \beta_1x + \epsilon
 <p>No entanto, o <span class="math inline">\(R^2\)</span> é uma medida mais geral, que pode ser aplicada a modelos de regressão mais complexos, com mais variáveis independentes. O <span class="math inline">\(R^2\)</span> pode ser pensado como uma medida de qualidade do modelo, enquanto a correlação é uma medida de associação entre variáveis.</p>
 <p>Para visualizar a regressão, podemos fazer um gráfico de dispersão com a linha de regressão. Para isso, vamos usar a função <code>lmplot</code> que plota o gráfico de dispersão e a linha de regressão.</p>
 <div id="cell-23" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sns.lmplot(data<span class="op">=</span>relatores, x<span class="op">=</span><span class="st">'rel_idade'</span>, y<span class="op">=</span><span class="st">'rel_tempo_magistratura'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sns.lmplot(data<span class="op">=</span>relatores, x<span class="op">=</span><span class="st">'rel_idade'</span>, y<span class="op">=</span><span class="st">'rel_tempo_magistratura'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -887,84 +900,84 @@ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p + \epsilon
 \]</span></p>
 <p>Nosso interesse agora é estudar o tempo dos processos em função da idade do desembargador e do polo do Ministério Público. Para isso, vamos ajustar um modelo de regressão linear múltipla com uma variável dependente (tempo do processo, em anos) e duas variáveis independentes (idade do desembargador e polo do Ministério Público).</p>
 <div id="cell-26" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>modelo_tempo <span class="op">=</span> smf.ols(<span class="st">'tempo ~ rel_idade + polo_mp'</span>, data<span class="op">=</span>camaras).fit()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>modelo_tempo <span class="op">=</span> smf.ols(<span class="st">'tempo ~ rel_idade + polo_mp'</span>, data<span class="op">=</span>camaras).fit()</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>modelo_tempo.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>modelo_tempo.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <caption>OLS Regression Results</caption>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<th data-quarto-table-cell-role="th">Dep. Variable:</th>
 <td>tempo</td>
-<td data-quarto-table-cell-role="th">R-squared:</td>
+<th data-quarto-table-cell-role="th">R-squared:</th>
 <td>0.004</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Model:</td>
+<th data-quarto-table-cell-role="th">Model:</th>
 <td>OLS</td>
-<td data-quarto-table-cell-role="th">Adj. R-squared:</td>
+<th data-quarto-table-cell-role="th">Adj. R-squared:</th>
 <td>0.003</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Method:</td>
+<th data-quarto-table-cell-role="th">Method:</th>
 <td>Least Squares</td>
-<td data-quarto-table-cell-role="th">F-statistic:</td>
+<th data-quarto-table-cell-role="th">F-statistic:</th>
 <td>15.20</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Date:</td>
+<th data-quarto-table-cell-role="th">Date:</th>
 <td>Sun, 07 Apr 2024</td>
-<td data-quarto-table-cell-role="th">Prob (F-statistic):</td>
+<th data-quarto-table-cell-role="th">Prob (F-statistic):</th>
 <td>2.57e-07</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Time:</td>
+<th data-quarto-table-cell-role="th">Time:</th>
 <td>20:01:06</td>
-<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<th data-quarto-table-cell-role="th">Log-Likelihood:</th>
 <td>-18762.</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">No. Observations:</td>
+<th data-quarto-table-cell-role="th">No. Observations:</th>
 <td>8608</td>
-<td data-quarto-table-cell-role="th">AIC:</td>
+<th data-quarto-table-cell-role="th">AIC:</th>
 <td>3.753e+04</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<th data-quarto-table-cell-role="th">Df Residuals:</th>
 <td>8605</td>
-<td data-quarto-table-cell-role="th">BIC:</td>
+<th data-quarto-table-cell-role="th">BIC:</th>
 <td>3.755e+04</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Df Model:</td>
+<th data-quarto-table-cell-role="th">Df Model:</th>
 <td>2</td>
-<td data-quarto-table-cell-role="th"></td>
+<th data-quarto-table-cell-role="th"></th>
 <td></td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<th data-quarto-table-cell-role="th">Covariance Type:</th>
 <td>nonrobust</td>
-<td data-quarto-table-cell-role="th"></td>
+<th data-quarto-table-cell-role="th"></th>
 <td></td>
 </tr>
 </tbody>
 </table>
 
 
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
 <td></td>
-<td data-quarto-table-cell-role="th">coef</td>
-<td data-quarto-table-cell-role="th">std err</td>
-<td data-quarto-table-cell-role="th">t</td>
-<td data-quarto-table-cell-role="th">P&gt;|t|</td>
-<td data-quarto-table-cell-role="th">[0.025</td>
-<td data-quarto-table-cell-role="th">0.975]</td>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+<th data-quarto-table-cell-role="th">[0.025</th>
+<th data-quarto-table-cell-role="th">0.975]</th>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Intercept</td>
+<th data-quarto-table-cell-role="th">Intercept</th>
 <td>4.0376</td>
 <td>0.277</td>
 <td>14.575</td>
@@ -973,7 +986,7 @@ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p + \epsilon
 <td>4.581</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">polo_mp[T.Passivo]</td>
+<th data-quarto-table-cell-role="th">polo_mp[T.Passivo]</th>
 <td>-0.4478</td>
 <td>0.085</td>
 <td>-5.268</td>
@@ -982,7 +995,7 @@ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p + \epsilon
 <td>-0.281</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">rel_idade</td>
+<th data-quarto-table-cell-role="th">rel_idade</th>
 <td>-0.0066</td>
 <td>0.004</td>
 <td>-1.652</td>
@@ -994,30 +1007,30 @@ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + ... + \beta_px_p + \epsilon
 </table>
 
 
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Omnibus:</td>
+<th data-quarto-table-cell-role="th">Omnibus:</th>
 <td>4063.861</td>
-<td data-quarto-table-cell-role="th">Durbin-Watson:</td>
+<th data-quarto-table-cell-role="th">Durbin-Watson:</th>
 <td>1.990</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Prob(Omnibus):</td>
+<th data-quarto-table-cell-role="th">Prob(Omnibus):</th>
 <td>0.000</td>
-<td data-quarto-table-cell-role="th">Jarque-Bera (JB):</td>
+<th data-quarto-table-cell-role="th">Jarque-Bera (JB):</th>
 <td>27633.729</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Skew:</td>
+<th data-quarto-table-cell-role="th">Skew:</th>
 <td>2.169</td>
-<td data-quarto-table-cell-role="th">Prob(JB):</td>
+<th data-quarto-table-cell-role="th">Prob(JB):</th>
 <td>0.00</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Kurtosis:</td>
+<th data-quarto-table-cell-role="th">Kurtosis:</th>
 <td>10.631</td>
-<td data-quarto-table-cell-role="th">Cond. No.</td>
+<th data-quarto-table-cell-role="th">Cond. No.</th>
 <td>806.</td>
 </tr>
 </tbody>
@@ -1052,7 +1065,7 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 </ul>
 <p>A ideia é estabelecer uma relação entre o valor do acordo e a aceitação do acordo, controlando pelo tipo de caso. Para isso, vamos ajustar um modelo de regressão logística com duas variáveis independentes: o valor da proposta de acordo (alçada) e o tipo de caso. A variável dependente é a aceitação do acordo, ou seja, uma variável binária que indica se a parte autora aceitou ou não o acordo.</p>
 <div id="cell-28" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>acordos <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/acordos.csv'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>acordos <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/acordos.csv'</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># nomes originais: Valor de Alçada, Tipo de Caso,   Aceita Acordo</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>acordos.rename(columns<span class="op">=</span>{</span>
@@ -1060,12 +1073,12 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Tipo de Caso'</span>: <span class="st">'tipo_caso'</span>,</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Aceita Acordo'</span>: <span class="st">'aceita_acordo'</span>}, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>acordos.head(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>acordos.head(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1076,61 +1089,61 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>0.374540</td>
 <td>0</td>
 <td>0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>0.950714</td>
 <td>1</td>
 <td>1</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>0.731994</td>
 <td>1</td>
 <td>0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>0.598658</td>
 <td>1</td>
 <td>0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>0.156019</td>
 <td>1</td>
 <td>0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5</td>
+<th data-quarto-table-cell-role="th">5</th>
 <td>0.155995</td>
 <td>0</td>
 <td>0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">6</td>
+<th data-quarto-table-cell-role="th">6</th>
 <td>0.058084</td>
 <td>1</td>
 <td>0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">7</td>
+<th data-quarto-table-cell-role="th">7</th>
 <td>0.866176</td>
 <td>0</td>
 <td>1</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">8</td>
+<th data-quarto-table-cell-role="th">8</th>
 <td>0.601115</td>
 <td>0</td>
 <td>0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
+<th data-quarto-table-cell-role="th">9</th>
 <td>0.708073</td>
 <td>0</td>
 <td>1</td>
@@ -1142,77 +1155,77 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 </div>
 </div>
 <div id="cell-29" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>modelo_logistico <span class="op">=</span> smf.logit(<span class="st">'aceita_acordo ~ valor_alcada + tipo_caso'</span>, data<span class="op">=</span>acordos).fit()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>modelo_logistico <span class="op">=</span> smf.logit(<span class="st">'aceita_acordo ~ valor_alcada + tipo_caso'</span>, data<span class="op">=</span>acordos).fit()</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>modelo_logistico.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>modelo_logistico.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Optimization terminated successfully.
          Current function value: 0.280667
          Iterations 8</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="15">
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <caption>Logit Regression Results</caption>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<th data-quarto-table-cell-role="th">Dep. Variable:</th>
 <td>aceita_acordo</td>
-<td data-quarto-table-cell-role="th">No. Observations:</td>
+<th data-quarto-table-cell-role="th">No. Observations:</th>
 <td>1000</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Model:</td>
+<th data-quarto-table-cell-role="th">Model:</th>
 <td>Logit</td>
-<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<th data-quarto-table-cell-role="th">Df Residuals:</th>
 <td>997</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Method:</td>
+<th data-quarto-table-cell-role="th">Method:</th>
 <td>MLE</td>
-<td data-quarto-table-cell-role="th">Df Model:</td>
+<th data-quarto-table-cell-role="th">Df Model:</th>
 <td>2</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Date:</td>
+<th data-quarto-table-cell-role="th">Date:</th>
 <td>Sun, 07 Apr 2024</td>
-<td data-quarto-table-cell-role="th">Pseudo R-squ.:</td>
+<th data-quarto-table-cell-role="th">Pseudo R-squ.:</th>
 <td>0.4647</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Time:</td>
+<th data-quarto-table-cell-role="th">Time:</th>
 <td>20:01:07</td>
-<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<th data-quarto-table-cell-role="th">Log-Likelihood:</th>
 <td>-280.67</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">converged:</td>
+<th data-quarto-table-cell-role="th">converged:</th>
 <td>True</td>
-<td data-quarto-table-cell-role="th">LL-Null:</td>
+<th data-quarto-table-cell-role="th">LL-Null:</th>
 <td>-524.36</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<th data-quarto-table-cell-role="th">Covariance Type:</th>
 <td>nonrobust</td>
-<td data-quarto-table-cell-role="th">LLR p-value:</td>
+<th data-quarto-table-cell-role="th">LLR p-value:</th>
 <td>1.456e-106</td>
 </tr>
 </tbody>
 </table>
 
 
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
 <td></td>
-<td data-quarto-table-cell-role="th">coef</td>
-<td data-quarto-table-cell-role="th">std err</td>
-<td data-quarto-table-cell-role="th">z</td>
-<td data-quarto-table-cell-role="th">P&gt;|z|</td>
-<td data-quarto-table-cell-role="th">[0.025</td>
-<td data-quarto-table-cell-role="th">0.975]</td>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">z</th>
+<th data-quarto-table-cell-role="th">P&gt;|z|</th>
+<th data-quarto-table-cell-role="th">[0.025</th>
+<th data-quarto-table-cell-role="th">0.975]</th>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Intercept</td>
+<th data-quarto-table-cell-role="th">Intercept</th>
 <td>-7.6311</td>
 <td>0.541</td>
 <td>-14.104</td>
@@ -1221,7 +1234,7 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 <td>-6.571</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">valor_alcada</td>
+<th data-quarto-table-cell-role="th">valor_alcada</th>
 <td>9.6214</td>
 <td>0.690</td>
 <td>13.941</td>
@@ -1230,7 +1243,7 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 <td>10.974</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">tipo_caso</td>
+<th data-quarto-table-cell-role="th">tipo_caso</th>
 <td>0.0727</td>
 <td>0.213</td>
 <td>0.342</td>
@@ -1247,77 +1260,77 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 <p>O coeficiente do tipo de caso ser dano moral é 0.213, o que significa que, para casos de dano moral, a probabilidade de a parte autora aceitar o acordo aumenta. O coeficiente de dano moral não é estatisticamente significante, já que o valor-p associado a ele, de 0.73, é maior que 0.05.</p>
 <p>Já que a probabilidade de aceitação não depende do tipo de caso, podemos simplificar o modelo e ajustar um modelo de regressão logística apenas com a alçada:</p>
 <div id="cell-31" class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>modelo_logistico <span class="op">=</span> smf.logit(<span class="st">'aceita_acordo ~ valor_alcada'</span>, data<span class="op">=</span>acordos).fit()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>modelo_logistico <span class="op">=</span> smf.logit(<span class="st">'aceita_acordo ~ valor_alcada'</span>, data<span class="op">=</span>acordos).fit()</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>modelo_logistico.summary()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>modelo_logistico.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Optimization terminated successfully.
          Current function value: 0.280725
          Iterations 8</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="16">
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <caption>Logit Regression Results</caption>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Dep. Variable:</td>
+<th data-quarto-table-cell-role="th">Dep. Variable:</th>
 <td>aceita_acordo</td>
-<td data-quarto-table-cell-role="th">No. Observations:</td>
+<th data-quarto-table-cell-role="th">No. Observations:</th>
 <td>1000</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Model:</td>
+<th data-quarto-table-cell-role="th">Model:</th>
 <td>Logit</td>
-<td data-quarto-table-cell-role="th">Df Residuals:</td>
+<th data-quarto-table-cell-role="th">Df Residuals:</th>
 <td>998</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Method:</td>
+<th data-quarto-table-cell-role="th">Method:</th>
 <td>MLE</td>
-<td data-quarto-table-cell-role="th">Df Model:</td>
+<th data-quarto-table-cell-role="th">Df Model:</th>
 <td>1</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Date:</td>
+<th data-quarto-table-cell-role="th">Date:</th>
 <td>Sun, 07 Apr 2024</td>
-<td data-quarto-table-cell-role="th">Pseudo R-squ.:</td>
+<th data-quarto-table-cell-role="th">Pseudo R-squ.:</th>
 <td>0.4646</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Time:</td>
+<th data-quarto-table-cell-role="th">Time:</th>
 <td>20:01:07</td>
-<td data-quarto-table-cell-role="th">Log-Likelihood:</td>
+<th data-quarto-table-cell-role="th">Log-Likelihood:</th>
 <td>-280.73</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">converged:</td>
+<th data-quarto-table-cell-role="th">converged:</th>
 <td>True</td>
-<td data-quarto-table-cell-role="th">LL-Null:</td>
+<th data-quarto-table-cell-role="th">LL-Null:</th>
 <td>-524.36</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Covariance Type:</td>
+<th data-quarto-table-cell-role="th">Covariance Type:</th>
 <td>nonrobust</td>
-<td data-quarto-table-cell-role="th">LLR p-value:</td>
+<th data-quarto-table-cell-role="th">LLR p-value:</th>
 <td>5.568e-108</td>
 </tr>
 </tbody>
 </table>
 
 
-<table class="simpletable caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="simpletable caption-top table table-sm table-striped small">
 <tbody>
 <tr class="odd">
 <td></td>
-<td data-quarto-table-cell-role="th">coef</td>
-<td data-quarto-table-cell-role="th">std err</td>
-<td data-quarto-table-cell-role="th">z</td>
-<td data-quarto-table-cell-role="th">P&gt;|z|</td>
-<td data-quarto-table-cell-role="th">[0.025</td>
-<td data-quarto-table-cell-role="th">0.975]</td>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">z</th>
+<th data-quarto-table-cell-role="th">P&gt;|z|</th>
+<th data-quarto-table-cell-role="th">[0.025</th>
+<th data-quarto-table-cell-role="th">0.975]</th>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">Intercept</td>
+<th data-quarto-table-cell-role="th">Intercept</th>
 <td>-7.5893</td>
 <td>0.526</td>
 <td>-14.434</td>
@@ -1326,7 +1339,7 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 <td>-6.559</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">valor_alcada</td>
+<th data-quarto-table-cell-role="th">valor_alcada</th>
 <td>9.6114</td>
 <td>0.689</td>
 <td>13.950</td>
@@ -1340,12 +1353,12 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 </div>
 <p>Agora que temos o valor final do modelo, podemos fazer uma interpretação mais direta. Podemos fazer um gráfico representando a relação entre a alçada e a probabilidade de aceitação do acordo:</p>
 <div id="cell-33" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> modelo_logistico.predict(pd.DataFrame({<span class="st">'valor_alcada'</span>: x}))</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>df_predict <span class="op">=</span> pd.DataFrame({<span class="st">'valor_alcada'</span>: x, <span class="st">'probabilidade'</span>: y})</span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df_predict, x<span class="op">=</span><span class="st">'valor_alcada'</span>, y<span class="op">=</span><span class="st">'probabilidade'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df_predict, x<span class="op">=</span><span class="st">'valor_alcada'</span>, y<span class="op">=</span><span class="st">'probabilidade'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1357,10 +1370,35 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
 <p>Pelo gráfico, vemos que a probabilidade de aceitação do acordo aumenta com o valor da alçada. Um valor de alçada abaixo de 40% do valor da causa implica em probabilidades ínfimas de aceitação do acordo, enquanto um valor de alçada próximo de 100% implica em uma aceitação maior de 80% do acordo, apesar desse valor não ser interessante para a parte ré. O valor ótimo de acordo é um trade-off entre a probabilidade de aceitação e a expectativa do resultado do processo pela parte ré.</p>
 
 
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section>
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -1412,13 +1450,14 @@ p = \frac{1}{1 + e^{-(\beta_0 + \beta_1x)}} = g(\beta_0 + \beta_1x)
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

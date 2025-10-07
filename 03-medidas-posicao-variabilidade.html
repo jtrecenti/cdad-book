@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -58,25 +58,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./04-visualizacao-plotnine.html" rel="next">
+<link href="./04-visualizacao-seaborn.html" rel="next">
 <link href="./02-organizacao-dados-taxas.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -104,7 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -122,7 +127,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -162,7 +167,9 @@ window.Quarto = {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Ciência de Dados Aplicada ao Direito II</a> 
     </div>
@@ -200,8 +207,8 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04-visualizacao-plotnine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com plotnine</span></span></a>
+  <a href="./04-visualizacao-seaborn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -248,8 +255,14 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./12-exercicios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Exercícios</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./resumo.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Resumo</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -312,13 +325,13 @@ window.Quarto = {
 
 
 <div id="cell-1" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> textwrap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> textwrap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-2" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>camaras <span class="op">=</span> pd.read_csv(<span class="st">'https://github.com/jtrecenti/main-cdad2/releases/download/data/camaras.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="introdução" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="introdução"><span class="header-section-number">3.1</span> Introdução</h2>
@@ -346,20 +359,20 @@ window.Quarto = {
 <h4 data-number="3.2.1.3" class="anchored" data-anchor-id="código"><span class="header-section-number">3.2.1.3</span> Código</h4>
 <p>A média pode ser calculada em python usando a função <code>mean</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.mean()</code>.</p>
 <div id="cell-5" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mean_pandas <span class="op">=</span> camaras.tempo.mean()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mean_pandas <span class="op">=</span> camaras.tempo.mean()</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mean_numpy <span class="op">=</span> np.mean(camaras.tempo)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>mean_pandas, mean_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>mean_pandas, mean_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>(3.1788413612066204, 3.1788413612066204)</code></pre>
 </div>
 </div>
 <p>Veja que essa conta é equivalente a calcular a soma de todos os valores e dividir pela quantidade de valores.</p>
 <div id="cell-7" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>soma <span class="op">=</span> np.<span class="bu">sum</span>(camaras.tempo)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>soma <span class="op">=</span> np.<span class="bu">sum</span>(camaras.tempo)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>quantidade <span class="op">=</span> <span class="bu">len</span>(camaras)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>soma <span class="op">/</span> quantidade</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>soma <span class="op">/</span> quantidade</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>3.1785234770704998</code></pre>
 </div>
@@ -390,10 +403,10 @@ window.Quarto = {
 <h4 data-number="3.2.2.3" class="anchored" data-anchor-id="código-1"><span class="header-section-number">3.2.2.3</span> Código</h4>
 <p>A mediana pode ser calculada em python usando a função <code>median</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.median()</code>.</p>
 <div id="cell-10" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>median_pandas <span class="op">=</span> camaras.tempo.median()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>median_pandas <span class="op">=</span> camaras.tempo.median()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>median_numpy <span class="op">=</span> np.median(camaras.tempo)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>median_pandas, median_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>median_pandas, median_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>(2.529774127310062, nan)</code></pre>
 </div>
@@ -401,9 +414,9 @@ window.Quarto = {
 <p>Opa, o que significa esse nan? Bem, no numpy, nan é a sigla para “not a number”. Isso acontece quando tentamos calcular a mediana de uma variável que tem valores faltantes. O pandas, por outro lado, ignora os valores faltantes e calcula a mediana normalmente. Tome cuidado com isso!</p>
 <p>Para calcular a mediana ignorando os valores faltantes, podemos usar a função <code>nanmedian()</code>, como abaixo</p>
 <div id="cell-12" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>median_numpy <span class="op">=</span> np.nanmedian(camaras.tempo)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>median_numpy <span class="op">=</span> np.nanmedian(camaras.tempo)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>median_pandas, median_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>median_pandas, median_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>(2.529774127310062, 2.529774127310062)</code></pre>
 </div>
@@ -430,28 +443,28 @@ window.Quarto = {
 <h4 data-number="3.2.3.3" class="anchored" data-anchor-id="código-2"><span class="header-section-number">3.2.3.3</span> Código</h4>
 <p>Os quantis podem ser calculados em python usando a função <code>quantile</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.quantile()</code>.</p>
 <div id="cell-15" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>q20_pandas <span class="op">=</span> camaras.tempo.quantile(<span class="fl">0.2</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>q20_pandas <span class="op">=</span> camaras.tempo.quantile(<span class="fl">0.2</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>q20_numpy <span class="op">=</span> np.quantile(camaras.tempo, <span class="fl">0.2</span>)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>q20_pandas, q20_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>q20_pandas, q20_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>(1.5742642026009583, nan)</code></pre>
 </div>
 </div>
 <p>Note que, assim como no caso da mediana, o numpy retorna nan quando tentamos calcular quantis de uma variável que tem valores faltantes. O pandas, por outro lado, ignora os valores faltantes e calcula os quantis normalmente.</p>
 <div id="cell-17" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># quantil de 20%</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># quantil de 20%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># interpretação: 20% dos tempos são menores que esse valor encontrado</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>q20_numpy <span class="op">=</span> np.nanquantile(camaras.tempo, <span class="fl">0.2</span>)</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>q20_pandas, q20_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>q20_pandas, q20_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>(1.5742642026009583, 1.5742642026009583)</code></pre>
 </div>
 </div>
 <div id="cell-18" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mínimo: p=0</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mínimo: p=0</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>min_pandas <span class="op">=</span> camaras.tempo.<span class="bu">min</span>()</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>min_numpy <span class="op">=</span> np.<span class="bu">min</span>(camaras.tempo)</span>
@@ -461,7 +474,7 @@ window.Quarto = {
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>qmin_pandas <span class="op">=</span> camaras.tempo.quantile(<span class="dv">0</span>)</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>qmin_numpy <span class="op">=</span> np.nanquantile(camaras.tempo, <span class="dv">0</span>)</span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>min_pandas, min_numpy, qmin_pandas, qmin_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>min_pandas, min_numpy, qmin_pandas, qmin_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>(0.2600958247775496,
  0.2600958247775496,
@@ -470,7 +483,7 @@ window.Quarto = {
 </div>
 </div>
 <div id="cell-19" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># máximo: p=1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># máximo: p=1</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>max_pandas <span class="op">=</span> camaras.tempo.<span class="bu">max</span>()</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>max_numpy <span class="op">=</span> np.<span class="bu">max</span>(camaras.tempo)</span>
@@ -480,7 +493,7 @@ window.Quarto = {
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>qmax_pandas <span class="op">=</span> camaras.tempo.quantile(<span class="dv">1</span>)</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>qmax_numpy <span class="op">=</span> np.nanquantile(camaras.tempo, <span class="dv">1</span>)</span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>max_pandas, max_numpy, qmax_pandas, qmax_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>max_pandas, max_numpy, qmax_pandas, qmax_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>(27.49075975359343, 27.49075975359343, 27.49075975359343, 27.49075975359343)</code></pre>
 </div>
@@ -493,7 +506,7 @@ window.Quarto = {
 <p>Agora vamos aplicar os conceitos aprendidos para entender melhor os tempos de decisão do TJSP.</p>
 <p>Primeiro, os tempos apresentados estão em anos, e são os tempos entre o ajuizamento e a decisão do recurso de apelação.</p>
 <div id="cell-21" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>camaras.tempo.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>camaras.tempo.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <pre><code>count    9999.000000
 mean        3.178841
@@ -511,12 +524,12 @@ Name: tempo, dtype: float64</code></pre>
 <p><strong>Obs</strong>: Essa é uma medida de variabilidade chamada intervalo interquartil, uma forma de entender a dispersão dos dados. Veremos essa medida com mais detalhes em seguida.</p>
 <p>O tempo máximo encontrado foi de 27.49 anos (27 anos e 6 meses). Isso é muito tempo! Vamos dar uma olhada nesse caso:</p>
 <div id="cell-23" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>camaras[camaras.tempo <span class="op">&gt;</span> <span class="dv">27</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>camaras[camaras.tempo <span class="op">&gt;</span> <span class="dv">27</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -542,7 +555,7 @@ Name: tempo, dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">8991</td>
+<th data-quarto-table-cell-role="th">8991</th>
 <td>04526037019918260011</td>
 <td>DIREITO PENAL-Crimes contra a vida-Homicídio Q...</td>
 <td>01ª Câmara de Direito Criminal</td>
@@ -571,7 +584,7 @@ Name: tempo, dtype: float64</code></pre>
 <p>Veja, pelo número do processo, que esse caso foi distribuído em 1991. Como esperado, é um caso complexo. Trata-se de um homicídio qualificado.</p>
 <p>Será, então, que os tempos típicos dos processos variam conforme o assunto? Vamos analisar isso agora.</p>
 <div id="cell-25" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_colwidth'</span>, <span class="va">None</span>) <span class="co"># Mostrar todas as colunas</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_colwidth'</span>, <span class="va">None</span>) <span class="co"># Mostrar todas as colunas</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  camaras</span>
@@ -580,12 +593,12 @@ Name: tempo, dtype: float64</code></pre>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  .reset_index()</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'count &gt;= 100'</span>)</span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'50%'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -602,7 +615,7 @@ Name: tempo, dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">105</td>
+<th data-quarto-table-cell-role="th">105</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Estelionato</td>
 <td>220.0</td>
 <td>6.210591</td>
@@ -614,7 +627,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>21.440110</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">41</td>
+<th data-quarto-table-cell-role="th">41</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Trânsito</td>
 <td>458.0</td>
 <td>4.367793</td>
@@ -626,7 +639,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>14.579055</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">69</td>
+<th data-quarto-table-cell-role="th">69</th>
 <td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica</td>
 <td>222.0</td>
 <td>3.790949</td>
@@ -638,7 +651,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>8.323066</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">109</td>
+<th data-quarto-table-cell-role="th">109</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Receptação</td>
 <td>439.0</td>
 <td>3.745380</td>
@@ -650,7 +663,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>10.603696</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">108</td>
+<th data-quarto-table-cell-role="th">108</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Furto</td>
 <td>577.0</td>
 <td>3.487429</td>
@@ -662,7 +675,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>17.210130</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">94</td>
+<th data-quarto-table-cell-role="th">94</th>
 <td>DIREITO PENAL-Crimes contra a liberdade pessoal-Ameaça</td>
 <td>248.0</td>
 <td>3.194067</td>
@@ -674,7 +687,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>8.134155</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">62</td>
+<th data-quarto-table-cell-role="th">62</th>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - Furto Qualificado</td>
 <td>1122.0</td>
 <td>3.455517</td>
@@ -686,7 +699,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>16.459959</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">42</td>
+<th data-quarto-table-cell-role="th">42</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes do Sistema Nacional de Armas</td>
 <td>355.0</td>
 <td>3.291969</td>
@@ -698,7 +711,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>12.610541</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">70</td>
+<th data-quarto-table-cell-role="th">70</th>
 <td>DIREITO PENAL - Lesão Corporal - Decorrente de Violência Doméstica-Contra a Mulher</td>
 <td>204.0</td>
 <td>3.277932</td>
@@ -710,7 +723,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>10.398357</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">67</td>
+<th data-quarto-table-cell-role="th">67</th>
 <td>DIREITO PENAL - Crimes contra o Patrimônio - Roubo Majorado</td>
 <td>1397.0</td>
 <td>2.824282</td>
@@ -722,7 +735,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>19.529090</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">110</td>
+<th data-quarto-table-cell-role="th">110</th>
 <td>DIREITO PENAL-Crimes contra o Patrimônio-Roubo</td>
 <td>422.0</td>
 <td>2.431815</td>
@@ -734,7 +747,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>17.289528</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">40</td>
+<th data-quarto-table-cell-role="th">40</th>
 <td>DIREITO PENAL - Crimes Previstos na Legislação Extravagante - Crimes de Tráfico Ilícito e Uso Indevido de Drogas - Tráfico de Drogas e Condutas Afins</td>
 <td>3081.0</td>
 <td>2.221805</td>
@@ -757,7 +770,7 @@ Name: tempo, dtype: float64</code></pre>
 <p>Chamamos variáveis que com médias diferentes das medianas de <em>assimétricas</em>. A assimetria é uma medida de desvio da simetria. Se a média é maior que a mediana, dizemos que há <em>assimetria à direita</em>. Se a média é menor que a mediana, dizemos que há <em>assimetria à esquerda</em>.</p>
 <p>Isso tem relação com a distribuição dos dados. Por distribuição, queremos dizer a forma como os dados estão distribuídos quando colocamos ele em um histograma. Vamos ver então o histograma dos tempos:</p>
 <div id="cell-27" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(camaras.tempo, kde<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(camaras.tempo, kde<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -769,19 +782,19 @@ Name: tempo, dtype: float64</code></pre>
 <p>Está vendo como os dados estão concentrados à esquerda? Isso é um sinal de assimetria à direita. A assimetria é justamente essa massa de dados que temos a mais de um lado da distribuição. No nosso caso, isso é esperado, pois temos muitos processos que são resolvidos rapidamente, mas alguns poucos que demoram muito tempo.</p>
 <p>Por último, será que os tempos variam por câmara? Em tese, não deveriam, já que os casos são distribuídos aleatoriamente entre elas.</p>
 <div id="cell-29" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  camaras</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  .groupby(<span class="st">'camara'</span>)[<span class="st">'tempo'</span>]</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  .describe()</span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  .reset_index()</span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  .query(<span class="st">'count &gt;= 100'</span>)</span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  .sort_values(<span class="st">'50%'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -798,7 +811,7 @@ Name: tempo, dtype: float64</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">23</td>
+<th data-quarto-table-cell-role="th">23</th>
 <td>12ª Câmara de Direito Criminal</td>
 <td>567.0</td>
 <td>3.460561</td>
@@ -810,7 +823,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>17.210130</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">24</td>
+<th data-quarto-table-cell-role="th">24</th>
 <td>13ª Câmara de Direito Criminal</td>
 <td>624.0</td>
 <td>3.361304</td>
@@ -822,7 +835,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>21.108830</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5</td>
+<th data-quarto-table-cell-role="th">5</th>
 <td>03ª Câmara de Direito Criminal</td>
 <td>581.0</td>
 <td>3.199803</td>
@@ -834,7 +847,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>18.893908</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">15</td>
+<th data-quarto-table-cell-role="th">15</th>
 <td>08ª Câmara de Direito Criminal</td>
 <td>683.0</td>
 <td>3.255774</td>
@@ -846,7 +859,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>18.266940</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">27</td>
+<th data-quarto-table-cell-role="th">27</th>
 <td>16ª Câmara de Direito Criminal</td>
 <td>660.0</td>
 <td>3.272711</td>
@@ -858,7 +871,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>18.976044</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
+<th data-quarto-table-cell-role="th">9</th>
 <td>05ª Câmara de Direito Criminal</td>
 <td>464.0</td>
 <td>3.291133</td>
@@ -870,7 +883,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>17.078713</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">26</td>
+<th data-quarto-table-cell-role="th">26</th>
 <td>15ª Câmara de Direito Criminal</td>
 <td>620.0</td>
 <td>3.135109</td>
@@ -882,7 +895,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>13.930185</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>02ª Câmara de Direito Criminal</td>
 <td>523.0</td>
 <td>3.167589</td>
@@ -894,7 +907,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>21.508556</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">11</td>
+<th data-quarto-table-cell-role="th">11</th>
 <td>06ª Câmara de Direito Criminal</td>
 <td>723.0</td>
 <td>3.176956</td>
@@ -906,7 +919,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>21.440110</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">17</td>
+<th data-quarto-table-cell-role="th">17</th>
 <td>09ª Câmara de Direito Criminal</td>
 <td>610.0</td>
 <td>3.045163</td>
@@ -918,7 +931,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>13.478439</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">21</td>
+<th data-quarto-table-cell-role="th">21</th>
 <td>11ª Câmara de Direito Criminal</td>
 <td>601.0</td>
 <td>3.086797</td>
@@ -930,7 +943,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>15.203285</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">13</td>
+<th data-quarto-table-cell-role="th">13</th>
 <td>07ª Câmara de Direito Criminal</td>
 <td>655.0</td>
 <td>2.992580</td>
@@ -942,7 +955,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>16.479124</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>01ª Câmara de Direito Criminal</td>
 <td>566.0</td>
 <td>2.971269</td>
@@ -954,7 +967,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>27.490760</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">25</td>
+<th data-quarto-table-cell-role="th">25</th>
 <td>14ª Câmara de Direito Criminal</td>
 <td>636.0</td>
 <td>3.003530</td>
@@ -966,7 +979,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>16.783025</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">19</td>
+<th data-quarto-table-cell-role="th">19</th>
 <td>10ª Câmara de Direito Criminal</td>
 <td>487.0</td>
 <td>2.882080</td>
@@ -978,7 +991,7 @@ Name: tempo, dtype: float64</code></pre>
 <td>13.738535</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">7</td>
+<th data-quarto-table-cell-role="th">7</th>
 <td>04ª Câmara de Direito Criminal</td>
 <td>568.0</td>
 <td>2.804750</td>
@@ -1039,7 +1052,7 @@ Name: tempo, dtype: float64</code></pre>
 <h4 data-number="3.4.2.3" class="anchored" data-anchor-id="código-4"><span class="header-section-number">3.4.2.3</span> Código</h4>
 <p>O IQR pode ser calculado em python usando a função <code>quantile</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.quantile()</code>. Também vimos a o método <code>.describe()</code>, que acaba soltando o IQR.</p>
 <div id="cell-33" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>minimo <span class="op">=</span> camaras.tempo.<span class="bu">min</span>()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>minimo <span class="op">=</span> camaras.tempo.<span class="bu">min</span>()</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>maximo <span class="op">=</span> camaras.tempo.<span class="bu">max</span>()</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>amplitude <span class="op">=</span> maximo <span class="op">-</span> minimo</span>
@@ -1048,7 +1061,7 @@ Name: tempo, dtype: float64</code></pre>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>q1 <span class="op">=</span> camaras.tempo.quantile(<span class="fl">0.25</span>)</span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> q3 <span class="op">-</span> q1</span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>amplitude, iqr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>amplitude, iqr</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>(27.23066392881588, 2.2258726899383983)</code></pre>
 </div>
@@ -1077,24 +1090,24 @@ Name: tempo, dtype: float64</code></pre>
 <h4 data-number="3.4.3.3" class="anchored" data-anchor-id="código-5"><span class="header-section-number">3.4.3.3</span> Código</h4>
 <p>Para calcular o desvio padrão em python, usamos a função <code>std</code> do pacote <code>numpy</code>, ou então dentro do próprio pandas, com o método <code>.std()</code>.</p>
 <div id="cell-35" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>std_pandas <span class="op">=</span> camaras.tempo.std()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>std_pandas <span class="op">=</span> camaras.tempo.std()</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>std_numpy <span class="op">=</span> np.std(camaras.tempo)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>std_pandas, std_numpy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>std_pandas, std_numpy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
 <pre><code>(2.182874474194876, 2.1827653168264267)</code></pre>
 </div>
 </div>
 <p>Os números do numpy são ligeiramente diferentes do que os do pandas. Vamos testar um exemplo com menos números.</p>
 <div id="cell-37" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'numeros'</span>: [<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">9</span>]</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>})</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>std_pd <span class="op">=</span> df[<span class="st">'numeros'</span>].std()</span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>std_np <span class="op">=</span> np.std(df[<span class="st">'numeros'</span>])</span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>std_pd, std_np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>std_pd, std_np</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
 <pre><code>(3.03315017762062, 2.7129319932501073)</code></pre>
 </div>
@@ -1113,7 +1126,7 @@ Name: tempo, dtype: float64</code></pre>
 <h2 data-number="3.5" class="anchored" data-anchor-id="medidas-de-variabilidade-aplicação"><span class="header-section-number">3.5</span> Medidas de variabilidade: aplicação</h2>
 <p>Vamos voltar ao nosso querido <code>.describe()</code>.</p>
 <div id="cell-40" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>camaras.tempo.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>camaras.tempo.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>count    9999.000000
 mean        3.178841
@@ -1132,7 +1145,7 @@ Name: tempo, dtype: float64</code></pre>
 <p>Enquanto não chegamos nessa parte mais mágica da estatística, vamos ver mais algumas visualizações interessantes. Primeiro, não seria interessante analisar esses quantis que vêm do <code>.describe()</code> de forma visual?</p>
 <p>Esse é o papel do boxplot:</p>
 <div id="cell-42" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Primeiro, vamos retirar da amostra os assuntos que têm menos de 100 observações</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Primeiro, vamos retirar da amostra os assuntos que têm menos de 100 observações</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>camaras_assuntos_100 <span class="op">=</span> camaras.groupby(<span class="st">'assunto'</span>).<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="bu">len</span>(x) <span class="op">&gt;=</span> <span class="dv">100</span>)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>camaras_assuntos_100[<span class="st">'assunto'</span>] <span class="op">=</span> [</span>
@@ -1140,7 +1153,7 @@ Name: tempo, dtype: float64</code></pre>
 <span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>]</span>
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># agora, vamos fazer o boxplot</span></span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>camaras_assuntos_100, y<span class="op">=</span><span class="st">'assunto'</span>, x<span class="op">=</span><span class="st">'tempo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>camaras_assuntos_100, y<span class="op">=</span><span class="st">'assunto'</span>, x<span class="op">=</span><span class="st">'tempo'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1176,10 +1189,10 @@ Name: tempo, dtype: float64</code></pre>
 </ol>
 <p>Sobre (3), é possível verificar visualmente o motivo disso ser um problema grave. A figura abaixo mostra, no eixo x, o ano de ajuizamento dos processos e, no eixo y, o tempo dos processos até o acórdão.</p>
 <div id="cell-45" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>camaras[<span class="st">'ano_ajuizamento'</span>] <span class="op">=</span> [<span class="bu">int</span>(p[<span class="dv">9</span>:<span class="dv">13</span>]) <span class="cf">for</span> p <span class="kw">in</span> camaras.processo]</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(camaras, x <span class="op">=</span> <span class="st">'ano_ajuizamento'</span>, y <span class="op">=</span> <span class="st">'tempo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(camaras, x <span class="op">=</span> <span class="st">'ano_ajuizamento'</span>, y <span class="op">=</span> <span class="st">'tempo'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1195,10 +1208,35 @@ Name: tempo, dtype: float64</code></pre>
 <p>Ou seja, esse gráfico <strong>não informa absolutamente nada</strong> a respeito da potencial aceleração dos tempos dos processos. Ele simplesmente evidencia o escopo da pesquisa.</p>
 
 
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section>
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -1250,13 +1288,14 @@ Name: tempo, dtype: float64</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1605,8 +1644,8 @@ Name: tempo, dtype: float64</code></pre>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04-visualizacao-plotnine.html" class="pagination-link" aria-label="Visualizações com plotnine">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com plotnine</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./04-visualizacao-seaborn.html" class="pagination-link" aria-label="Visualizações com seaborn">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualizações com seaborn</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
