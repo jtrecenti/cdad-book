@@ -100,9 +100,52 @@ else:
 feedback
 ```
 
-## Exercício 3
 
-Hello World
+## Exercício 3 — Filtragem e estatísticas por ano
+**Enunciado.** Usando o dataset `camaras` (carregado no `setup`), crie um DataFrame contendo apenas as votações dos anos **2020** e **2021**. Em seguida:
+1. Calcule o total de `votos_sim` por `ano`.
+2. Mostre o top-3 partidos com maior soma de `votos_sim` no período (2020–2021).
+
+```{python}
+#| label: ex_3_solution
+#| eval: true
+#| echo: false
+
+import pandas as pd
+
+# --- Garantir que exista coluna 'ano' (tenta inferir a partir de colunas comuns)
+if "ano" not in camaras.columns:
+    candidatos_data = [
+        "data", "data_da_sessao", "data_sessao", "data_votacao",
+        "date", "dt", "timestamp", "year"
+    ]
+    converted = False
+    for c in candidatos_data:
+        if c in camaras.columns:
+            try:
+                camaras["ano"] = pd.to_datetime(camaras[c], errors="coerce").dt.year
+                if camaras["ano"].notna().any():
+                    converted = True
+                    break
+            except Exception:
+                continue
+    if not converted:
+        raise KeyError(
+            "Coluna 'ano' não encontrada em `camaras` e nenhuma coluna candidata pôde ser convertida. "
+            f"Colunas disponíveis: {list(camaras.columns)}"
+        )
+
+# filtrar por anos 2020 e 2021
+df_20_21 = camaras[camaras["ano"].isin([2020, 2021])].copy()
+df_20_21 = df_20_21[df_20_21["ano"].notna()]
+
+# garantir que exista 'votos_sim'
+if "votos_sim" not in df_20_21.columns:
+    raise KeyError("Coluna 'votos_sim' não encontrada em `camaras`. Colunas: " + ", ".join(camaras.columns))
+
+total_por_ano = df_20_21.groupby("ano", as_index=False)["votos_sim"].sum().sort_values("ano")
+total_por_ano
+```
 
 ## Exercício 4
 
