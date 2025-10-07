@@ -102,8 +102,9 @@ feedback
 
 ## Exercício 3
 
-Hello World
-
+```{pyodide}
+camaras.head(3)
+```
 ## Exercício 4
 
 ## Exercício 5
