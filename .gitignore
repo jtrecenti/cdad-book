@@ -13,6 +13,7 @@ __pycache__/
 venv/
 env/
 .virtualenv/
+.venv/
 
 # Logs e arquivos temporários
 *.log
