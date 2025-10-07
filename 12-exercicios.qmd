@@ -101,8 +101,15 @@ feedback
 ```
 
 ## Exercício 3
+```{pyodide}
 
-Hello World
+import pandas as pd
+
+camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+
+camaras.head(3)
+
+```
 
 ## Exercício 4
 
