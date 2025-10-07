@@ -11,23 +11,14 @@ book:
   chapters:
     - index.qmd
     - intro.qmd
-    - 02-organizacao-dados-taxas.ipynb
-    - 03-medidas-posicao-variabilidade.ipynb
-    - 04-visualizacao-seaborn.ipynb
-    - 05-amostras-populacoes.ipynb
-    - 06-probabilidade-cnormal.ipynb
-    - 07-testes-hipoteses.ipynb
-    - 08-correlacao-regressao.ipynb
-    - 09-modelos-classificacao.ipynb
-    - 10-corporativo.ipynb
-    - 11-openai.ipynb
+    - 01-exercicios.qmd
     - resumo.qmd
     - refs.qmd
 
 bibliography: references.bib
 
 format:
-  html:
+  live-html:
     theme: cosmo
 
 filters:
