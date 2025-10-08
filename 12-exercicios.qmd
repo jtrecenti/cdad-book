@@ -3,107 +3,322 @@ title: Exercícios
 format: live-html
 ---
 
-## Exemplo de exercício
+## Exercício 1 — **Panorama de Decisões**
 
-Faça a soma dar 5.
+## Contexto jurídico  
+Uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)** solicitou um relatório preliminar que apresente um panorama geral das decisões proferidas nas **Câmaras Criminais**.  
+
+O objetivo é compreender a **distribuição das decisões** conforme o tipo de provimento concedido — se os recursos foram **negados**, **providos**, **parcialmente providos** ou se houve **extinção da punibilidade**.  
+
+Esse levantamento servirá como base para um **estudo comparativo futuro** entre o TJSP e outros tribunais estaduais, buscando identificar possíveis **padrões de julgamento** e **variações na aplicação de precedentes**.  
+
+***
+
+Utilizando a base de dados `camaras`, elabore um **resumo quantitativo das decisões**, agrupando-as por **tipo de decisão**.  
+Apresente o resultado em formato de tabela e, se desejar, complemente com um gráfico simples (ex.: `barplot` ou `value_counts().plot.bar()`).
 
 ```{pyodide}
 #| setup: true
 #| exercise: ex_1
-# aqui, podemos criar uma variável que será usada nos exercícios
-x = 1 + 1
+import pandas as pd
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
+print("SETUP ok — colunas:", list(camaras.columns)[:10])
 ```
 
 ```{pyodide}
 #| exercise: ex_1
-x + ______
+# Escreva sua solução aqui:
+# Agrupe as decisões usando value_counts() e renomeie a coluna de contagem.
 ```
 
-::: { .hint exercise="ex_1"}
-::: { .callout-note collapse="false"}
-## Hint 1
-
-Queremos somar o valor 3!
+::: { .hint exercise="ex_1" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Use `camaras["decisao"].value_counts()` para contar quantas vezes cada tipo de decisão aparece.
 :::
 :::
 
-::: { .hint exercise="ex_1"}
-::: { .callout-note collapse="false"}
-## Hint 2
-
-Lembre-se, o valor é 3.
-
+::: { .hint exercise="ex_1" }
+::: { .callout-note collapse="false" }
+## Dica 2
+ Depois, transforme o resultado em DataFrame com `.reset_index(name="qtd_decisoes")`.
 :::
 :::
 
 ::: { .solution exercise="ex_1" }
-::: { .callout-tip collapse="false"}
-## Solução:
-
-Coloque o valor 3!
-
+::: { .callout-tip collapse="false" }
+## Solução
 ```python
-x + 3
+total_decisoes = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
+total_decisoes.head()
 ```
-
 :::
 :::
 
 ```{pyodide}
 #| exercise: ex_1
 #| check: true
+# Checador automático — compara o resultado do aluno com o DataFrame esperado.
+
+import pandas as pd
 feedback = None
-if (result == 5):
-  feedback = { "correct": True, "message": "Parabéns!" }
-else:
-  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+try:
+    expected = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes").reset_index(drop=True)
+    if isinstance(result, pd.DataFrame):
+        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
+        # tenta identificar colunas
+        if "decisao" in res.columns or "index" in res.columns:
+            ok_cols = any("qtd" in c for c in res.columns)
+            if ok_cols and len(res) == len(expected):
+                feedback = {"correct": True, "message": "Perfeito 🎉 — seu resumo de decisões está correto!"}
+            else:
+                feedback = {"correct": False, "message": "As colunas ou contagens não correspondem. Verifique o uso de value_counts() e reset_index()."}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame deve conter a coluna 'decisao' e a contagem ('qtd_decisoes')."}
+    else:
+        feedback = {"correct": False, "message": "Retorne um DataFrame (total_decisoes) para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+
 feedback
 ```
+## Exercício 2 — **Distribuição de Decisões por Câmara**
 
-## Exercício 2
+### ⚖️ Enunciado  
 
-Fazer um filtro na base das câmaras para selecionar apenas as câmaras ordinárias.
+Em seguida, vamos supor que a mesma autoridade tenha solicitado uma **análise complementar** com o objetivo de verificar a **quantidade de decisões proferidas por cada Câmara** do **Tribunal de Justiça de São Paulo (TJSP)**.  
 
-Leitura dos dados:
+Como essa apresentação será encaminhada para um **congresso dedicado ao estudo da distribuição de decisões entre as Câmaras**, optou-se por representar os resultados em **formato gráfico**, de modo a proporcionar uma visualização mais clara, comparativa e intuitiva do volume de decisões analisadas.  
 
-```{python}
-import pandas as pd
-camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+---
 
-camaras.value_counts('camara').reset_index()
-```
+### 🧠 Tarefa  
+Utilizando a base `camaras`, elabore um **gráfico de barras** que mostre a quantidade total de decisões por **Câmara** (`camara`).  
+Use o `value_counts()` para obter os totais e o `seaborn.barplot()` para montar o gráfico.
+
+---
 
 ```{pyodide}
 #| setup: true
 #| exercise: ex_2
-
 import pandas as pd
-camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
 ```
 
 ```{pyodide}
 #| exercise: ex_2
-camaras[camaras['camara'].str.contains('________')]
+# Escreva sua solução aqui:
+# 1️⃣ Agrupe por 'camara' e conte as decisões.
+# 2️⃣ Gere um gráfico de barras (horizontal) com seaborn.
+
+# Exemplo de passos (comente ou apague antes de submeter):
+# total_decisoes_por_camara = camaras['camara'].value_counts().reset_index(name='qtd_decisoes')
+# sns.barplot(data=total_decisoes_por_camara, y='camara', x='qtd_decisoes', color='royalblue')
+# plt.show()
 ```
 
+::: { .hint exercise="ex_2" }
+::: { .callout-note collapse="false" }
+**Dica 1:**  
+Use `value_counts()` para contar quantas decisões há em cada Câmara.
+:::
+:::
+
+::: { .hint exercise="ex_2" }
+::: { .callout-note collapse="false" }
+**Dica 2:**  
+Para visualizar, use `sns.barplot()` com `x='qtd_decisoes'`, `y='camara'` e uma cor (`color='royalblue'`).
+:::
+:::
+
+::: { .solution exercise="ex_2" }
+::: { .callout-tip collapse="false" }
+**Solução**
+```python
+total_decisoes_por_camara = camaras["camara"].value_counts().reset_index(name="qtd_decisoes")
+
+sns.barplot(
+    data=total_decisoes_por_camara,
+    y="camara",
+    x="qtd_decisoes",
+    color="royalblue"
+)
+plt.show()
+```
+:::
+:::
 
 ```{pyodide}
 #| exercise: ex_2
 #| check: true
-
-n = camaras[camaras['camara'].str.contains('Direito Criminal')].shape[0]
+import pandas as pd
 feedback = None
-if (result.shape[0] == n):
-  feedback = { "correct": True, "message": "Parabéns!" }
-else:
-  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+try:
+    expected = camaras["camara"].value_counts().reset_index(name="qtd_decisoes").reset_index(drop=True)
+    if isinstance(result, pd.DataFrame):
+        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
+        if "camara" in res.columns and any("qtd" in c for c in res.columns):
+            if len(res) == len(expected):
+                feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico e tabela de decisões por Câmara estão corretos!"}
+            else:
+                feedback = {"correct": False, "message": "A contagem não bate com o esperado. Verifique se usou value_counts()."}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame deve conter colunas 'camara' e 'qtd_decisoes'."}
+    else:
+        feedback = {"correct": False, "message": "Retorne o DataFrame total_decisoes_por_camara antes do gráfico para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
 feedback
 ```
 
-## Exercício 3
 
-Hello World
+## Exercício 3 — Filtrar por anos e contagem por ano (2020 & 2021)
 
-## Exercício 4
+Usando o DataFrame `camaras`, filtre apenas os registros dos anos **2020** e **2021** e:
+1. Calcule o total de registros por `ano`.
+2. Mostre os 3 relatores (`relator`) com mais registros nesse período.
 
-## Exercício 5
+```{pyodide}
+#| setup: true
+#| exercise: ex_3
+# Setup robusto para pyodide — garante que 'camaras' e 'ano' existam no runtime do navegador.
+import pandas as pd
+import io, sys
+
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+
+camaras = pd.DataFrame()
+# tenta carregar do raw github, senão tenta arquivo local
+for src in (url, "data/camaras.csv", "camaras.csv"):
+    try:
+        camaras = pd.read_csv(src, dtype=str)
+        break
+    except Exception:
+        continue
+
+# normalizar nomes de colunas
+camaras.columns = [str(c).strip() for c in camaras.columns]
+camaras.rename(columns={c: c.lower().replace(" ", "_") for c in camaras.columns}, inplace=True)
+
+# garantir coluna 'ano': tentar dt_publicacao -> ano; senão extrair 4 dígitos
+if "ano" not in camaras.columns:
+    if "dt_publicacao" in camaras.columns:
+        try:
+            camaras["ano"] = pd.to_datetime(camaras["dt_publicacao"], errors="coerce").dt.year
+        except Exception:
+            camaras["ano"] = pd.NA
+    else:
+        # tentar extrair ano de colunas prováveis
+        found = False
+        for col in ["processo", "ementa", "assunto"]:
+            if col in camaras.columns:
+                yrs = camaras[col].astype(str).str.extract(r"([12][0-9]{3})")
+                if yrs.notna().any().any():
+                    camaras["ano"] = pd.to_numeric(yrs[0], errors="coerce")
+                    found = True
+                    break
+        if not found:
+            camaras["ano"] = pd.NA
+
+# forçar tipo int onde possível (usar Int64 para permitir NA)
+if "ano" in camaras.columns:
+    try:
+        camaras["ano"] = pd.to_numeric(camaras["ano"], errors="coerce").astype("Int64")
+    except Exception:
+        pass
+
+# garantir colunas textuais usadas nos exercícios
+for col in ("relator", "camara", "assunto"):
+    if col not in camaras.columns:
+        camaras[col] = ""
+
+# debug minimal (aparece no preview para confirmar)
+print("SETUP: colunas =", list(camaras.columns))
+print("SETUP: n rows =", len(camaras))
+```
+
+```{pyodide}
+#| exercise: ex_3
+
+# A última expressão deve retornar `total_por_ano` para que o checador valide corretamente.
+
+# --- escreva sua solução aqui (aluno) ---
+```
+
+::: { .hint exercise="ex_3" }
+::: { .callout-note collapse="false" }
+## Dica 1
+ Use `df_20_21 = camaras[camaras["ano"].isin([2020, 2021])]`.  
+:::
+:::
+::: { .hint exercise="ex_3" }
+::: { .callout-note collapse="false" }
+## Dica 2
+ Use `groupby(...).size()` e renomeie a coluna de contagem com `.rename(columns={"size":"n_registros"})`.
+:::
+:::
+
+::: { .solution exercise="ex_3" }
+::: { .callout-tip collapse="false" }
+## Solução
+
+```python
+df_20_21 = camaras[camaras["ano"].isin([2020, 2021])]
+total_por_ano = df_20_21.groupby("ano", as_index=False).size().rename(columns={"size":"n_registros"}).sort_values("ano")
+top_relatores = df_20_21.groupby("relator", as_index=False).size().rename(columns={"size":"n_registros"}).sort_values("n_registros", ascending=False).head(3)
+total_por_ano
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_3
+#| check: true
+# Checador automático: compara o DataFrame retornado pelo aluno (result) com o esperado.
+import pandas as pd
+
+feedback = None
+try:
+    # construir esperado a partir da base carregada no setup
+    expected = camaras[camaras["ano"].isin([2020, 2021])].groupby("ano", as_index=False).size().rename(columns={"size":"n_registros"}).sort_values("ano").reset_index(drop=True)
+
+    if isinstance(result, pd.DataFrame):
+        # normaliza colunas do resultado do aluno
+        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
+        if "ano" not in res.columns:
+            feedback = {"correct": False, "message": "Retorne um DataFrame com a coluna 'ano' e a contagem (ex.: 'n_registros')."}
+        else:
+            # identificar coluna de contagem (primeira que não seja 'ano')
+            count_cols = [c for c in res.columns if c != "ano"]
+            if len(count_cols) == 0:
+                feedback = {"correct": False, "message": "Seu DataFrame precisa ter 'ano' e uma coluna de contagem (ex.: 'n_registros')."}
+            else:
+                cnt = count_cols[0]
+                res2 = res[["ano", cnt]].rename(columns={cnt: "n_registros"})
+                # garantir tipos compatíveis
+                res2["ano"] = pd.to_numeric(res2["ano"], errors="coerce").astype("Int64")
+                expected["ano"] = pd.to_numeric(expected["ano"], errors="coerce").astype("Int64")
+                res2 = res2.sort_values("ano").reset_index(drop=True)
+                expected2 = expected.sort_values("ano").reset_index(drop=True)
+                # comparar
+                equal = res2.equals(expected2)
+                if equal:
+                    feedback = {"correct": True, "message": "Perfeito — total_por_ano está correto 🎉"}
+                else:
+                    feedback = {"correct": False, "message": "Valores não conferem com o esperado. Verifique o filtro por ano e a agregação (groupby/count)."}
+    else:
+        feedback = {"correct": False, "message": "Retorne um DataFrame (total_por_ano) para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+
+feedback
+```
+
+### Exercício 4
