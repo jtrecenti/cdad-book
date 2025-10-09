@@ -3,107 +3,675 @@ title: Exercícios
 format: live-html
 ---
 
-## Exemplo de exercício
+```{pyodide}
+#| setup: true
+# SETUP GLOBAL — carrega e normaliza a base `camaras` para todos os exercícios
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
 
-Faça a soma dar 5.
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+
+try:
+    camaras_raw = pd.read_csv(url, dtype=str)
+except Exception:
+    camaras_raw = pd.DataFrame()
+
+# Normalizar nomes de colunas
+camaras_raw.columns = [str(c).strip() for c in camaras_raw.columns]
+camaras = camaras_raw.copy()
+camaras.columns = [c.lower().replace(" ", "_") for c in camaras.columns]
+
+# Garantir colunas usadas nos exercícios (cria se não existir)
+expected_cols = (
+    "decisao", "camara", "relator", "rel_idade", 
+    "rel_tempo_magistratura", "partido", "votos_sim", 
+    "dt_publicacao", "processo", "assunto", "ementa", "ano"
+)
+for col in expected_cols:
+    if col not in camaras.columns:
+        camaras[col] = pd.NA
+
+# Tentar criar coluna 'ano' a partir de 'dt_publicacao' se existir
+if "ano" not in camaras.columns and "dt_publicacao" in camaras.columns:
+    try:
+        camaras["ano"] = pd.to_datetime(camaras["dt_publicacao"], errors="coerce").dt.year
+    except Exception:
+        camaras["ano"] = pd.NA
+
+print("✅ SETUP GLOBAL OK — linhas:", len(camaras), "colunas:", list(camaras.columns)[:15])
+```
+
+
+## Exercício 1 — **Panorama de Decisões**
+ 
+Uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)** solicitou um relatório preliminar que apresente um panorama geral das decisões proferidas nas **Câmaras Criminais**.  
+
+O objetivo é compreender a **distribuição das decisões** conforme o tipo de provimento concedido — se os recursos foram **negados**, **providos**, **parcialmente providos** ou se houve **extinção da punibilidade**.  
+
+Esse levantamento servirá como base para um **estudo comparativo futuro** entre o TJSP e outros tribunais estaduais, buscando identificar possíveis **padrões de julgamento** e **variações na aplicação de precedentes**.  
+
+***
+
+Utilizando a base de dados `camaras`, elabore um **resumo quantitativo das decisões**, agrupando-as por **tipo de decisão**.  
 
 ```{pyodide}
 #| setup: true
 #| exercise: ex_1
-# aqui, podemos criar uma variável que será usada nos exercícios
-x = 1 + 1
+import pandas as pd
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
+print("SETUP ok — colunas:", list(camaras.columns)[:10])
 ```
 
 ```{pyodide}
 #| exercise: ex_1
-x + ______
+# Escreva sua solução aqui:
+# Agrupe as decisões usando value_counts() e renomeie a coluna de contagem.
 ```
 
-::: { .hint exercise="ex_1"}
-::: { .callout-note collapse="false"}
-## Hint 1
-
-Queremos somar o valor 3!
+::: { .hint exercise="ex_1" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Use `camaras["decisao"].value_counts()` para contar quantas vezes cada tipo de decisão aparece.
 :::
 :::
 
-::: { .hint exercise="ex_1"}
-::: { .callout-note collapse="false"}
-## Hint 2
-
-Lembre-se, o valor é 3.
-
+::: { .hint exercise="ex_1" }
+::: { .callout-note collapse="false" }
+## Dica 2
+ Depois, transforme o resultado em DataFrame com `.reset_index(name="qtd_decisoes")`.
 :::
 :::
 
 ::: { .solution exercise="ex_1" }
-::: { .callout-tip collapse="false"}
-## Solução:
-
-Coloque o valor 3!
-
+::: { .callout-tip collapse="false" }
+## Solução
 ```python
-x + 3
+total_decisoes = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
+total_decisoes.head()
 ```
-
 :::
 :::
 
 ```{pyodide}
 #| exercise: ex_1
 #| check: true
+# Checador automático — compara o resultado do aluno com o DataFrame esperado.
+
+import pandas as pd
 feedback = None
-if (result == 5):
-  feedback = { "correct": True, "message": "Parabéns!" }
-else:
-  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+try:
+    expected = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes").reset_index(drop=True)
+    if isinstance(result, pd.DataFrame):
+        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
+        # tenta identificar colunas
+        if "decisao" in res.columns or "index" in res.columns:
+            ok_cols = any("qtd" in c for c in res.columns)
+            if ok_cols and len(res) == len(expected):
+                feedback = {"correct": True, "message": "Perfeito 🎉 — seu resumo de decisões está correto!"}
+            else:
+                feedback = {"correct": False, "message": "As colunas ou contagens não correspondem. Verifique o uso de value_counts() e reset_index()."}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame deve conter a coluna 'decisao' e a contagem ('qtd_decisoes')."}
+    else:
+        feedback = {"correct": False, "message": "Retorne um DataFrame (total_decisoes) para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+
 feedback
 ```
 
-## Exercício 2
+### Exercício 1.1 — **Visualização do Panorama de Decisões**
 
-Fazer um filtro na base das câmaras para selecionar apenas as câmaras ordinárias.
+ 
 
-Leitura dos dados:
+A autoridade responsável avaliou o relatório preliminar e solicitou que os resultados fossem apresentados de forma **mais visual**, para facilitar a compreensão em reuniões e apresentações públicas.  
 
-```{python}
+Ela pediu que você **represente graficamente** a quantidade de decisões por tipo de provimento, a fim de destacar de maneira intuitiva **quais tipos de decisão são mais comuns**.  
+
+---
+
+ 
+Com base no DataFrame `total_decisoes`, elabore um **gráfico de barras horizontais** que mostre a quantidade de decisões em cada categoria.  
+
+
+---
+
+```{pyodide}
+#| setup: true
+#| exercise: ex_1_1
 import pandas as pd
-camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-camaras.value_counts('camara').reset_index()
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
+total_decisoes = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
+total_decisoes.rename(columns={"index": "decisao"}, inplace=True)
 ```
+
+```{pyodide}
+#| exercise: ex_1_1
+# --- Escreva sua solução aqui ---
+
+
+```
+
+::: { .hint exercise="ex_1_1" }
+::: { .callout-note collapse="false" }
+## Dica 1  
+O DataFrame `total_decisoes` já contém as colunas `decisao` e `qtd_decisoes`.  
+Use `sns.barplot()` para representar visualmente os valores.
+:::
+:::
+
+::: { .hint exercise="ex_1_1" }
+::: { .callout-note collapse="false" }
+## Dica 2
+Defina `y="decisao"` e `x="qtd_decisoes"` para gerar um gráfico de barras horizontais.  
+A cor pode ser escolhida com `color="royalblue"`.
+:::
+:::
+
+::: { .solution exercise="ex_1_1" }
+::: { .callout-tip collapse="false" }
+## Solução
+```python
+sns.barplot(
+    data=total_decisoes,
+    y="decisao",
+    x="qtd_decisoes",
+    color="royalblue"
+)
+plt.title("Distribuição das Decisões por Tipo de Provimento", fontsize=12)
+plt.xlabel("Quantidade de Decisões")
+plt.ylabel("Tipo de Decisão")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_1_1
+#| check: true
+# Checador automático — verifica se o gráfico foi gerado a partir do DataFrame correto.
+import pandas as pd
+feedback = None
+try:
+    if "total_decisoes" in locals():
+        ok_cols = {"decisao","qtd_decisoes"}.issubset(set(total_decisoes.columns))
+        if ok_cols:
+            feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico criado com base em total_decisoes!"}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame total_decisoes deve conter as colunas 'decisao' e 'qtd_decisoes'."}
+    else:
+        feedback = {"correct": False, "message": "Certifique-se de usar o DataFrame total_decisoes gerado no exercício anterior."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+A **visualização de dados** é uma ferramenta poderosa para a **gestão judiciária** e para a **pesquisa empírica do Direito**. Gráficos simples podem revelar padrões que passam despercebidos em planilhas — como a **frequência de negativas de provimento** ou a **raridade de determinadas decisões**.
+:::
+
+
+## Exercício 2 — **Distribuição de Decisões por Câmara**
+
+
+
+Em seguida, vamos supor que a mesma autoridade tenha solicitado uma **análise complementar** com o objetivo de verificar a **quantidade de decisões proferidas por cada Câmara** do **Tribunal de Justiça de São Paulo (TJSP)**.  
+
+Como essa apresentação será encaminhada para um **congresso dedicado ao estudo da distribuição de decisões entre as Câmaras**, optou-se por representar os resultados em **formato gráfico**, de modo a proporcionar uma visualização mais clara, comparativa e intuitiva do volume de decisões analisadas.  
+
+---
+
+Utilizando a base `camaras`, elabore um **gráfico de barras** que mostre a quantidade total de decisões por **Câmara** (`camara`).  
+
+
+---
 
 ```{pyodide}
 #| setup: true
 #| exercise: ex_2
-
 import pandas as pd
-camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
 ```
 
 ```{pyodide}
 #| exercise: ex_2
-camaras[camaras['camara'].str.contains('________')]
+# Escreva sua solução aqui:
+# Agrupe por 'camara' e conte as decisões.
+# Gere um gráfico de barras (horizontal) com seaborn.
+
+
 ```
 
+::: { .hint exercise="ex_2" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Use `value_counts()` para contar quantas decisões há em cada Câmara.
+:::
+:::
+
+::: { .hint exercise="ex_2" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Para visualizar, use `sns.barplot()` com `x='qtd_decisoes'`, `y='camara'` e uma cor (`color='royalblue'`).
+:::
+:::
+
+::: { .solution exercise="ex_2" }
+::: { .callout-tip collapse="false" }
+## Solução
+```python
+total_decisoes_por_camara = camaras["camara"].value_counts().reset_index(name="qtd_decisoes")
+
+sns.barplot(
+    data=total_decisoes_por_camara,
+    y="camara",
+    x="qtd_decisoes",
+    color="royalblue"
+)
+plt.show()
+```
+:::
+:::
 
 ```{pyodide}
 #| exercise: ex_2
 #| check: true
-
-n = camaras[camaras['camara'].str.contains('Direito Criminal')].shape[0]
+import pandas as pd
 feedback = None
-if (result.shape[0] == n):
-  feedback = { "correct": True, "message": "Parabéns!" }
-else:
-  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+try:
+    expected = camaras["camara"].value_counts().reset_index(name="qtd_decisoes").reset_index(drop=True)
+    if isinstance(result, pd.DataFrame):
+        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
+        if "camara" in res.columns and any("qtd" in c for c in res.columns):
+            if len(res) == len(expected):
+                feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico e tabela de decisões por Câmara estão corretos!"}
+            else:
+                feedback = {"correct": False, "message": "A contagem não bate com o esperado. Verifique se usou value_counts()."}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame deve conter colunas 'camara' e 'qtd_decisoes'."}
+    else:
+        feedback = {"correct": False, "message": "Retorne o DataFrame total_decisoes_por_camara antes do gráfico para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
 feedback
 ```
 
-## Exercício 3
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
 
-Hello World
+A realização desse tipo de **análise é especialmente relevante para o profissional do Direito**, porque promove uma **compreensão empírica e quantitativa da atuação jurisdicional**.  
 
-## Exercício 4
+Ao examinar a **distribuição de decisões entre as Câmaras**, o operador do Direito pode identificar **padrões de produtividade, especialização e volume de demandas** — elementos essenciais para a **gestão judiciária eficiente** e para o **aperfeiçoamento das políticas públicas de justiça**.
+:::
 
-## Exercício 5
+
+
+## Exercício 3 — **Padrão Decisório Comparado**
+
+  
+
+Uma equipe de pesquisa da **Escola da Magistratura** está conduzindo um estudo sobre **padrões de decisão entre diferentes relatores** das **Câmaras Criminais do TJSP**.  
+
+O objetivo é verificar se existem **diferenças perceptíveis no comportamento decisório** de magistrados — por exemplo, se um relator tende a negar mais recursos do que outro, ou se há maior propensão a decisões **parcialmente providas**.  
+
+Para iniciar o estudo, a equipe selecionou dois relatores com grande volume de decisões no acervo:  
+
+- **Mário Devienne Ferraz**  
+- **Alberto Anderson Filho**
+
+O foco é **comparar o perfil decisório** desses dois magistrados quanto à variável **“decisão”**, que representa o resultado do julgamento do recurso.  
+
+---
+
+
+Filtre a base `camaras` para manter **somente as decisões** proferidas pelos relatores acima e salvar o resultado em `rel_comparacao`e utilize o Seaborn para **criar um gráfico de barras horizontais** que compare a quantidade de decisões de cada tipo (`DECISAO`) entre os dois relatores.  
+A ideia é gerar barras agrupadas por `DECISAO` com `hue` indicando o `RELATOR`.
+
+
+---
+
+```{pyodide}
+#| setup: true
+#| exercise: ex_3
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().upper().replace(" ", "_") for c in camaras.columns]
+print("SETUP OK — colunas:", list(camaras.columns)[:10])
+```
+
+```{pyodide}
+#| exercise: ex_3
+# --- Escreva sua solução aqui ---
+
+rel_comparacao = _________________
+
+
+
+
+sns._______________
+
+```
+
+::: { .hint exercise="ex_3" }
+::: { .callout-note collapse="false" }
+## Dica 1 
+Crie uma lista com os dois nomes de relatores e use `query('RELATOR == @rel_comparacao')` para filtrar a base.
+:::
+:::
+
+::: { .hint exercise="ex_3" }
+::: { .callout-note collapse="false" }
+## Dica 2
+Para o gráfico, use `sns.countplot()` e mapeie `y='RELATOR'`, `hue='DECISAO'` e `palette='flare'`.
+:::
+:::
+
+::: { .solution exercise="ex_3" }
+::: { .callout-tip collapse="false" }
+## Solução
+```python
+rel_comparacao = ['MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO']
+rel_comparacao = camaras.query('RELATOR == @rel_comparacao')
+
+sns.countplot(
+    data=rel_comparacao,
+    y='RELATOR',
+    hue='DECISAO',
+    palette='flare'
+)
+plt.title("Padrão Decisório Comparado — TJSP", fontsize=12)
+plt.xlabel("Quantidade de Decisões")
+plt.ylabel("Relator")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_3
+#| check: true
+# Checador simples — verifica se o DataFrame 'rel_comparacao' foi criado corretamente.
+import pandas as pd
+feedback = None
+try:
+    expected = ['MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO']
+    if isinstance(result, pd.DataFrame):
+        if 'RELATOR' in result.columns:
+            relatores_encontrados = sorted(result['RELATOR'].unique().tolist())
+            relatores_esperados = sorted(expected)
+            if relatores_encontrados == relatores_esperados:
+                feedback = {"correct": True, "message": "Excelente 🎉 — filtrou corretamente os dois relatores!"}
+            else:
+                feedback = {"correct": False, "message": f"Os relatores filtrados não correspondem. Esperado: {relatores_esperados}"}
+        else:
+            feedback = {"correct": False, "message": "Seu DataFrame precisa conter a coluna 'RELATOR'."}
+    else:
+        feedback = {"correct": False, "message": "Retorne o DataFrame rel_comparacao antes do gráfico para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+**Comparar padrões decisórios entre relatores** é uma técnica frequentemente utilizada em estudos de **Direito e Tecnologia**.  
+Essa abordagem permite investigar a **consistência e previsibilidade das decisões judiciais**, bem como discutir o papel da **subjetividade judicial** no contexto dos tribunais.
+:::
+
+
+
+## Exercício 4 — **Idade x Padrão Decisório**
+
+ 
+
+Dando sequência ao estudo desenvolvido pela **equipe de pesquisa em Direito e Ciência de Dados**, que vem atendendo às solicitações de uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)**, surge uma nova questão de interesse.  
+
+Após observar **diferenças de comportamento entre relatores** nas análises anteriores, a equipe foi instigada a investigar se a **idade dos magistrados pode estar relacionada ao tipo de decisão proferida**.  
+
+A hipótese é de que **relatores mais experientes** — e, portanto, com **maior idade** — possam apresentar **tendências distintas** em relação à concessão ou negação de recursos.  
+
+O objetivo deste exercício é verificar se há alguma **correlação entre a idade dos relatores e o padrão de decisões proferidas**.  
+
+Crie tabelas que permitam comparar a idade dos relatores com a **quantidade de decisões de cada tipo**.  
+A autoridade do TJSP solicitou que a equipe apresentasse uma **visualização gráfica** que pudesse indicar se existe **relação entre a idade dos relatores e o número de decisões negativas (“Negaram”)**.  
+
+O objetivo é observar possíveis **tendências etárias no comportamento decisório** das Câmaras Criminais.  
+
+---
+
+ 
+Crie uma tabela com o número de decisões de cada tipo por relator.  
+Crie outra tabela com a idade de cada relator (`rel_idade`).  
+Faça um **merge** das duas tabelas, resultando em `decisoes_idade`.  
+Elabore um **gráfico de dispersão (`sns.scatterplot`)** mostrando `rel_idade` (x) versus o número de decisões “Negaram” (y).
+
+---
+
+```{pyodide}
+#| setup: true
+#| exercise: ex_4
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().replace(" ", "_") for c in camaras.columns]
+print("SETUP ok — colunas:", list(camaras.columns)[:10])
+```
+
+```{pyodide}
+#| exercise: ex_4
+# --- Escreva sua solução aqui ---
+
+
+```
+
+::: { .hint exercise="ex_4" }
+::: { .callout-note collapse="false" }
+## Dica 1  
+Use `groupby(['relator','decisao']).size().unstack(fill_value=0)` para montar a tabela de decisões por relator.
+:::
+:::
+
+::: { .hint exercise="ex_4" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Para associar a idade de cada relator, remova duplicatas (`drop_duplicates('relator')`) e selecione `['relator','rel_idade']`.
+:::
+:::
+
+::: { .hint exercise="ex_4" }
+::: { .callout-note collapse="false" }
+## Dica 3
+Depois, use `pd.merge()` para juntar as duas tabelas e gere o gráfico de dispersão (`sns.scatterplot`).
+:::
+:::
+
+::: { .solution exercise="ex_4" }
+::: { .callout-tip collapse="false" }
+##  Solução
+```python
+# TABELA DE TIPO DE DECISÕES POR RELATOR 
+decisoes_relator = camaras.groupby(['relator', 'decisao']).size().unstack(fill_value=0)
+
+# TABELA DE IDADES POR RELATOR 
+camaras_semduplicatas = camaras.drop_duplicates('relator')
+idade_relator = camaras_semduplicatas[['relator', 'rel_idade']]
+
+# JUNÇÃO DA IDADE COM AS DECISÕES
+decisoes_relator = decisoes_relator.reset_index()
+decisoes_idade = pd.merge(decisoes_relator, idade_relator, on='relator').reset_index()
+
+# GRÁFICO DE DISPERSÃO
+sns.scatterplot(data=decisoes_idade, x='rel_idade', y='Negaram')
+plt.title("Relação entre Idade e Decisões Negativas (TJSP)")
+plt.xlabel("Idade do Relator")
+plt.ylabel("Número de Decisões 'Negaram'")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_4
+#| check: true
+# Checador automático — verifica se 'decisoes_idade' contém colunas esperadas e merge correto.
+import pandas as pd
+feedback = None
+try:
+    # monta versão esperada mínima
+    decisoes_relator = camaras.groupby(['relator','decisao']).size().unstack(fill_value=0).reset_index()
+    camaras_semduplicatas = camaras.drop_duplicates('relator')
+    idade_relator = camaras_semduplicatas[['relator','rel_idade']]
+    esperado = pd.merge(decisoes_relator, idade_relator, on='relator').reset_index(drop=True)
+
+    if isinstance(result, pd.DataFrame):
+        cols_necessarias = {'relator','rel_idade','Negaram'}
+        if cols_necessarias.issubset(set(result.columns)):
+            feedback = {"correct": True, "message": "Perfeito 🎉 — você combinou corretamente as tabelas e gerou a base para o gráfico!"}
+        else:
+            faltando = cols_necessarias - set(result.columns)
+            feedback = {"correct": False, "message": f"Faltam colunas esperadas: {faltando}. Verifique a junção e nomes das colunas."}
+    else:
+        feedback = {"correct": False, "message": "Retorne o DataFrame (decisoes_idade) antes do gráfico para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+A **análise empírica da atuação judicial** permite discutir até que ponto **fatores pessoais**, como **idade** e **tempo de carreira**, influenciam os resultados das decisões.  
+
+Embora **correlação não implique causalidade**, tais estudos são fundamentais para compreender a **diversidade de perfis decisórios** e para fomentar **políticas de uniformização jurisprudencial** e **gestão da magistratura**.
+:::
+
+
+##  Exercício 5 — **Idade x Tempo de Magistratura**
+
+ 
+
+Dando prosseguimento ao estudo conduzido pela **equipe de pesquisa em Direito e Ciência de Dados**, que tem elaborado relatórios analíticos para uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)**, o grupo decidiu agora examinar a **relação entre a idade dos relatores e o tempo de magistratura**.  
+
+A intenção é compreender se existe **correlação entre essas duas variáveis** — o que pode ajudar a **validar os dados coletados** e oferecer um retrato mais preciso do **perfil dos julgadores** que atuam nas **Câmaras Criminais**.  
+
+---  
+
+ **Selecione apenas uma linha por relator**, contendo suas informações de idade (`rel_idade`) e tempo de magistratura (`rel_tempo_magistratura`).  
+ Crie um **gráfico de dispersão (`sns.scatterplot`)**, em que:  
+   - o eixo **x** representa a idade (`rel_idade`);  
+   - o eixo **y** representa o tempo de magistratura (`rel_tempo_magistratura`).  
+
+O objetivo é verificar visualmente se existe **correlação positiva entre idade e tempo de magistratura** — hipótese que validaria a consistência dos dados.
+
+---
+
+```{pyodide}
+#| setup: true
+#| exercise: ex_5
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(url, dtype=str)
+camaras.columns = [c.strip().replace(" ", "_") for c in camaras.columns]
+print("SETUP ok — colunas:", list(camaras.columns)[:10])
+```
+
+```{pyodide}
+#| exercise: ex_5
+# --- Escreva sua solução aqui ---
+
+```
+
+::: { .hint exercise="ex_5" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Use `drop_duplicates('relator')` para garantir **apenas uma linha por relator** no DataFrame.
+:::
+:::
+
+::: { .hint exercise="ex_5" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Monte o gráfico com `sns.scatterplot()`, definindo `x='rel_idade'` e `y='rel_tempo_magistratura'`.  
+Isso criará um **gráfico de dispersão** que permite observar a correlação entre idade e tempo de carreira.
+:::
+:::
+
+::: { .solution exercise="ex_5" }
+::: { .callout-tip collapse="false" }
+## Solução
+```python
+relatores = camaras.drop_duplicates('relator')  # Uma linha por relator
+sns.scatterplot(
+    data=relatores,
+    x='rel_idade',
+    y='rel_tempo_magistratura'
+)
+plt.title("Correlação entre Idade e Tempo de Magistratura (TJSP)", fontsize=12)
+plt.xlabel("Idade do Relator")
+plt.ylabel("Tempo de Magistratura (anos)")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_5
+#| check: true
+# Checador automático — valida se o DataFrame 'relatores' contém as colunas esperadas.
+import pandas as pd
+feedback = None
+try:
+    relatores_esperado = camaras.drop_duplicates('relator')
+    if isinstance(result, pd.DataFrame):
+        if {'rel_idade','rel_tempo_magistratura'}.issubset(result.columns):
+            feedback = {"correct": True, "message": "Excelente 🎉 — relação entre idade e tempo de magistratura identificada corretamente!"}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame deve conter as colunas 'rel_idade' e 'rel_tempo_magistratura'."}
+    else:
+        feedback = {"correct": False, "message": "Retorne o DataFrame (relatores) antes do gráfico para validação."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+O **cruzamento entre idade e tempo de magistratura** é útil não apenas para a **validação dos dados**, mas também para refletir sobre **trajetórias profissionais** e a formação de **cultura institucional** dentro do **Poder Judiciário**.  
+
+Ao compreender o **perfil de carreira dos relatores**, a equipe pode investigar com mais profundidade como a **experiência influencia padrões decisórios** e a **estabilidade jurisprudencial**.
+:::
+
+
+
