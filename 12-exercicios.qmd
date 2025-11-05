@@ -1,5 +1,5 @@
----
-title: Exercícios
+﻿---
+title: Exercícios 
 format: live-html
 pyodide:
   packages:
@@ -8,18 +8,35 @@ pyodide:
     - seaborn
 ---
 
-```{pyodide}
-#| envir: myenv
-# Bloco 1: APENAS IMPORTA AS BIBLIOTECAS
-import pandas as pd
-import seaborn as sns
-import numpy as np
-import matplotlib.pyplot as plt
-import warnings
 
+```{pyodide}
+#| exercise: 
+#|   - ex_1
+#|   - ex_1_1
+#|   - ex_2
+#|   - ex_3
+#|   - ex_4
+#|   - ex_5
+#| setup: true
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-print("Setup Global OK: Bibliotecas carregadas em 'myenv'.")
+
+URL_CAMARAS = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+camaras = pd.read_csv(URL_CAMARAS, dtype=str)
+camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
+
+# IMPORTANTE: Marca explicitamente que o setup foi concluído
+globals()['__setup_done__'] = True
+globals()['camaras'] = camaras
+globals()['URL_CAMARAS'] = URL_CAMARAS
+
 ```
+
+
 
 ## Exercício 1 — **Panorama de Decisões**
  
@@ -35,15 +52,11 @@ Utilizando a base de dados `camaras`, elabore um **resumo quantitativo das decis
 
 ```{pyodide}
 #| exercise: ex_1
-#| envir: myenv
 
-# Prepara a base 'camaras' para este exercício
-url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-camaras = pd.read_csv(url, dtype=str)
-camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
+# Exercício 1 — panorama de decisões
 
-# Escreva sua solução aqui:
-# Agrupe as decisões usando value_counts() e renomeie a coluna de contagem.
+# Crie um DataFrame chamado `total_decisoes`
+
 ```
 
 ::: { .hint exercise="ex_1" }
@@ -69,7 +82,6 @@ Por fim, use `.reset_index(drop=True)` para garantir que os índices fiquem limp
 ```python
 total_decisoes = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
 total_decisoes = total_decisoes.rename(columns={"index": "decisao"})
-total_decisoes = total_decisoes.reset_index(drop=True)
 total_decisoes
 ```
 :::
@@ -78,47 +90,67 @@ total_decisoes
 ```{pyodide}
 #| exercise: ex_1
 #| check: true
-#| envir: myenv
-# Checador automático — compara o resultado do aluno com o DataFrame esperado.
 
+# Checador automático — compara o resultado do aluno com o DataFrame esperado.
 import pandas as pd
 feedback = None
-result = None
 try:
-    # CORREÇÃO: Captura a variável de resposta do aluno
-    result = total_decisoes 
-    
-    # Prepara a base 'camaras' (deve ser igual ao do aluno)
-    url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-    camaras = pd.read_csv(url, dtype=str)
-    camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
-    expected = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes").reset_index(drop=True)
-    
-    if isinstance(result, pd.DataFrame):
+    # tenta obter a variável por nome
+    result = globals().get("total_decisoes", None)
+    # fallback: procura qualquer DataFrame com colunas compatíveis
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower().replace(" ", "_") for c in val.columns}
+                if {"decisao", "qtd_decisoes"}.issubset(cols):
+                    result = val
+                    break
+
+    cam = pd.read_csv(URL_CAMARAS, dtype=str)
+    cam.columns = [c.strip().lower().replace(" ", "_") for c in cam.columns]
+    expected = (
+        cam["decisao"]
+        .value_counts()
+        .reset_index(name="qtd_decisoes")
+        .rename(columns={"index": "decisao"})
+        .reset_index(drop=True)
+    )
+
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei `total_decisoes`. Certifique-se de definir essa variável."}
+    else:
         res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
-        # tenta identificar colunas
-        if "decisao" in res.columns or "index" in res.columns:
-            ok_cols = any("qtd" in c for c in res.columns)
-            if ok_cols and len(res) == len(expected):
+        if {"decisao", "qtd_decisoes"}.issubset(set(res.columns)):
+            left = res[["decisao", "qtd_decisoes"]].copy()
+            left["decisao"] = left["decisao"].astype(str).str.strip()
+            left = left.sort_values("decisao").reset_index(drop=True)
+
+            right = expected.copy()
+            right["decisao"] = right["decisao"].astype(str).str.strip()
+            right = right.sort_values("decisao").reset_index(drop=True)
+
+            left["qtd_decisoes"] = pd.to_numeric(left["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+            right["qtd_decisoes"] = pd.to_numeric(right["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+
+            if left.equals(right):
                 feedback = {"correct": True, "message": "Perfeito 🎉 — seu resumo de decisões está correto!"}
             else:
-                feedback = {"correct": False, "message": "As colunas ou contagens não correspondem. Verifique o uso de value_counts() e reset_index()."}
+                merged = pd.merge(left, right, on="decisao", how="outer", suffixes=("_res", "_exp")).fillna(0)
+                diffs = merged[merged["qtd_decisoes_res"] != merged["qtd_decisoes_exp"]]
+                if not diffs.empty:
+                    msg = "Contagens diferentes para alguns tipos (exemplo):\n" + diffs.head(6).to_csv(index=False)
+                    feedback = {"correct": False, "message": msg}
+                else:
+                    feedback = {"correct": False, "message": "Colunas corretas, mas valores/formatos diferem. Verifique limpeza e tipos."}
         else:
-            feedback = {"correct": False, "message": "O DataFrame deve conter a coluna 'decisao' e a contagem ('qtd_decisoes')."}
-    else:
-        feedback = {"correct": False, "message": "Retorne um DataFrame (total_decisoes) para validação."}
-
-except NameError:
-    feedback = {"correct": False, "message": "A variável 'total_decisoes' não foi encontrada. Verifique o nome da sua variável."}
+            feedback = {"correct": False, "message": "O DataFrame deve conter as colunas 'decisao' e 'qtd_decisoes'."}
 except Exception as e:
-    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+    feedback = {"correct": False, "message": f"Erro ao validar: {type(e).__name__}: {e}"}
 
 feedback
 ```
 
 ### Exercício 1.1 — **Visualização do Panorama de Decisões**
-
- 
 
 A autoridade responsável avaliou o relatório preliminar e solicitou que os resultados fossem apresentados de forma **mais visual**, para facilitar a compreensão em reuniões e apresentações públicas.  
 
@@ -126,21 +158,13 @@ Ela pediu que você **represente graficamente** a quantidade de decisões por ti
 
 ---
 
- 
 Com base no DataFrame `total_decisoes`, elabore um **gráfico de barras horizontais** que mostre a quantidade de decisões em cada categoria.  
-
-
----
 
 
 ```{pyodide}
 #| exercise: ex_1_1
-#| envir: myenv
-url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-camaras = pd.read_csv(url, dtype=str)
-camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
-# --- Escreva sua solução aqui ---
 
+# Use total_decisoes para criar o gráfico (y='decisao', x='qtd_decisoes')
 
 ```
 
@@ -182,15 +206,14 @@ plt.show()
 ```{pyodide}
 #| exercise: ex_1_1
 #| check: true
-#| envir: myenv
+
 # Checador automático — verifica se o gráfico foi gerado a partir do DataFrame correto.
-import pandas as pd
 feedback = None
 try:
-    # Como o 'envir' é compartilhado, 'total_decisoes' do Ex 1 está acessível.
-    if "total_decisoes" in locals(): 
-        ok_cols = {"decisao","qtd_decisoes"}.issubset(set(total_decisoes.columns))
-        if ok_cols:
+    if "total_decisoes" in globals():
+        td = globals()["total_decisoes"]
+        cols = {c.lower().replace(" ", "_") for c in td.columns}
+        if {"decisao", "qtd_decisoes"}.issubset(cols):
             feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico criado com base em total_decisoes!"}
         else:
             feedback = {"correct": False, "message": "O DataFrame total_decisoes deve conter as colunas 'decisao' e 'qtd_decisoes'."}
@@ -210,8 +233,6 @@ A **visualização de dados** é uma ferramenta poderosa para a **gestão judici
 
 ## Exercício 2 — **Distribuição de Decisões por Câmara**
 
-
-
 Em seguida, vamos supor que a mesma autoridade tenha solicitado uma **análise complementar** com o objetivo de verificar a **quantidade de decisões proferidas por cada Câmara** do **Tribunal de Justiça de São Paulo (TJSP)**.  
 
 Como essa apresentação será encaminhada para um **congresso dedicado ao estudo da distribuição de decisões entre as Câmaras**, optou-se por representar os resultados em **formato gráfico**, de modo a proporcionar uma visualização mais clara, comparativa e intuitiva do volume de decisões analisadas.  
@@ -220,21 +241,15 @@ Como essa apresentação será encaminhada para um **congresso dedicado ao estud
 
 Utilizando a base `camaras`, elabore um **gráfico de barras** que mostre a quantidade total de decisões por **Câmara** (`camara`).  
 
-
----
-
 ```{pyodide}
 #| exercise: ex_2
-#| envir: myenv
 
-# Prepara a base 'camaras' para este exercício
-url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-camaras = pd.read_csv(url, dtype=str)
-camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
 
+# Prepara a base 'camaras' para este exercício (o setup global já carregou a base)
 # Escreva sua solução aqui:
 # Agrupe por 'camara' e conte as decisões.
 # Gere um gráfico de barras (horizontal) com seaborn.
+
 ```
 
 ::: { .hint exercise="ex_2" }
@@ -256,13 +271,11 @@ Para visualizar, use `sns.barplot()` com `x='qtd_decisoes'`, `y='camara'` e uma 
 ## Solução
 ```python
 total_decisoes_por_camara = camaras["camara"].value_counts().reset_index(name="qtd_decisoes")
-
-sns.barplot(
-    data=total_decisoes_por_camara,
-    y="camara",
-    x="qtd_decisoes",
-    color="royalblue"
-)
+sns.barplot(data=total_decisoes_por_camara, y="camara", x="qtd_decisoes", color="royalblue")
+plt.title("Decisões por Câmara")
+plt.xlabel("Quantidade")
+plt.ylabel("Câmara")
+plt.tight_layout()
 plt.show()
 ```
 :::
@@ -271,36 +284,52 @@ plt.show()
 ```{pyodide}
 #| exercise: ex_2
 #| check: true
-#| envir: myenv
 
 feedback = None
-result = None 
 try:
-    # Captura a variável de resposta do aluno
-    result = total_decisoes_por_camara
-    
-    # RE-CARREGA OS DADOS PARA CRIAR A RESPOSTA ESPERADA
-    url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-    camaras = pd.read_csv(url, dtype=str)
-    camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
-    expected = camaras["camara"].value_counts().reset_index(name="qtd_decisoes").reset_index(drop=True)
-    
-    if isinstance(result, pd.DataFrame):
-        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
-        if "camara" in res.columns and any("qtd" in c for c in res.columns):
-            if len(res) == len(expected):
-                feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico e tabela de decisões por Câmara estão corretos!"}
-            else:
-                feedback = {"correct": False, "message": "A contagem não bate com o esperado. Verifique se usou value_counts()."}
-        else:
-            feedback = {"correct": False, "message": "O DataFrame deve conter colunas 'camara' e 'qtd_decisoes'."}
-    else:
-        feedback = {"correct": False, "message": "Retorne o DataFrame total_decisoes_por_camara antes do gráfico para validação."}
+    result = globals().get("total_decisoes_por_camara", None)
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower().replace(" ", "_") for c in val.columns}
+                if {"camara", "qtd_decisoes"}.issubset(cols):
+                    result = val
+                    break
 
-except NameError:
-    feedback = {"correct": False, "message": "A variável 'total_decisoes_por_camara' não foi encontrada."}
+    cam = pd.read_csv(URL_CAMARAS, dtype=str)
+    cam.columns = [c.strip().lower().replace(" ", "_") for c in cam.columns]
+    expected = (
+        cam["camara"]
+        .value_counts()
+        .reset_index(name="qtd_decisoes")
+        .rename(columns={"index": "camara"})
+        .reset_index(drop=True)
+    )
+
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei `total_decisoes_por_camara`."}
+    else:
+        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
+        if {"camara", "qtd_decisoes"}.issubset(set(res.columns)):
+            left = res[["camara", "qtd_decisoes"]].copy()
+            left["camara"] = left["camara"].astype(str).str.strip()
+            left = left.sort_values("camara").reset_index(drop=True)
+
+            right = expected.copy()
+            right["camara"] = right["camara"].astype(str).str.strip()
+            right = right.sort_values("camara").reset_index(drop=True)
+
+            left["qtd_decisoes"] = pd.to_numeric(left["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+            right["qtd_decisoes"] = pd.to_numeric(right["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+
+            if left.equals(right):
+                feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico e tabela de decisões por Câmara estão corretos!"}
+            else:
+                feedback = {"correct": False, "message": "A contagem não bate com o esperado. Verifique se usou value_counts()."}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame deve conter colunas 'camara' e 'qtd_decisoes'."}
 except Exception as e:
-    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
 feedback
 ```
 
@@ -313,10 +342,7 @@ Ao examinar a **distribuição de decisões entre as Câmaras**, o operador do D
 :::
 
 
-
 ## Exercício 3 — **Padrão Decisório Comparado**
-
-  
 
 Uma equipe de pesquisa da **Escola da Magistratura** está conduzindo um estudo sobre **padrões de decisão entre diferentes relatores** das **Câmaras Criminais do TJSP**.  
 
@@ -327,31 +353,24 @@ Para iniciar o estudo, a equipe selecionou dois relatores com grande volume de d
 - **Mário Devienne Ferraz**  
 - **Alberto Anderson Filho**
 
-O foco é **comparar o perfil decisório** desses dois magistrados quanto à variável **“decisão”**, que representa o resultado do julgamento do recurso.  
+O foco é **comparar o perfil decisório** desses dois magistrados quanto à variável **"decisão"**, que representa o resultado do julgamento do recurso.  
 
 ---
 
-
-Filtre a base `camaras` para manter **somente as decisões** proferidas pelos relatores acima e salvar o resultado em `rel_comparacao`e utilize o Seaborn para **criar um gráfico de barras horizontais** que compare a quantidade de decisões de cada tipo (`DECISAO`) entre os dois relatores.  
+Filtre a base `camaras` para manter **somente as decisões** proferidas pelos relatores acima e salvar o resultado em `rel_comparacao` e utilize o Seaborn para **criar um gráfico de barras horizontais** que compare a quantidade de decisões de cada tipo (`DECISAO`) entre os dois relatores.  
 A ideia é gerar barras agrupadas por `DECISAO` com `hue` indicando o `RELATOR`.
-
-
----
 
 ```{pyodide}
 #| exercise: ex_3
-#| envir: myenv
 
 # CARREGA OS DADOS E FORMATA EM MAIÚSCULO
-url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-camaras = pd.read_csv(url, dtype=str)
-camaras.columns = [c.strip().upper().replace(" ", "_") for c in camaras.columns]
+camaras_upper = camaras.copy()
+for col in camaras_upper.columns:
+    camaras_upper[col] = camaras_upper[col].astype(str).str.upper().str.strip()
+camaras_upper.columns = [c.strip().upper().replace(" ", "_") for c in camaras_upper.columns]
 
 # --- Escreva sua solução aqui ---
 
-rel_comparacao = _________________
-
-sns._______________
 ```
 
 ::: { .hint exercise="ex_3" }
@@ -372,8 +391,8 @@ Para o gráfico, use `sns.countplot()` e mapeie `y='RELATOR'`, `hue='DECISAO'` e
 ::: { .callout-tip collapse="false" }
 ## Solução
 ```python
-rel_comparacao = ['MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO']
-rel_comparacao = camaras.query('RELATOR == @rel_comparacao')
+rel_comparacao_nomes = ['MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO']
+rel_comparacao = camaras_upper[camaras_upper['RELATOR'].isin(rel_comparacao_nomes)]
 
 sns.countplot(
     data=rel_comparacao,
@@ -396,35 +415,53 @@ plt.show()
 #| envir: myenv
 
 feedback = None
-result = None
 try:
-    # Captura a variável de resposta do aluno
-    result = rel_comparacao
-    
-    # RE-CARREGA OS DADOS PARA CRIAR A RESPOSTA ESPERADA
-    url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-    camaras = pd.read_csv(url, dtype=str)
-    camaras.columns = [c.strip().upper().replace(" ", "_") for c in camaras.columns]
-    expected_names = ['MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO']
-    
-    if isinstance(result, pd.DataFrame):
-        if 'RELATOR' in result.columns:
-            relatores_encontrados = sorted(result['RELATOR'].unique().tolist())
-            relatores_esperados = sorted(expected_names)
-            if relatores_encontrados == relatores_esperados:
-                feedback = {"correct": True, "message": "Excelente 🎉 — filtrou corretamente os dois relatores!"}
-            else:
-                feedback = {"correct": False, "message": f"Os relatores filtrados não correspondem. Esperado: {relatores_esperados}"}
-        else:
-            feedback = {"correct": False, "message": "Seu DataFrame precisa conter a coluna 'RELATOR'."}
-    else:
-        feedback = {"correct": False, "message": "Retorne o DataFrame rel_comparacao antes do gráfico para validação."}
+    result = globals().get("rel_comparacao", None)
 
-except NameError:
-    feedback = {"correct": False, "message": "A variável 'rel_comparacao' não foi encontrada."}
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.upper().replace(" ", "_") for c in val.columns}
+                if 'RELATOR' in cols and any('DECISAO' in c or 'DECISãO' in c for c in cols):
+                    result = val
+                    break
+
+    if result is None:
+        feedback = {
+            "correct": False,
+            "message": "Não encontrei o DataFrame `rel_comparacao`. Certifique-se de filtrá-lo criando `rel_comparacao`."
+        }
+    else:
+        cols_norm = {c.upper().replace(" ", "_") for c in result.columns}
+
+        has_relator = 'RELATOR' in cols_norm
+        has_decisao = any('DECISAO' in c or 'DECIS' in c for c in cols_norm)
+
+        if not has_relator or not has_decisao:
+            faltando = []
+            if not has_relator:
+                faltando.append("'RELATOR'")
+            if not has_decisao:
+                faltando.append("'DECISAO' (ou coluna similar)")
+            feedback = {
+                "correct": False,
+                "message": f"Seu DataFrame foi encontrado, mas faltam colunas esperadas: {', '.join(faltando)}."
+            }
+        else:
+            relatores_presentes = sorted({str(v).strip().upper() for v in result['RELATOR'].astype(str).unique()})
+            esperado = {'MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO'}
+            intersec = esperado.intersection(set(relatores_presentes))
+            if len(intersec) == len(esperado):
+                feedback = {"correct": True, "message": "Excelente — filtrou corretamente os dois relatores!"}
+            elif len(intersec) > 0:
+                feedback = {"correct": False, "message": "Encontrou alguns relatores, mas não todos os esperados. Verifique nomes/acentuação."}
+            else:
+                feedback = {"correct": False, "message": "O DataFrame não contém os relatores esperados. Verifique a filtragem (nomes/acentuação)."}
 except Exception as e:
-    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+    feedback = {"correct": False, "message": f"Erro ao validar: {type(e).__name__}: {e}"}
+
 feedback
+
 ```
 
 ::: {.callout-tip icon="⚖️"}
@@ -435,10 +472,7 @@ Essa abordagem permite investigar a **consistência e previsibilidade das decis�
 :::
 
 
-
 ## Exercício 4 — **Idade x Padrão Decisório**
-
- 
 
 Dando sequência ao estudo desenvolvido pela **equipe de pesquisa em Direito e Ciência de Dados**, que vem atendendo às solicitações de uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)**, surge uma nova questão de interesse.  
 
@@ -449,30 +483,23 @@ A hipótese é de que **relatores mais experientes** — e, portanto, com **maio
 O objetivo deste exercício é verificar se há alguma **correlação entre a idade dos relatores e o padrão de decisões proferidas**.  
 
 Crie tabelas que permitam comparar a idade dos relatores com a **quantidade de decisões de cada tipo**.  
-A autoridade do TJSP solicitou que a equipe apresentasse uma **visualização gráfica** que pudesse indicar se existe **relação entre a idade dos relatores e o número de decisões negativas (“Negaram”)**.  
+A autoridade do TJSP solicitou que a equipe apresentasse uma **visualização gráfica** que pudesse indicar se existe **relação entre a idade dos relatores e o número de decisões negativas ("Negaram")**.  
 
 O objetivo é observar possíveis **tendências etárias no comportamento decisório** das Câmaras Criminais.  
 
 ---
 
- 
 Crie uma tabela com o número de decisões de cada tipo por relator.  
 Crie outra tabela com a idade de cada relator (`rel_idade`).  
 Faça um **merge** das duas tabelas, resultando em `decisoes_idade`.  
-Elabore um **gráfico de dispersão (`sns.scatterplot`)** mostrando `rel_idade` (x) versus o número de decisões “Negaram” (y).
-
----
+Elabore um **gráfico de dispersão (`sns.scatterplot`)** mostrando `rel_idade` (x) versus o número de decisões "Negaram" (y).
 
 ```{pyodide}
 #| exercise: ex_4
-#| envir: myenv
 
-# CARREGA OS DADOS DENTRO DO BLOCO DO EXERCÍCIO
-url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-camaras = pd.read_csv(url, dtype=str)
-camaras.columns = [c.strip().replace(" ", "_") for c in camaras.columns]
+# CARREGA OS DADOS DENTRO DO BLOCO DO EXERCÍCIO (setup já carregou a base)
+# --- Escreva sua solução aqui ---
 
-# --- Escreva sua solution aqui ---
 ```
 
 ::: { .hint exercise="ex_4" }
@@ -498,26 +525,36 @@ Depois, use `pd.merge()` para juntar as duas tabelas e gere o gráfico de disper
 
 ::: { .solution exercise="ex_4" }
 ::: { .callout-tip collapse="false" }
+
 ##  Solução
+
 ```python
 # TABELA DE TIPO DE DECISÕES POR RELATOR 
 decisoes_relator = camaras.groupby(['relator', 'decisao']).size().unstack(fill_value=0)
 
+# Capitaliza os nomes das colunas para garantir "Negaram"
+decisoes_relator.columns = [c.capitalize() for c in decisoes_relator.columns]
+decisoes_relator = decisoes_relator.reset_index()
+
 # TABELA DE IDADES POR RELATOR 
-camaras_semduplicatas = camaras.drop_duplicates('relator')
-idade_relator = camaras_semduplicatas[['relator', 'rel_idade']]
+idade_relator = camaras.drop_duplicates('relator')[['relator', 'rel_idade']]
 
 # JUNÇÃO DA IDADE COM AS DECISÕES
-decisoes_relator = decisoes_relator.reset_index()
-decisoes_idade = pd.merge(decisoes_relator, idade_relator, on='relator').reset_index()
+decisoes_idade = pd.merge(decisoes_relator, idade_relator, on='relator')
+
+# Converte idade para numérico
+decisoes_idade['rel_idade'] = pd.to_numeric(decisoes_idade['rel_idade'], errors='coerce')
 
 # GRÁFICO DE DISPERSÃO
-sns.scatterplot(data=decisoes_idade, x='rel_idade', y='Negaram')
-plt.title("Relação entre Idade e Decisões Negativas (TJSP)")
-plt.xlabel("Idade do Relator")
-plt.ylabel("Número de Decisões 'Negaram'")
-plt.tight_layout()
-plt.show()
+if 'Negaram' in decisoes_idade.columns:
+    sns.scatterplot(data=decisoes_idade, x='rel_idade', y='Negaram')
+    plt.title("Relação entre Idade e Decisões Negativas (TJSP)")
+    plt.xlabel("Idade do Relator")
+    plt.ylabel("Número de Decisões 'Negaram'")
+    plt.tight_layout()
+    plt.show()
+else:
+    print("⚠️ Coluna 'Negaram' não encontrada. Colunas:", decisoes_idade.columns.tolist())
 ```
 :::
 :::
@@ -525,54 +562,44 @@ plt.show()
 ```{pyodide}
 #| exercise: ex_4
 #| check: true
-#| envir: myenv
 
 feedback = None
-result = None 
 try:
-    # Captura a variável de resposta do aluno
-    result = decisoes_idade
-    
-    # RE-CARREGA OS DADOS PARA CRIAR A RESPOSTA ESPERADA
-    url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-    camaras = pd.read_csv(url, dtype=str)
-    camaras.columns = [c.strip().replace(" ", "_") for c in camaras.columns]
-    
-    decisoes_relator = camaras.groupby(['relator','decisao']).size().unstack(fill_value=0).reset_index()
-    camaras_semduplicatas = camaras.drop_duplicates('relator')
-    idade_relator = camaras_semduplicatas[['relator','rel_idade']]
-    esperado = pd.merge(decisoes_relator, idade_relator, on='relator').reset_index(drop=True)
+    result = globals().get("decisoes_idade", None)
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower().replace(" ", "_") for c in val.columns}
+                if {"relator", "rel_idade"}.issubset(cols) and any("negar" in c.lower() for c in val.columns):
+                    result = val
+                    break
 
-    if isinstance(result, pd.DataFrame):
-        cols_necessarias = {'relator','rel_idade','Negaram'}
-        if cols_necessarias.issubset(set(result.columns)):
-            # Checagem simples (não compara os valores, apenas se as colunas existem)
-            feedback = {"correct": True, "message": "Perfeito 🎉 — você combinou corretamente as tabelas e gerou a base para o gráfico!"}
-        else:
-            faltando = cols_necessarias - set(result.columns)
-            feedback = {"correct": False, "message": f"Faltam colunas esperadas: {faltando}. Verifique a junção e nomes das colunas."}
-    else:
-        feedback = {"correct": False, "message": "Retorne o DataFrame (decisoes_idade) antes do gráfico para validação."}
+    cam = pd.read_csv(URL_CAMARAS, dtype=str)
+    cam.columns = [c.strip().lower().replace(" ", "_") for c in cam.columns]
 
-except NameError:
-    feedback = {"correct": False, "message": "A variável 'decisoes_idade' não foi encontrada."}
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei `decisoes_idade`."}
+    else:
+        # Verifica se tem as colunas necessárias (case insensitive)
+        cols_lower = {c.lower() for c in result.columns}
+        has_relator = 'relator' in cols_lower
+        has_idade = 'rel_idade' in cols_lower
+        has_negaram = any('negar' in c.lower() for c in result.columns)
+        
+        if has_relator and has_idade and has_negaram:
+            feedback = {"correct": True, "message": "Perfeito 🎉 — você combinou corretamente as tabelas e gerou a base para o gráfico!"}
+        else:
+            faltando = []
+            if not has_relator: faltando.append("relator")
+            if not has_idade: faltando.append("rel_idade")
+            if not has_negaram: faltando.append("coluna com 'Negaram'")
+            feedback = {"correct": False, "message": f"Faltam: {', '.join(faltando)}. Verifique a junção."}
 except Exception as e:
-    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
 feedback
 ```
 
-::: {.callout-tip icon="⚖️"}
-### Relevância jurídica  
-
-A **análise empírica da atuação judicial** permite discutir até que ponto **fatores pessoais**, como **idade** e **tempo de carreira**, influenciam os resultados das decisões.  
-
-Embora **correlação não implique causalidade**, tais estudos são fundamentais para compreender a **diversidade de perfis decisórios** e para fomentar **políticas de uniformização jurisprudencial** e **gestão da magistratura**.
-:::
-
-
 ##  Exercício 5 — **Idade x Tempo de Magistratura**
-
- 
 
 Dando prosseguimento ao estudo conduzido pela **equipe de pesquisa em Direito e Ciência de Dados**, que tem elaborado relatórios analíticos para uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)**, o grupo decidiu agora examinar a **relação entre a idade dos relatores e o tempo de magistratura**.  
 
@@ -587,19 +614,13 @@ A intenção é compreender se existe **correlação entre essas duas variáveis
 
 O objetivo é verificar visualmente se existe **correlação positiva entre idade e tempo de magistratura** — hipótese que validaria a consistência dos dados.
 
----
-
-
 ```{pyodide}
 #| exercise: ex_5
-#| envir: myenv
 
-# CARREGA OS DADOS DENTRO DO BLOCO DO EXERCÍCIO
-url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-camaras = pd.read_csv(url, dtype=str)
-camaras.columns = [c.strip().replace(" ", "_") for c in camaras.columns]
 
+# CARREGA OS DADOS DENTRO DO BLOCO DO EXERCÍCIO (setup já carregou a base)
 # --- Escreva sua solução aqui ---
+
 ```
 
 ::: { .hint exercise="ex_5" }
@@ -619,9 +640,16 @@ Isso criará um **gráfico de dispersão** que permite observar a correlação e
 
 ::: { .solution exercise="ex_5" }
 ::: { .callout-tip collapse="false" }
+
 ## Solução
+
 ```python
-relatores = camaras.drop_duplicates('relator')  # Uma linha por relator
+relatores = camaras.drop_duplicates('relator')[['relator', 'rel_idade', 'rel_tempo_magistratura']]
+
+# Converte para numérico
+relatores['rel_idade'] = pd.to_numeric(relatores['rel_idade'], errors='coerce')
+relatores['rel_tempo_magistratura'] = pd.to_numeric(relatores['rel_tempo_magistratura'], errors='coerce')
+
 sns.scatterplot(
     data=relatores,
     x='rel_idade',
@@ -639,43 +667,39 @@ plt.show()
 ```{pyodide}
 #| exercise: ex_5
 #| check: true
-#| envir: myenv
 
 feedback = None
-result = None 
 try:
-    # Captura a variável de resposta do aluno
-    result = relatores
-    
-    # RE-CARREGA OS DADOS PARA CRIAR A RESPOSTA ESPERADA
-    url = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
-    camaras = pd.read_csv(url, dtype=str)
-    camaras.columns = [c.strip().replace(" ", "_") for c in camaras.columns]
-    relatores_esperado = camaras.drop_duplicates('relator')
-    
-    if isinstance(result, pd.DataFrame):
-        if {'rel_idade','rel_tempo_magistratura'}.issubset(result.columns):
-            # Checagem simples
-            feedback = {"correct": True, "message": "Excelente 🎉 — relação entre idade e tempo de magistratura identificada corretamente!"}
-        else:
-            feedback = {"correct": False, "message": "O DataFrame deve conter as colunas 'rel_idade' e 'rel_tempo_magistratura'."}
-    else:
-        feedback = {"correct": False, "message": "Retorne o DataFrame (relatores) antes do gráfico para validação."}
+    result = globals().get("relatores", None)
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower().replace(" ", "_") for c in val.columns}
+                if {"rel_idade", "rel_tempo_magistratura"}.issubset(cols):
+                    result = val
+                    break
 
-except NameError:
-    feedback = {"correct": False, "message": "A variável 'relatores' não foi encontrada."}
+    cam = pd.read_csv(URL_CAMARAS, dtype=str)
+    cam.columns = [c.strip().lower().replace(" ", "_") for c in cam.columns]
+    relatores_esperado = cam.drop_duplicates('relator')
+
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei o DataFrame de relatores (uma linha por relator). Nome sugerido: `relatores`."}
+    else:
+        cols = {c.lower().replace(" ", "_") for c in result.columns}
+        if {"rel_idade", "rel_tempo_magistratura"}.issubset(cols):
+            feedback = {"correct": True, "message": "Excelente 🎉 — relação entre idade e tempo de magistratura identificada corretamente!"}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame deve conter 'rel_idade' e 'rel_tempo_magistratura'."}
 except Exception as e:
-    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
 feedback
 ```
 
 ::: {.callout-tip icon="⚖️"}
 ### Relevância jurídica  
 
-O **cruzamento entre idade e tempo de magistratura** é útil não apenas para a **validação dos dados**, mas também para refletir sobre **trajetórias profissionais** e a formação de **cultura institucional** dentro do **Poder Judiciário**.  
+A **análise da correlação entre idade e tempo de magistratura** permite não apenas **validar a qualidade dos dados**, mas também compreender melhor o **perfil dos magistrados** que compõem as **Câmaras Criminais**.  
 
-Ao compreender o **perfil de carreira dos relatores**, a equipe pode investigar com mais profundidade como a **experiência influencia padrões decisórios** e a **estabilidade jurisprudencial**.
+Essa investigação pode revelar padrões de **progressão na carreira** e oferecer subsídios para **políticas de formação continuada** e **gestão de recursos humanos** no Poder Judiciário.
 :::
-
-
-
