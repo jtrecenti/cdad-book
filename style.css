@@ -1,0 +1,11 @@
+/* Estilo para os tooltips <abbr> */
+abbr[title] {
+  color: blue; /* <-- Define a cor do texto (ex: azul) */
+  
+  /* Mantém o sublinhado pontilhado padrão */
+  text-decoration: dotted underline;
+  text-decoration-color: #555; /* Cor dos pontinhos */
+
+  /* Muda o cursor para indicar "ajuda" */
+  cursor: help;
+}
