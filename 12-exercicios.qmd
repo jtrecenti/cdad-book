@@ -52,8 +52,8 @@ camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
 vivo = pd.read_csv(URL_VIVO)
 
 # pequenas transformações úteis (sem resolver exercícios)
-total_decisoes = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
-total_decisoes = total_decisoes.rename(columns={"index": "decisao"})
+total_decisoes_ref = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
+total_decisoes_ref = total_decisoes_ref.rename(columns={"index": "decisao"})
 
 vivo_filtrado = vivo[vivo['desfecho_vivo'].isin(['Vitória', 'Derrota (Total ou Parcial)'])]
 vivo_filtrado = vivo_filtrado.dropna(subset=['juiz_tempo_vara', 'pags_inicial', 'pags_contestacao'])
@@ -197,6 +197,7 @@ Com base no DataFrame `total_decisoes`, elabore um **gráfico de barras horizont
 
 ```{pyodide}
 #| exercise: ex_1_1
+total_decisoes = total_decisoes_ref.copy() # apenas carregando a variável para o exercício
 
 # Use total_decisoes para criar o gráfico (y='decisao', x='qtd_decisoes')
 
@@ -902,7 +903,7 @@ Essas dummies representarão cada juiz da base de dados, com o valor 1 indicando
 
 ---
 
-Crie a base de dummies a partir da coluna `juiz` do DataFrame `vivo_filtrado` (criado no Exercício 1). Armazene o resultado em `dummies_juiz`.
+Crie a base de dummies a partir da coluna `juiz` do DataFrame `vivo_filtrado` (criado no Exercício 6). Armazene o resultado em `dummies_juiz`.
 Não remova a primeira categoria (isto é, não utilize o parâmetro `drop_first=True`).
 Por fim, armazene o número de colunas da base resultante na variável `n_col_dummies` e imprima esse valor.
 
