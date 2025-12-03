@@ -1,4 +1,4 @@
-﻿---
+---
 title: Exercícios 
 format: live-html
 pyodide:
