@@ -1,109 +1,1395 @@
 ---
-title: Exercícios
+title: Exercícios 
 format: live-html
+pyodide:
+  packages:
+    - pandas
+    - matplotlib
+    - seaborn
+    - scikit-learn
+    - numpy
+    - warnings
+    - statsmodels
 ---
 
-## Exemplo de exercício
-
-Faça a soma dar 5.
 
 ```{pyodide}
+#| exercise: 
+#|   - ex_1
+#|   - ex_1_1
+#|   - ex_2
+#|   - ex_3
+#|   - ex_4
+#|   - ex_5
+#|   - ex_6
+#|   - ex_7
+#|   - ex_8
+#|   - ex_9
+#|   - ex_10
+#|   - ex_11
+#|   - ex_12
 #| setup: true
-#| exercise: ex_1
-# aqui, podemos criar uma variável que será usada nos exercícios
-x = 1 + 1
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# URLs
+URL_CAMARAS = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv"
+URL_VIVO = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/vivo.csv"
+
+# Carrega dados
+camaras = pd.read_csv(URL_CAMARAS, dtype=str)
+camaras.columns = [c.strip().lower().replace(" ", "_") for c in camaras.columns]
+
+vivo = pd.read_csv(URL_VIVO)
+
+# pequenas transformações úteis (sem resolver exercícios)
+total_decisoes_ref = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
+total_decisoes_ref = total_decisoes_ref.rename(columns={"index": "decisao"})
+
+vivo_filtrado = vivo[vivo['desfecho_vivo'].isin(['Vitória', 'Derrota (Total ou Parcial)'])]
+vivo_filtrado = vivo_filtrado.dropna(subset=['juiz_tempo_vara', 'pags_inicial', 'pags_contestacao'])
+vivo_filtrado = vivo_filtrado.copy() # Evita SettingWithCopyWarning
+
+# Solução Ex 7 (para criar 'y')
+vivo['y'] = np.where(vivo['desfecho_vivo'] == 'Vitória', 1, 0)
+vivo_filtrado['y'] = np.where(vivo_filtrado['desfecho_vivo'] == 'Vitória', 1, 0)
+
+print("Setup (3/4): Variáveis 'vivo_filtrado' e 'y' criadas...")
+
+# Solução Ex 8 (para criar 'dummies_juiz')
+dummies_juiz = pd.get_dummies(vivo_filtrado['juiz'])
+
+# Solução Ex 9 (para criar 'dummies_juiz_select')
+frequencias = dummies_juiz.sum()
+juizes_selecionados = frequencias[frequencias > 50].index
+dummies_juiz_select = dummies_juiz[juizes_selecionados]
+
+# Solução Ex 10 (para criar 'vivo_f', a base de modelagem)
+# --- LINHA FALTANDO ADICIONADA AQUI ---
+numeric_cols = ['valor', 'pags_inicial', 'pags_contestacao', 'juiz_tempo_vara']
+vivo_numeric = vivo_filtrado[numeric_cols]
+# --- LINHA DO 'vivo_f' MOVIDA PARA A ORDEM CORRETA ---
+vivo_f = pd.concat([vivo_numeric, dummies_juiz_select], axis=1)
+
+
 ```
+
+
+
+## Exercício 1 — **Panorama de Decisões**
+ 
+Uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)** solicitou um relatório preliminar que apresente um panorama geral das decisões proferidas nas **Câmaras Criminais**.  
+
+O objetivo é compreender a **distribuição das decisões** conforme o tipo de provimento concedido — se os recursos foram **negados**, **providos**, **parcialmente providos** ou se houve **extinção da punibilidade**.  
+
+Esse levantamento servirá como base para um **estudo comparativo futuro** entre o TJSP e outros tribunais estaduais, buscando identificar possíveis **padrões de julgamento** e **variações na aplicação de precedentes**.  
+
+***
+
+Utilizando a base de dados `camaras`, elabore um **resumo quantitativo das decisões**, agrupando-as por **tipo de decisão**.  
 
 ```{pyodide}
 #| exercise: ex_1
-x + ______
+
+# Exercício 1 — panorama de decisões
+
+# Crie um DataFrame chamado `total_decisoes`
+
 ```
 
-::: { .hint exercise="ex_1"}
-::: { .callout-note collapse="false"}
-## Hint 1
-
-Queremos somar o valor 3!
+::: { .hint exercise="ex_1" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Use `camaras["decisao"].value_counts()` para contar quantas vezes cada tipo de decisão aparece na base.
 :::
 :::
 
-::: { .hint exercise="ex_1"}
-::: { .callout-note collapse="false"}
-## Hint 2
+::: { .hint exercise="ex_1" }
+::: { .callout-note collapse="false" }
+## Dica 2
+ Depois de obter a contagem, transforme o resultado em um **DataFrame** usando  `.reset_index(name="qtd_decisoes")`  
+e **renomeie a coluna** `"index"` para `"decisao"` com: `total_decisoes = total_decisoes.rename(columns={"index": "decisao"})`.  
 
-Lembre-se, o valor é 3.
-
+Por fim, use `.reset_index(drop=True)` para garantir que os índices fiquem limpos antes de retornar o DataFrame.
 :::
 :::
 
 ::: { .solution exercise="ex_1" }
-::: { .callout-tip collapse="false"}
-## Solução:
-
-Coloque o valor 3!
-
+::: { .callout-tip collapse="false" }
+## Solução
 ```python
-x + 3
+total_decisoes = camaras["decisao"].value_counts().reset_index(name="qtd_decisoes")
+total_decisoes = total_decisoes.rename(columns={"index": "decisao"})
+total_decisoes
 ```
-
 :::
 :::
 
 ```{pyodide}
 #| exercise: ex_1
 #| check: true
+import pandas as pd
 feedback = None
-if (result == 5):
-  feedback = { "correct": True, "message": "Parabéns!" }
-else:
-  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+try:
+    result = globals().get("total_decisoes", None)
+    # busca alternativa: qualquer DataFrame com colunas compatíveis
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower().replace(" ", "_") for c in val.columns}
+                if {"decisao", "qtd_decisoes"}.issubset(cols):
+                    result = val
+                    break
+
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei `total_decisoes`. Defina essa variável (DataFrame)."}
+    elif not isinstance(result, pd.DataFrame):
+        feedback = {"correct": False, "message": f"`total_decisoes` existe mas não é DataFrame (type={type(result).__name__})."}
+    else:
+        # normaliza colunas
+        res = result.rename(columns={c: c.lower().replace(" ", "_") for c in result.columns})
+        if {"decisao", "qtd_decisoes"}.issubset(set(res.columns)):
+            # prepara esperado
+            cam = pd.read_csv(URL_CAMARAS, dtype=str)
+            cam.columns = [c.strip().lower().replace(" ", "_") for c in cam.columns]
+            expected = (cam["decisao"].value_counts().reset_index(name="qtd_decisoes")
+                        .rename(columns={"index":"decisao"}).reset_index(drop=True))
+            left = res[["decisao", "qtd_decisoes"]].copy()
+            left["decisao"] = left["decisao"].astype(str).str.strip()
+            left["qtd_decisoes"] = pd.to_numeric(left["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+            right = expected.copy()
+            right["decisao"] = right["decisao"].astype(str).str.strip()
+            right["qtd_decisoes"] = pd.to_numeric(right["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+            merged = pd.merge(left, right, on="decisao", how="outer", suffixes=("_res","_exp")).fillna(0)
+            diffs = merged[merged["qtd_decisoes_res"] != merged["qtd_decisoes_exp"]]
+            if diffs.empty and len(left)>0:
+                feedback = {"correct": True, "message": "Perfeito 🎉 — seu resumo de decisões está correto!"}
+            else:
+                # mostra exemplo de diferença
+                sample = diffs.head(6).to_csv(index=False)
+                feedback = {"correct": False, "message": "Diferenças nas contagens (exemplo):\n" + sample}
+        else:
+            feedback = {"correct": False, "message": "Colunas esperadas: 'decisao' e 'qtd_decisoes' (verifique nomes)."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {type(e).__name__}: {e}"}
 feedback
 ```
 
-## Exercício 2
+### Exercício 1.1 — **Visualização do Panorama de Decisões**
 
-Fazer um filtro na base das câmaras para selecionar apenas as câmaras ordinárias.
+A autoridade responsável avaliou o relatório preliminar e solicitou que os resultados fossem apresentados de forma **mais visual**, para facilitar a compreensão em reuniões e apresentações públicas.  
 
-Leitura dos dados:
+Ela pediu que você **represente graficamente** a quantidade de decisões por tipo de provimento, a fim de destacar de maneira intuitiva **quais tipos de decisão são mais comuns**.  
 
-```{python}
-import pandas as pd
-camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+---
 
-camaras.value_counts('camara').reset_index()
-```
+Com base no DataFrame `total_decisoes`, elabore um **gráfico de barras horizontais** que mostre a quantidade de decisões em cada categoria.  
+
 
 ```{pyodide}
-#| setup: true
-#| exercise: ex_2
+#| exercise: ex_1_1
+total_decisoes = total_decisoes_ref.copy() # apenas carregando a variável para o exercício
 
-import pandas as pd
-camaras = pd.read_csv('https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/camaras.csv')
+# Use total_decisoes para criar o gráfico (y='decisao', x='qtd_decisoes')
+
 ```
+
+::: { .hint exercise="ex_1_1" }
+::: { .callout-note collapse="false" }
+## Dica 1  
+O DataFrame `total_decisoes` já contém as colunas `decisao` e `qtd_decisoes`.  
+Use `sns.barplot()` para representar visualmente os valores.
+:::
+:::
+
+::: { .hint exercise="ex_1_1" }
+::: { .callout-note collapse="false" }
+## Dica 2
+Defina `y="decisao"` e `x="qtd_decisoes"` para gerar um gráfico de barras horizontais.  
+A cor pode ser escolhida com `color="royalblue"`.
+:::
+:::
+
+::: { .solution exercise="ex_1_1" }
+::: { .callout-tip collapse="false" }
+## Solução
+```python
+sns.barplot(
+    data=total_decisoes,
+    y="decisao",
+    x="qtd_decisoes",
+    color="royalblue"
+)
+plt.title("Distribuição das Decisões por Tipo de Provimento", fontsize=12)
+plt.xlabel("Quantidade de Decisões")
+plt.ylabel("Tipo de Decisão")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_1_1
+#| check: true
+import pandas as pd
+feedback = None
+try:
+    td = globals().get("total_decisoes", None)
+    if td is None or not isinstance(td, pd.DataFrame):
+        feedback = {"correct": False, "message": "Não encontrei um DataFrame `total_decisoes`. Gere-o antes do gráfico."}
+    else:
+        cols = {c.lower().replace(" ", "_") for c in td.columns}
+        if {"decisao", "qtd_decisoes"}.issubset(cols):
+            feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico criado com base em total_decisoes!"}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame `total_decisoes` deve conter 'decisao' e 'qtd_decisoes'."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+feedback
+
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+A **visualização de dados** é uma ferramenta poderosa para a **gestão judiciária** e para a **pesquisa empírica do Direito**. Gráficos simples podem revelar padrões que passam despercebidos em planilhas — como a **frequência de negativas de provimento** ou a **raridade de determinadas decisões**.
+:::
+
+
+## Exercício 2 — **Distribuição de Decisões por Câmara**
+
+Em seguida, vamos supor que a mesma autoridade tenha solicitado uma **análise complementar** com o objetivo de verificar a **quantidade de decisões proferidas por cada Câmara** do **Tribunal de Justiça de São Paulo (TJSP)**.  
+
+Como essa apresentação será encaminhada para um **congresso dedicado ao estudo da distribuição de decisões entre as Câmaras**, optou-se por representar os resultados em **formato gráfico**, de modo a proporcionar uma visualização mais clara, comparativa e intuitiva do volume de decisões analisadas.  
+
+---
+
+Utilizando a base `camaras`, elabore um **gráfico de barras** que mostre a quantidade total de decisões por **Câmara** (`camara`).  
 
 ```{pyodide}
 #| exercise: ex_2
-camaras[camaras['camara'].str.contains('________')]
+
+
 ```
 
+::: { .hint exercise="ex_2" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Use `value_counts()` para contar quantas decisões há em cada Câmara.
+:::
+:::
+
+::: { .hint exercise="ex_2" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Para visualizar, use `sns.barplot()` com `x='qtd_decisoes'`, `y='camara'` e uma cor (`color='royalblue'`).
+:::
+:::
+
+::: { .solution exercise="ex_2" }
+::: { .callout-tip collapse="false" }
+## Solução
+```python
+total_decisoes_por_camara = camaras["camara"].value_counts().reset_index(name="qtd_decisoes")
+sns.barplot(data=total_decisoes_por_camara, y="camara", x="qtd_decisoes", color="royalblue")
+plt.title("Decisões por Câmara")
+plt.xlabel("Quantidade")
+plt.ylabel("Câmara")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
 
 ```{pyodide}
 #| exercise: ex_2
 #| check: true
-
-n = camaras[camaras['camara'].str.contains('Direito Criminal')].shape[0]
+import pandas as pd
 feedback = None
-if (result.shape[0] == n):
-  feedback = { "correct": True, "message": "Parabéns!" }
-else:
-  feedback = { "correct": False, "message": "Que pena, tente novamente." }
+try:
+    res = globals().get("total_decisoes_por_camara", None)
+    if res is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower().replace(" ", "_") for c in val.columns}
+                if {"camara", "qtd_decisoes"}.issubset(cols):
+                    res = val
+                    break
+    if res is None:
+        feedback = {"correct": False, "message": "Não encontrei `total_decisoes_por_camara`."}
+    elif not isinstance(res, pd.DataFrame):
+        feedback = {"correct": False, "message": f"`total_decisoes_por_camara` existe mas não é DataFrame (type={type(res).__name__})."}
+    else:
+        df = res.rename(columns={c: c.lower().replace(" ", "_") for c in res.columns})
+        if {"camara", "qtd_decisoes"}.issubset(set(df.columns)):
+            cam = pd.read_csv(URL_CAMARAS, dtype=str)
+            cam.columns = [c.strip().lower().replace(" ", "_") for c in cam.columns]
+            expected = (cam["camara"].value_counts().reset_index(name="qtd_decisoes").rename(columns={"index":"camara"}).reset_index(drop=True))
+            left = df[["camara","qtd_decisoes"]].copy()
+            left["camara"] = left["camara"].astype(str).str.strip()
+            left["qtd_decisoes"] = pd.to_numeric(left["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+            right = expected.copy()
+            right["camara"] = right["camara"].astype(str).str.strip()
+            right["qtd_decisoes"] = pd.to_numeric(right["qtd_decisoes"], errors="coerce").fillna(0).astype(int)
+            merged = pd.merge(left,right,on="camara",how="outer",suffixes=("_res","_exp")).fillna(0)
+            diffs = merged[merged["qtd_decisoes_res"] != merged["qtd_decisoes_exp"]]
+            if diffs.empty:
+                feedback = {"correct": True, "message": "Perfeito 🎉 — gráfico e tabela de decisões por Câmara estão corretos!"}
+            else:
+                feedback = {"correct": False, "message": "Contagens diferentes para algumas Câmaras (verifique)."}
+        else:
+            feedback = {"correct": False, "message": "Colunas esperadas: 'camara' e 'qtd_decisoes'."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {type(e).__name__}: {e}"}
 feedback
 ```
 
-## Exercício 3
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
 
-Hello World
+A realização desse tipo de **análise é especialmente relevante para o profissional do Direito**, porque promove uma **compreensão empírica e quantitativa da atuação jurisdicional**.  
 
-## Exercício 4
+Ao examinar a **distribuição de decisões entre as Câmaras**, o operador do Direito pode identificar **padrões de produtividade, especialização e volume de demandas** — elementos essenciais para a **gestão judiciária eficiente** e para o **aperfeiçoamento das políticas públicas de justiça**.
+:::
 
-## Exercício 5
+
+## Exercício 3 — **Padrão Decisório Comparado**
+
+Uma equipe de pesquisa da **Escola da Magistratura** está conduzindo um estudo sobre **padrões de decisão entre diferentes relatores** das **Câmaras Criminais do TJSP**.  
+
+O objetivo é verificar se existem **diferenças perceptíveis no comportamento decisório** de magistrados — por exemplo, se um relator tende a negar mais recursos do que outro, ou se há maior propensão a decisões **parcialmente providas**.  
+
+Para iniciar o estudo, a equipe selecionou dois relatores com grande volume de decisões no acervo:  
+
+- **Mário Devienne Ferraz**  
+- **Alberto Anderson Filho**
+
+O foco é **comparar o perfil decisório** desses dois magistrados quanto à variável **"decisão"**, que representa o resultado do julgamento do recurso.  
+
+---
+
+Filtre a base `camaras` para manter **somente as decisões** proferidas pelos relatores acima e salvar o resultado em `rel_comparacao` e utilize o Seaborn para **criar um gráfico de barras horizontais** que compare a quantidade de decisões de cada tipo (`DECISAO`) entre os dois relatores.  
+A ideia é gerar barras agrupadas por `DECISAO` com `hue` indicando o `RELATOR`.
+
+```{pyodide}
+#| exercise: ex_3
+
+# CARREGA OS DADOS E FORMATA EM MAIÚSCULO
+camaras_upper = camaras.copy()
+for col in camaras_upper.columns:
+    camaras_upper[col] = camaras_upper[col].astype(str).str.upper().str.strip()
+camaras_upper.columns = [c.strip().upper().replace(" ", "_") for c in camaras_upper.columns]
+
+# --- Escreva sua solução aqui ---
+
+```
+
+::: { .hint exercise="ex_3" }
+::: { .callout-note collapse="false" }
+## Dica 1 
+Crie uma lista com os dois nomes de relatores e use `query('RELATOR == @rel_comparacao')` para filtrar a base.
+:::
+:::
+
+::: { .hint exercise="ex_3" }
+::: { .callout-note collapse="false" }
+## Dica 2
+Para o gráfico, use `sns.countplot()` e mapeie `y='RELATOR'`, `hue='DECISAO'` e `palette='flare'`.
+:::
+:::
+
+::: { .solution exercise="ex_3" }
+::: { .callout-tip collapse="false" }
+## Solução
+```python
+rel_comparacao_nomes = ['MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO']
+rel_comparacao = camaras_upper[camaras_upper['RELATOR'].isin(rel_comparacao_nomes)]
+
+sns.countplot(
+    data=rel_comparacao,
+    y='RELATOR',
+    hue='DECISAO',
+    palette='flare'
+)
+plt.title("Padrão Decisório Comparado — TJSP", fontsize=12)
+plt.xlabel("Quantidade de Decisões")
+plt.ylabel("Relator")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_3
+#| check: true
+
+feedback = None
+try:
+    result = globals().get("rel_comparacao", None)
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei `rel_comparacao`. Certifique-se de filtrar os relatores esperados."}
+    else:
+        # normaliza nomes de colunas e valores
+        cols = {c.upper().replace(" ", "_") for c in result.columns}
+        # garanta que a coluna RELATOR exista (case-insensitive)
+        if 'RELATOR' in cols:
+            # extrai os valores únicos da coluna RELATOR de forma robusta
+            try:
+                rel_values = [str(x).strip().upper() for x in result.loc[:, result.columns.str.upper().str.replace(" ", "_") == 'RELATOR'].iloc[:,0].unique()]
+            except Exception:
+                # fallback simples se acesso por loc falhar
+                rel_values = [str(x).strip().upper() for x in result['RELADOR'].astype(str).unique()] if 'RELADOR' in result.columns else [str(x).strip().upper() for x in result.iloc[:,0].astype(str).unique()]
+
+            expected = {'MÁRIO DEVIENNE FERRAZ', 'ALBERTO ANDERSON FILHO'}
+            found_set = set(rel_values)
+            missing = sorted(list(expected - found_set))
+            if not missing:
+                feedback = {"correct": True, "message": "Excelente 🎉 — filtrou corretamente os dois relatores!"}
+            else:
+                feedback = {"correct": False, "message": f"Faltam relatores esperados (não encontrados): {missing}. Relatores encontrados: {sorted(list(found_set))[:10]} (mostrando até 10)."}
+        else:
+            feedback = {"correct": False, "message": "Seu DataFrame precisa conter a coluna 'RELATOR' (verifique nomes e capitalização)."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {type(e).__name__}: {e}"}
+feedback
+
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+**Comparar padrões decisórios entre relatores** é uma técnica frequentemente utilizada em estudos de **Direito e Tecnologia**.  
+Essa abordagem permite investigar a **consistência e previsibilidade das decisões judiciais**, bem como discutir o papel da **subjetividade judicial** no contexto dos tribunais.
+:::
+
+
+## Exercício 4 — **Idade x Padrão Decisório**
+
+Dando sequência ao estudo desenvolvido pela **equipe de pesquisa em Direito e Ciência de Dados**, que vem atendendo às solicitações de uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)**, surge uma nova questão de interesse.  
+
+Após observar **diferenças de comportamento entre relatores** nas análises anteriores, a equipe foi instigada a investigar se a **idade dos magistrados pode estar relacionada ao tipo de decisão proferida**.  
+
+A hipótese é de que **relatores mais experientes** — e, portanto, com **maior idade** — possam apresentar **tendências distintas** em relação à concessão ou negação de recursos.  
+
+O objetivo deste exercício é verificar se há alguma **correlação entre a idade dos relatores e o padrão de decisões proferidas**.  
+
+Crie tabelas que permitam comparar a idade dos relatores com a **quantidade de decisões de cada tipo**.  
+A autoridade do TJSP solicitou que a equipe apresentasse uma **visualização gráfica** que pudesse indicar se existe **relação entre a idade dos relatores e o número de decisões negativas ("Negaram")**.  
+
+O objetivo é observar possíveis **tendências etárias no comportamento decisório** das Câmaras Criminais.  
+
+---
+
+Crie uma tabela com o número de decisões de cada tipo por relator.  
+Crie outra tabela com a idade de cada relator (`rel_idade`).  
+Faça um **merge** das duas tabelas, resultando em `decisoes_idade`.  
+Elabore um **gráfico de dispersão (`sns.scatterplot`)** mostrando `rel_idade` (x) versus o número de decisões "Negaram" (y).
+
+```{pyodide}
+#| exercise: ex_4
+
+# CARREGA OS DADOS DENTRO DO BLOCO DO EXERCÍCIO (setup já carregou a base)
+# --- Escreva sua solução aqui ---
+
+```
+
+::: { .hint exercise="ex_4" }
+::: { .callout-note collapse="false" }
+## Dica 1  
+Use `groupby(['relator','decisao']).size().unstack(fill_value=0)` para montar a tabela de decisões por relator.
+:::
+:::
+
+::: { .hint exercise="ex_4" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Para associar a idade de cada relator, remova duplicatas (`drop_duplicates('relator')`) e selecione `['relator','rel_idade']`.
+:::
+:::
+
+::: { .hint exercise="ex_4" }
+::: { .callout-note collapse="false" }
+## Dica 3
+Depois, use `pd.merge()` para juntar as duas tabelas e gere o gráfico de dispersão (`sns.scatterplot`).
+:::
+:::
+
+::: { .solution exercise="ex_4" }
+::: { .callout-tip collapse="false" }
+
+##  Solução
+
+```python
+# TABELA DE TIPO DE DECISÕES POR RELATOR 
+decisoes_relator = camaras.groupby(['relator', 'decisao']).size().unstack(fill_value=0)
+
+# Capitaliza os nomes das colunas para garantir "Negaram"
+decisoes_relator.columns = [c.capitalize() for c in decisoes_relator.columns]
+decisoes_relator = decisoes_relator.reset_index()
+
+# TABELA DE IDADES POR RELATOR 
+idade_relator = camaras.drop_duplicates('relator')[['relator', 'rel_idade']]
+
+# JUNÇÃO DA IDADE COM AS DECISÕES
+decisoes_idade = pd.merge(decisoes_relator, idade_relator, on='relator')
+
+# Converte idade para numérico
+decisoes_idade['rel_idade'] = pd.to_numeric(decisoes_idade['rel_idade'], errors='coerce')
+
+# GRÁFICO DE DISPERSÃO
+if 'Negaram' in decisoes_idade.columns:
+    sns.scatterplot(data=decisoes_idade, x='rel_idade', y='Negaram')
+    plt.title("Relação entre Idade e Decisões Negativas (TJSP)")
+    plt.xlabel("Idade do Relator")
+    plt.ylabel("Número de Decisões 'Negaram'")
+    plt.tight_layout()
+    plt.show()
+else:
+    print("⚠️ Coluna 'Negaram' não encontrada. Colunas:", decisoes_idade.columns.tolist())
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_4
+#| check: true
+import pandas as pd
+feedback = None
+try:
+    result = globals().get("decisoes_idade", None)
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower() for c in val.columns}
+                if "relator" in cols and "rel_idade" in cols and any("negar" in c for c in cols):
+                    result = val
+                    break
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei `decisoes_idade`. Verifique a junção."}
+    elif not isinstance(result, pd.DataFrame):
+        feedback = {"correct": False, "message": "`decisoes_idade` existe mas não é um DataFrame."}
+    else:
+        cols_lower = {c.lower() for c in result.columns}
+        has_negar = any("negar" in c for c in cols_lower)
+        if "relator" in cols_lower and "rel_idade" in cols_lower and has_negar:
+            feedback = {"correct": True, "message": "Perfeito 🎉 — base para gráfico de idade está ok!"}
+        else:
+            faltam = []
+            if "relator" not in cols_lower: faltam.append("relator")
+            if "rel_idade" not in cols_lower: faltam.append("rel_idade")
+            if not has_negar: faltam.append("coluna com 'Negaram'")
+            feedback = {"correct": False, "message": "Faltam: " + ", ".join(faltam)}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+feedback
+```
+
+
+
+
+##  Exercício 5 — **Idade x Tempo de Magistratura**
+
+Dando prosseguimento ao estudo conduzido pela **equipe de pesquisa em Direito e Ciência de Dados**, que tem elaborado relatórios analíticos para uma autoridade do **Tribunal de Justiça de São Paulo (TJSP)**, o grupo decidiu agora examinar a **relação entre a idade dos relatores e o tempo de magistratura**.  
+
+A intenção é compreender se existe **correlação entre essas duas variáveis** — o que pode ajudar a **validar os dados coletados** e oferecer um retrato mais preciso do **perfil dos julgadores** que atuam nas **Câmaras Criminais**.  
+
+---  
+
+ **Selecione apenas uma linha por relator**, contendo suas informações de idade (`rel_idade`) e tempo de magistratura (`rel_tempo_magistratura`).  
+ Crie um **gráfico de dispersão (`sns.scatterplot`)**, em que:  
+   - o eixo **x** representa a idade (`rel_idade`);  
+   - o eixo **y** representa o tempo de magistratura (`rel_tempo_magistratura`).  
+
+O objetivo é verificar visualmente se existe **correlação positiva entre idade e tempo de magistratura** — hipótese que validaria a consistência dos dados.
+
+```{pyodide}
+#| exercise: ex_5
+
+
+# CARREGA OS DADOS DENTRO DO BLOCO DO EXERCÍCIO (setup já carregou a base)
+# --- Escreva sua solução aqui ---
+
+```
+
+::: { .hint exercise="ex_5" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Use `drop_duplicates('relator')` para garantir **apenas uma linha por relator** no DataFrame.
+:::
+:::
+
+::: { .hint exercise="ex_5" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Monte o gráfico com `sns.scatterplot()`, definindo `x='rel_idade'` e `y='rel_tempo_magistratura'`.  
+Isso criará um **gráfico de dispersão** que permite observar a correlação entre idade e tempo de carreira.
+:::
+:::
+
+::: { .solution exercise="ex_5" }
+::: { .callout-tip collapse="false" }
+
+## Solução
+
+```python
+relatores = camaras.drop_duplicates('relator')[['relator', 'rel_idade', 'rel_tempo_magistratura']]
+
+# Converte para numérico
+relatores['rel_idade'] = pd.to_numeric(relatores['rel_idade'], errors='coerce')
+relatores['rel_tempo_magistratura'] = pd.to_numeric(relatores['rel_tempo_magistratura'], errors='coerce')
+
+sns.scatterplot(
+    data=relatores,
+    x='rel_idade',
+    y='rel_tempo_magistratura'
+)
+plt.title("Correlação entre Idade e Tempo de Magistratura (TJSP)", fontsize=12)
+plt.xlabel("Idade do Relator")
+plt.ylabel("Tempo de Magistratura (anos)")
+plt.tight_layout()
+plt.show()
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_5
+#| check: true
+import pandas as pd
+feedback = None
+try:
+    result = globals().get("relatores", None)
+    if result is None:
+        for name, val in globals().items():
+            if isinstance(val, pd.DataFrame):
+                cols = {c.lower() for c in val.columns}
+                if {"rel_idade","rel_tempo_magistratura"}.issubset(cols):
+                    result = val
+                    break
+    if result is None:
+        feedback = {"correct": False, "message": "Não encontrei o DataFrame de `relatores` (uma linha por relator)."}
+    elif not isinstance(result, pd.DataFrame):
+        feedback = {"correct": False, "message": "`relatores` existe mas não é DataFrame."}
+    else:
+        cols = {c.lower() for c in result.columns}
+        if {"rel_idade","rel_tempo_magistratura"}.issubset(cols):
+            feedback = {"correct": True, "message": "Excelente 🎉 — relação entre idade e tempo de magistratura identificada corretamente!"}
+        else:
+            feedback = {"correct": False, "message": "O DataFrame precisa conter 'rel_idade' e 'rel_tempo_magistratura'."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}"}
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+A **análise da correlação entre idade e tempo de magistratura** permite não apenas **validar a qualidade dos dados**, mas também compreender melhor o **perfil dos magistrados** que compõem as **Câmaras Criminais**.  
+
+Essa investigação pode revelar padrões de **progressão na carreira** e oferecer subsídios para **políticas de formação continuada** e **gestão de recursos humanos** no Poder Judiciário.
+:::
+## Exercício 6 — Preparação da Base Vivo
+
+Imagine que você foi contratado para integrar o time jurídico contencioso da Vivo, responsável por analisar e acompanhar milhares de ações judiciais movidas contra a empresa em todo o país. Seu papel será auxiliar na criação de indicadores e modelos preditivos capazes de antecipar os riscos e custos dessas demandas.
+
+Antes de iniciar as análises, a equipe de dados da Vivo notificou que foram encontradas algumas inconsistências na base de dados, que precisam ser corrigidas para garantir a confiabilidade dos resultados.
+
+Para esta primeira etapa, seu objetivo é preparar a base de dados de modo que ela contenha apenas as informações relevantes e completas para os casos em que já se conhece o desfecho da Vivo (isto é, se a empresa ganhou ou perdeu a ação).
+
+---
+ 
+Faça o filtro da base de dados para conter apenas as linhas correspondentes à vitória ou derrota da Vivo e remova as linhas com valores ausentes nas variáveis `juiz_tempo_vara`, `pags_inicial` e `pags_contestacao`. Em seguida, informe quantas linhas restaram na base de dados após esses filtros.
+
+```{pyodide}
+#| exercise: ex_6
+
+
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
+# --- Escreva sua solução aqui ---
+
+```
+
+::: { .hint exercise="ex_6" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Para filtrar a coluna desfecho_vivo, você pode criar uma lista com os dois valores desejados `(['Vitória', 'Derrota (Total ou Parcial)'])` e usar o método `.isin(lista)` para selecionar as linhas.
+:::
+:::
+
+::: { .hint exercise="ex_6" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Use `.dropna(subset=[...])` para remover linhas com valores nulos apenas nas colunas especificadas. Para obter a contagem final de linhas, use a função `len(seu_dataframe)`
+:::
+:::
+
+::: { .solution exercise="ex_6" }
+::: { .callout-tip collapse="false" }
+
+## Solução
+
+```python
+vivo_filtrado = vivo[vivo['desfecho_vivo'].isin(['Vitória', 'Derrota (Total ou Parcial)'])]
+vivo_filtrado = vivo_filtrado.dropna(subset=['juiz_tempo_vara', 'pags_inicial', 'pags_contestacao'])
+qtd_linhas = len(vivo_filtrado)
+qtd_linhas
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_6
+#| check: true
+
+import pandas as pd
+feedback = None
+result = None 
+try:
+    # Captura a variável de resposta do aluno
+    result = qtd_linhas
+    
+    # --- ETAPA DE VALIDAÇÃO (RECRIA A SOLUÇÃO) ---
+    # ATENÇÃO: A URL abaixo é uma suposição. 
+    # Troque pelo caminho correto para o seu arquivo .csv
+    url_check = "https://raw.githubusercontent.com/jtrecenti/camaras-test/refs/heads/main/vivo.csv"
+    vivo_check = pd.read_csv(url_check, dtype=str)
+    
+    vivo_filtrado_check = vivo_check[vivo_check['desfecho_vivo'].isin(['Vitória', 'Derrota (Total ou Parcial)'])]
+    vivo_filtrado_check = vivo_filtrado_check.dropna(subset=['juiz_tempo_vara', 'pags_inicial', 'pags_contestacao'])
+    expected = len(vivo_filtrado_check)
+    
+    if result == expected:
+        feedback = {"correct": True, "message": f"Perfeito! A base de dados filtrada e limpa resultou em {expected} linhas."}
+    else:
+        feedback = {"correct": False, "message": f"O número de linhas não está correto. Esperado: {expected}. Seu resultado: {result}."}
+
+except NameError:
+    feedback = {"correct": False, "message": "A variável `qtd_linhas` não foi encontrada. Certifique-se de que ela é a última linha do seu código."}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}. (Verifique se a URL no bloco de check está correta)"}
+
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+A `qualidade dos dados (data quality)` é a etapa mais crítica em qualquer projeto de Jurimetria. Modelos preditivos construídos sobre bases de dados "sujas" (com valores ausentes, duplicados ou inconsistentes) geram previsões não confiáveis.
+
+No contexto corporativo, isso pode levar o escritório a tomar decisões estratégicas erradas, como provisionar valores incorretos para perdas, subestimar custos processuais ou perder oportunidades valiosas de acordo
+:::
+
+## Exercício 7 — Criação da Variável de Desfecho da Vivo
+
+Após a etapa inicial de limpeza dos dados, o time de dados da Vivo solicitou uma nova verificação.
+Durante o desenvolvimento do painel de acompanhamento de resultados judiciais, a equipe percebeu que não havia uma variável numérica que identificasse, de forma padronizada, se a decisão foi favorável ou desfavorável à empresa.
+
+Para possibilitar análises estatísticas e a futura construção de modelos preditivos, o jurídico analítico pediu que você criasse uma nova coluna chamada `y`, que receba o valor **1** quando a decisão for favorável à Vivo e **0** caso contrário.
+
+Com base nessa nova variável, calcule também a **proporção** de decisões favoráveis à Vivo na base de dados. Essa métrica servirá como indicador preliminar de desempenho da empresa no contencioso.
+
+---
+
+Crie a coluna `y` no DataFrame `vivo` (onde 1 = 'Vitória' e 0 para os demais casos). Em seguida, calcule a proporção de vitórias e armazene o resultado na variável `proporcao_vitorias`.
+
+```{pyodide}
+#| exercise: ex_7
+
+# O DataFrame 'vivo' e as bibliotecas 'pd' e 'np' já foram carregados no setup global.
+
+# --- Escreva sua solution aqui ---
+```
+
+::: { .hint exercise="ex_7" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Para criar a nova coluna `y` de forma condicional, a função `np.where()` (do NumPy) é ideal. A sintaxe é: `np.where(condição, valor_se_verdadeiro, valor_se_falso)`
+:::
+:::
+
+::: { .hint exercise="ex_7" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Depois de criar a coluna `y` (que contém apenas 1s e 0s), a proporção de vitórias é simplesmente a média dessa coluna. Você pode calcular isso usando o método `.mean()`.
+:::
+:::
+
+::: { .solution exercise="ex_7" }
+::: { .callout-tip collapse="false" }
+
+## Solução
+
+```python
+# 1. Criar a variável 'y'
+vivo['y'] = np.where(vivo['desfecho_vivo'] == 'Vitória', 1, 0)
+
+# 2. Calcular a proporção de vitórias
+proporcao_vitorias = vivo['y'].mean()
+proporcao_vitorias
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_7
+#| check: true
+
+# Este bloco assume que 'vivo' e 'np' existem no escopo 'myenv'
+
+feedback = None
+result = None 
+try:
+    # Captura a variável de resposta do aluno
+    result = proporcao_vitorias
+    
+    # --- ETAPA DE VALIDAÇÃO (RECRIA A SOLUÇÃO) ---
+    # Usa o 'vivo' DataFrame e 'np' do setup global
+    y_check = np.where(vivo['desfecho_vivo'] == 'Vitória', 1, 0)
+    expected = y_check.mean()
+    
+    # Verifica se o 'y' foi criado no DataFrame original
+    if 'y' not in vivo.columns:
+        feedback = {"correct": False, "message": "A coluna 'y' não foi criada no DataFrame `vivo`."}
+    # Verifica se o valor da proporção está correto
+    elif (result is not None) and (abs(result - expected) < 0.0001):
+        feedback = {"correct": True, "message": f"Correto! A proporção de vitórias é de {expected*100:.2f}%."}
+    else:
+        feedback = {"correct": False, "message": f"O valor da proporção não está correto. Esperado: {expected:.4f}. Seu resultado: {result}."}
+
+except NameError as e:
+    if 'proporcao_vitorias' in str(e):
+        feedback = {"correct": False, "message": "A variável `proporcao_vitorias` não foi encontrada. Certifique-se de que ela é a última linha do seu código."}
+    elif 'vivo' in str(e) or 'np' in str(e):
+        feedback = {"correct": False, "message": "Erro de Validação: O DataFrame `vivo` ou `np` não foi encontrado. O setup global foi executado?"}
+    else:
+        feedback = {"correct": False, "message": f"Erro de Validação: {e}"}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}."}
+
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+Transformar resultados categóricos (como "Vitória" ou "Derrota") em variáveis numéricas binárias (1 ou 0) é um passo fundamental em machine learning. Isso permite que algoritmos matemáticos, que não entendem texto, possam processar e modelar desfechos.
+
+A proporção de vitórias (a média da coluna `y`) é uma métrica crucial. Ela é conhecida como taxa de base (ou baseline). Qualquer modelo preditivo futuro que construir só será útil se conseguir prever os resultados com uma acurácia maior do que essa taxa de base.
+:::
+
+## Exercício 8 — Criação de Variáveis Dummies para o Juiz
+
+Após as etapas iniciais de limpeza e estruturação dos dados, o time jurídico-analítico da Vivo começou a planejar a construção de modelos estatísticos para prever o desfecho dos processos.
+
+Durante as reuniões técnicas, os analistas de dados destacaram que, para aplicar técnicas de regressão logística e outros modelos de classificação, é necessário transformar variáveis categóricas em valores numéricos.
+
+Uma das variáveis que precisam ser tratadas é a que identifica o juiz responsável pelo processo. Cada magistrado pode ter características e históricos de decisão distintos, que podem influenciar o resultado das ações.
+
+Por isso, a equipe solicitou que você criasse uma base de variáveis dummies para a coluna `juiz`, utilizando a função `pd.get_dummies()`.
+Essas dummies representarão cada juiz da base de dados, com o valor 1 indicando a presença daquele juiz no processo, e 0 caso contrário.
+
+---
+
+Crie a base de dummies a partir da coluna `juiz` do DataFrame `vivo_filtrado` (criado no Exercício 6). Armazene o resultado em `dummies_juiz`.
+Não remova a primeira categoria (isto é, não utilize o parâmetro `drop_first=True`).
+Por fim, armazene o número de colunas da base resultante na variável `n_col_dummies` e imprima esse valor.
+
+```{pyodide}
+#| exercise: ex_8
+
+# O DataFrame 'vivo_filtrado' (do Ex 1) e 'pd' já foram carregados no setup global.
+
+# --- Escreva sua solução aqui ---
+```
+
+::: { .hint exercise="ex_8" }
+::: { .callout-note collapse="false" }
+## Dica 1
+A função para criar variáveis `dummies` (One-Hot Encoding) no pandas é `pd.get_dummies()`. Basta passar a coluna do DataFrame como argumento (ex: `pd.get_dummies(seu_dataframe['sua_coluna'])`).
+:::
+:::
+
+::: { .hint exercise="ex_8" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Todo DataFrame do pandas possui o atributo .shape, que retorna uma tupla (linhas, colunas). Para pegar apenas o número de colunas, você pode usar `seu_dataframe.shape[1]`.
+:::
+:::
+
+::: { .solution exercise="ex_8" }
+::: { .callout-tip collapse="false" }
+
+## Solução
+
+```python
+dummies_juiz = pd.get_dummies(vivo_filtrado['juiz'])
+
+n_col_dummies = dummies_juiz.shape[1]
+
+print(n_col_dummies)
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_8
+#| check: true
+
+# Este bloco assume que 'vivo' (o original) e 'pd' existem no escopo global
+
+feedback = None
+result_df = None
+result_cols = None
+
+try:
+    # Captura as variáveis de resposta do aluno
+    result_df = dummies_juiz
+    result_cols = n_col_dummies
+    
+    # --- ETAPA DE VALIDAÇÃO (RECRIA A SOLUÇÃO) ---
+    # Recria o vivo_filtrado do Exercício 1 para um check robusto
+    vivo_filtrado_check = vivo[vivo['desfecho_vivo'].isin(['Vitória', 'Derrota (Total ou Parcial)'])]
+    vivo_filtrado_check = vivo_filtrado_check.dropna(subset=['juiz_tempo_vara', 'pags_inicial', 'pags_contestacao'])
+    
+    # Recria a solução esperada
+    expected_dummies = pd.get_dummies(vivo_filtrado_check['juiz'])
+    expected_n_cols = expected_dummies.shape[1]
+    
+    # Validação
+    if not isinstance(result_df, pd.DataFrame):
+        feedback = {"correct": False, "message": "A variável `dummies_juiz` não foi criada corretamente como um DataFrame."}
+    elif result_df.shape[1] != expected_n_cols:
+        feedback = {"correct": False, "message": f"O DataFrame `dummies_juiz` não tem o número correto de colunas. Esperado: {expected_n_cols}. Seu resultado: {result_df.shape[1]}."}
+    elif result_cols != expected_n_cols:
+        feedback = {"correct": False, "message": f"A variável `n_col_dummies` não tem o valor correto. Esperado: {expected_n_cols}. Seu resultado: {result_cols}."}
+    else:
+        feedback = {"correct": True, "message": f"Correto! A transformação resultou em {expected_n_cols} colunas (uma para cada juiz)."}
+
+except NameError as e:
+    if 'dummies_juiz' in str(e):
+        feedback = {"correct": False, "message": "A variável `dummies_juiz` não foi encontrada."}
+    elif 'n_col_dummies' in str(e):
+        feedback = {"correct": False, "message": "A variável `n_col_dummies` não foi encontrada."}
+    elif 'vivo_filtrado' in str(e):
+        feedback = {"correct": False, "message": "O DataFrame `vivo_filtrado` (do Exercício 1) não foi encontrado. Você executou o Exercício 1?"}
+    else:
+        feedback = {"correct": False, "message": f"Erro de Validação: {e}"}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}."}
+
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+Transformar variáveis categóricas como "juiz" em `dummies` (também chamado de One-Hot Encoding) é essencial. Modelos matemáticos, como a regressão logística, não entendem categorias de texto ("Juiz A", "Juiz B").
+
+Ao criar uma coluna para cada juiz (ex: `juiz_A`, `juiz_B`), o modelo pode atribuir um peso (coeficiente) individual a cada magistrado, aprendendo se a presença de um juiz específico aumenta ou diminui estatisticamente a chance de "Vitória" da empresa.
+:::
+
+## Exercício 9 — Seleção de Dummies Relevantes
+
+Com a base de variáveis dummies criada, o time jurídico-analítico da Vivo identificou um novo desafio.
+Alguns juízes possuem apenas poucos processos na amostra, o que pode introduzir ruído estatístico nos modelos preditivos e dificultar a interpretação dos resultados.
+
+Para garantir análises mais robustas, a equipe solicitou que fossem mantidos apenas os juízes com quantidade relevante de observações na base de dados.
+
+---
+
+Com base na estrutura criada em `dummies_juiz` (do Exercício 8), gere uma nova base contendo apenas as colunas correspondentes aos juízes que possuem **mais de 50 processos** registrados.
+
+Armazene o resultado na variável `dummies_juiz_select` e informe quantas colunas a base resultante possui, armazenando este número na variável `n_col_dummies_select` e imprimindo o valor.
+
+```{pyodide}
+#| exercise: ex_9
+
+# O DataFrame 'dummies_juiz' (do Ex 8) e 'pd' já foram carregados.
+
+# --- Escreva sua solução aqui ---
+```
+
+::: { .hint exercise="ex_9" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Como o DataFrame `dummies_juiz` contém 1s e 0s, você pode obter a contagem de processos por juiz simplesmente somando as colunas. Use o método `.sum()` no DataFrame. O resultado será uma Series onde o índice é o nome do juiz e o valor é a contagem.
+:::
+:::
+
+::: { .hint exercise="ex_9" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Filtre a Series da Dica 1 para manter apenas os valores `> 50`. Em seguida, extraia o `.index` (que são os nomes dos juízes selecionados) e use essa lista para filtrar as colunas do DataFrame `dummies_juiz` original.
+:::
+:::
+
+::: { .solution exercise="ex_9" }
+::: { .callout-tip collapse="false" }
+
+## Solução
+
+```python
+frequencias = dummies_juiz.sum()
+juizes_selecionados = frequencias[frequencias > 50].index
+dummies_juiz_select = dummies_juiz[juizes_selecionados]
+n_col_dummies_select = dummies_juiz_select.shape[1]
+
+print(n_col_dummies_select)
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_9
+#| check: true
+
+# Este bloco assume que 'vivo' (o original) e 'pd' existem no escopo global
+
+feedback = None
+result_df = None
+result_cols = None
+
+try:
+    # Captura as variáveis de resposta do aluno
+    result_df = dummies_juiz_select
+    result_cols = n_col_dummies_select
+    
+    # --- ETAPA DE VALIDAÇÃO (RECRIA A SOLUÇÃO) ---
+    # Recria o vivo_filtrado (do Ex 1)
+    vivo_filtrado_check = vivo[vivo['desfecho_vivo'].isin(['Vitória', 'Derrota (Total ou Parcial)'])]
+    vivo_filtrado_check = vivo_filtrado_check.dropna(subset=['juiz_tempo_vara', 'pags_inicial', 'pags_contestacao'])
+    
+    # Recria o dummies_juiz (do Ex 8)
+    dummies_juiz_check = pd.get_dummies(vivo_filtrado_check['juiz'])
+    
+    # Recria a solução esperada
+    frequencias = dummies_juiz_check.sum()
+    juizes_selecionados = frequencias[frequencias > 50].index
+    expected_dummies = dummies_juiz_check[juizes_selecionados]
+    expected_n_cols = expected_dummies.shape[1]
+    
+    # Validação
+    if not isinstance(result_df, pd.DataFrame):
+        feedback = {"correct": False, "message": "A variável `dummies_juiz_select` não foi criada corretamente como um DataFrame."}
+    elif result_df.shape[1] != expected_n_cols:
+        feedback = {"correct": False, "message": f"O DataFrame `dummies_juiz_select` não tem o número correto de colunas. Esperado: {expected_n_cols}. Seu resultado: {result_df.shape[1]}."}
+    elif result_cols != expected_n_cols:
+        feedback = {"correct": False, "message": f"A variável `n_col_dummies_select` não tem o valor correto. Esperado: {expected_n_cols}. Seu resultado: {result_cols}."}
+    else:
+        feedback = {"correct": True, "message": f"Correto! Apenas {expected_n_cols} juízes possuem mais de 50 processos na base."}
+
+except NameError as e:
+    if 'dummies_juiz_select' in str(e):
+        feedback = {"correct": False, "message": "A variável `dummies_juiz_select` não foi encontrada."}
+    elif 'n_col_dummies_select' in str(e):
+        feedback = {"correct": False, "message": "A variável `n_col_dummies_select` não foi encontrada."}
+    elif 'dummies_juiz' in str(e):
+        feedback = {"correct": False, "message": "O DataFrame `dummies_juiz` (do Exercício 8) não foi encontrado. Você executou o Exercício 8?"}
+    else:
+        feedback = {"correct": False, "message": f"Erro de Validação: {e}"}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}."}
+
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+Esta etapa é um exemplo clássico de seleção de features (feature selection). No contexto jurídico, um juiz com pouquíssimos casos (ex: 2 ou 3 processos) não oferece informação estatística suficiente para o modelo aprender um padrão.
+
+Manter essas dummies "raras" pode ser prejudicial, fazendo o modelo dar um peso indevido a uma coincidência (ex: se um juiz julgou 2 casos e a Vivo perdeu ambos). Ao filtrar e manter apenas juízes com um volume relevante (ex: > 50 casos), garantimos que o modelo aprenda padrões mais robustos e estatisticamente estáveis.
+
+:::
+
+## Exercício 10 — Consolidação da Base de Modelagem
+
+Com as etapas anteriores concluídas, o time jurídico-analítico da Vivo está pronto para iniciar a fase de modelagem preditiva.
+O objetivo agora é criar uma base consolidada que contenha apenas as variáveis consideradas mais relevantes para prever o desfecho dos processos.
+
+Após reuniões com os advogados internos e especialistas em dados, foi definido que a base final deve incluir:
+
+* as variáveis numéricas principais: `valor`, `pags_inicial`, `pags_contestacao` e `juiz_tempo_vara`, que representam aspectos financeiros e processuais relevantes;
+* e as variáveis dummies correspondentes aos juízes com mais de 50 processos, previamente armazenadas na base `dummies_juiz_select`.
+
+---
+
+Com base nisso, crie uma nova base chamada `vivo_f`, contendo as variáveis listadas acima.
+Em seguida, armazene o número de linhas e colunas da base resultante nas variáveis `n_linhas` e `n_colunas`, e imprima o resultado.
+
+```{pyodide}
+#| exercise: ex_10
+
+# Os DataFrames 'vivo_filtrado' (Ex 1), 'dummies_juiz_select' (Ex 9) 
+# e 'pd' já existem no escopo.
+
+# --- Escreva sua solução aqui ---
+```
+
+::: { .hint exercise="ex_10" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Primeiro, crie uma lista com os nomes das colunas numéricas (ex: `cols = ['valor', 'pags_inicial', ...]`). Use essa lista para selecionar apenas essas colunas do DataFrame `vivo_filtrado`.
+:::
+:::
+
+::: { .hint exercise="ex_10" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Para juntar o DataFrame numérico (da Dica 1) com o `dummies_juiz_select`, use a função `pd.concat()`. Lembre-se de especificar `axis=1` para juntar as colunas lado a lado.
+:::
+:::
+
+::: { .solution exercise="ex_10" }
+::: { .callout-tip collapse="false" }
+
+## Solução
+
+```python
+# Define as colunas numéricas
+numeric_cols = ['valor', 'pags_inicial', 'pags_contestacao', 'juiz_tempo_vara']
+vivo_numeric = vivo_filtrado[numeric_cols]
+
+# Concatena com as dummies (do exercício anterior)
+vivo_f = pd.concat([vivo_numeric, dummies_juiz_select], axis=1)
+
+# Informa as dimensões
+n_linhas = vivo_f.shape[0]
+n_colunas = vivo_f.shape[1]
+
+print(f"Base final criada com {n_linhas} linhas e {n_colunas} colunas.")
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_10
+#| check: true
+
+# Este bloco assume que 'vivo' (o original) e 'pd' existem no escopo global
+
+feedback = None
+result_df = None
+result_rows = None
+result_cols = None
+
+try:
+    # Captura as variáveis do aluno
+    result_df = vivo_f
+    result_rows = n_linhas
+    result_cols = n_colunas
+    
+    # --- ETAPA DE VALIDAÇÃO (RECRIA TUDO) ---
+    # 1. Recria vivo_filtrado (de Ex 1)
+    vivo_filtrado_check = vivo[vivo['desfecho_vivo'].isin(['Vitória', 'Derrota (Total ou Parcial)'])]
+    vivo_filtrado_check = vivo_filtrado_check.dropna(subset=['juiz_tempo_vara', 'pags_inicial', 'pags_contestacao'])
+    
+    # 2. Recria dummies_juiz (de Ex 8)
+    dummies_juiz_check = pd.get_dummies(vivo_filtrado_check['juiz'])
+    
+    # 3. Recria dummies_juiz_select (de Ex 9)
+    frequencias = dummies_juiz_check.sum()
+    juizes_selecionados = frequencias[frequencias > 50].index
+    dummies_juiz_select_check = dummies_juiz_check[juizes_selecionados]
+    
+    # 4. Recria a solução (Ex 10)
+    numeric_cols = ['valor', 'pags_inicial', 'pags_contestacao', 'juiz_tempo_vara']
+    vivo_numeric_check = vivo_filtrado_check[numeric_cols]
+    expected_df = pd.concat([vivo_numeric_check, dummies_juiz_select_check], axis=1)
+    expected_rows = expected_df.shape[0]
+    expected_cols = expected_df.shape[1]
+    
+    # Validação
+    if not isinstance(result_df, pd.DataFrame):
+        feedback = {"correct": False, "message": "A variável `vivo_f` não foi criada como um DataFrame."}
+    elif result_rows != expected_rows:
+        feedback = {"correct": False, "message": f"O número de linhas em `n_linhas` está incorreto. Esperado: {expected_rows}. Seu resultado: {result_rows}."}
+    elif result_cols != expected_cols:
+        feedback = {"correct": False, "message": f"O número de colunas em `n_colunas` está incorreto. Esperado: {expected_cols}. Seu resultado: {result_cols}."}
+    else:
+        feedback = {"correct": True, "message": f"Excelente! A base final `vivo_f` foi consolidada com {expected_rows} linhas e {expected_cols} colunas."}
+
+except NameError as e:
+    if 'vivo_f' in str(e):
+        feedback = {"correct": False, "message": "A variável `vivo_f` não foi encontrada."}
+    elif 'n_linhas' in str(e) or 'n_colunas' in str(e):
+        feedback = {"correct": False, "message": "As variáveis `n_linhas` ou `n_colunas` não foram encontradas."}
+    elif 'dummies_juiz_select' in str(e):
+        feedback = {"correct": False, "message": "O DataFrame `dummies_juiz_select` (do Exercício 9) não foi encontrado. Você executou o Exercício 9?"}
+    else:
+        feedback = {"correct": False, "message": f"Erro de Validação: {e}"}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}."}
+
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+Esta é a etapa final de preparação de dados, onde criamos a matriz de features (ou `X`). Esta base `vivo_f` contém todas as informações que o modelo preditivo usará para "aprender" os padrões que levam a uma vitória ou derrota (que está na variável `y`, criada no Exercício 7).
+
+A escolha de quais colunas incluir (numéricas, dummies) é um passo crucial que combina conhecimento jurídico (o que realmente importa para o caso?) e estatístico (o que o modelo consegue usar para prever?).
+
+:::
+
+## Exercício 11 — Ajuste de um Modelo Logístico Simplificado
+
+Após a criação da base de dados completa, a equipe de dados da Vivo solicitou um primeiro teste de modelagem.
+
+Antes de usar o modelo completo (com todas as *dummies* de juízes), a equipe quer avaliar o poder preditivo de um modelo mais simples, usando apenas as variáveis `valor` e `juiz_tempo_vara`.
+
+O objetivo é criar um "modelo de base" simplificado para comparar com as versões mais complexas no futuro.
+
+---
+
+Crie um modelo de regressão logística usando **apenas** `valor` e `juiz_tempo_vara` do `vivo_f` como `X`, e a coluna `y` do `vivo_filtrado` como `y`.
+
+Divida os dados em treino e teste (30% para teste, `random_state=1`, estratificado por `y`).
+
+Ajuste o modelo (`LogisticRegression(max_iter=10000)`) e, por fim, imprima na mesma linha:
+1.  A proporção de vitórias na base de **treino** (`prop_y_train`).
+2.  A proporção de vitórias na base de **teste** (`prop_y_test`).
+3.  A acurácia final do modelo (`acc`).
+
+```{pyodide}
+#| exercise: ex_11
+
+# As bibliotecas (incluindo sklearn) e os DataFrames 
+# 'vivo_f' (X) e 'vivo_filtrado' (de onde tiramos y) já estão no escopo.
+
+# --- Escreva sua solução aqui ---
+```
+
+::: { .hint exercise="ex_11" }
+::: { .callout-note collapse="false" }
+## Dica 1
+Desta vez, seu `X` não será o `vivo_f` inteiro. Crie o `X` selecionando apenas as duas colunas pedidas: `X = vivo_f[['valor', 'juiz_tempo_vara']]`. O `y` continua vindo do `vivo_filtrado['y']`.
+:::
+:::
+
+::: { .hint exercise="ex_11" }
+::: { .callout-note collapse="false" }
+## Dica 2 
+Lembre-se de usar `random_state=1` no `train_test_split` para este exercício. Para calcular as proporções, use `.mean()` nas variáveis `y_train` e `y_test`.
+:::
+:::
+
+::: { .solution exercise="ex_11" }
+::: { .callout-tip collapse="false" }
+
+## Solução
+
+```python
+# 1. Definir X (simplificado) e y
+X = vivo_f[['valor', 'juiz_tempo_vara']]
+y = vivo_filtrado['y'] # Corrigido (não está em vivo_f)
+
+# 2. Dividir os dados com random_state=1
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=1, stratify=y
+)
+
+# 3. Calcular proporções
+prop_y_train = y_train.mean()
+prop_y_test = y_test.mean()
+
+# 4. Criar e treinar o modelo
+model = LogisticRegression(max_iter=10000)
+model.fit(X_train, y_train)
+
+# 5. Fazer previsões e calcular acurácia
+y_pred = model.predict(X_test)
+acc = accuracy_score(y_test, y_pred)
+
+print(prop_y_train, prop_y_test, acc)
+```
+:::
+:::
+
+```{pyodide}
+#| exercise: ex_11
+#| check: true
+
+# Este bloco assume que as variáveis do setup ('vivo_f', 'vivo_filtrado')
+# e as bibliotecas ('pd', 'np', 'sklearn.*') estão no escopo global.
+
+feedback = None
+result_acc = None 
+result_prop_train = None
+result_prop_test = None
+
+try:
+    # Captura as variáveis de resposta do aluno
+    result_acc = acc
+    result_prop_train = prop_y_train
+    result_prop_test = prop_y_test
+    
+    # --- ETAPA DE VALIDAÇÃO (RECRIA A SOLUÇÃO) ---
+    X_check = vivo_f[['valor', 'juiz_tempo_vara']]
+    y_check = vivo_filtrado['y'] 
+
+    X_train_check, X_test_check, y_train_check, y_test_check = train_test_split(
+        X_check, y_check, test_size=0.3, random_state=1, stratify=y_check
+    )
+    
+    expected_prop_train = y_train_check.mean()
+    expected_prop_test = y_test_check.mean()
+    
+    model_check = LogisticRegression(max_iter=10000)
+    model_check.fit(X_train_check, y_train_check)
+    y_pred_check = model_check.predict(X_test_check)
+    expected_acc = accuracy_score(y_test_check, y_pred_check)
+    
+    # Validação
+    if result_acc is None:
+        feedback = {"correct": False, "message": "A variável `acc` não foi encontrada."}
+    elif abs(result_acc - expected_acc) > 0.0001:
+        feedback = {"correct": False, "message": f"O valor da acurácia `acc` não está correto. Esperado: {expected_acc:.4f}. Seu resultado: {result_acc:.4f}."}
+    elif abs(result_prop_train - expected_prop_train) > 0.0001:
+        feedback = {"correct": False, "message": f"O valor de `prop_y_train` não está correto. Esperado: {expected_prop_train:.4f}."}
+    elif abs(result_prop_test - expected_prop_test) > 0.0001:
+        feedback = {"correct": False, "message": f"O valor de `prop_y_test` não está correto. Esperado: {expected_prop_test:.4f}."}
+    else:
+        feedback = {"correct": True, "message": f"Correto! Acurácia: {expected_acc*100:.2f}%. Proporções (T/T): {expected_prop_train:.3f} / {expected_prop_test:.3f}."}
+
+except NameError as e:
+    if 'acc' in str(e) or 'prop_y_train' in str(e) or 'prop_y_test' in str(e):
+        feedback = {"correct": False, "message": "Uma das variáveis (`acc`, `prop_y_train` ou `prop_y_test`) não foi encontrada."}
+    elif 'vivo_f' in str(e) or 'vivo_filtrado' in str(e):
+        feedback = {"correct": False, "message": "Os DataFrames `vivo_f` ou `vivo_filtrado` não foram encontrados. O setup global foi executado?"}
+    elif 'LogisticRegression' in str(e):
+         feedback = {"correct": False, "message": "Funções do 'sklearn' não foram encontradas. Verifique se elas estão no seu bloco de setup."}
+    else:
+        feedback = {"correct": False, "message": f"Erro de Validação: {e}"}
+except Exception as e:
+    feedback = {"correct": False, "message": f"Erro ao validar: {e}."}
+
+feedback
+```
+
+::: {.callout-tip icon="⚖️"}
+### Relevância jurídica  
+
+A acurácia é a métrica mais fundamental para um modelo de classificação. Ela responde à pergunta: "De 100 processos que o modelo analisou, quantos ele acertou (Vitória/Derrota)?"
+
+Neste exercício, usamos um modelo "simples" (com apenas 2 variáveis). Ele serve como um baseline de performance. Qualquer modelo futuro, mais complexo (como o que usa todas as dummies de juízes), só será considerado "melhor" se apresentar uma acurácia significativamente maior do que esta.
+
+:::
+
+
+
+

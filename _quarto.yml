@@ -30,6 +30,7 @@ bibliography: references.bib
 format:
   live-html:
     theme: cosmo
+    css: style.css
 
 filters:
   - pyodide
