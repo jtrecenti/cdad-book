@@ -4,7 +4,17 @@
     "href": "index.html",
     "title": "Ciência de Dados Aplicada ao Direito II",
     "section": "",
-    "text": "Prefácio\n\nO livro está em construção!\n\nA ideia deste livro é funcionar como material de apoio e estudos para a disciplina de Ciência de Dados no Direito II do curso de Direito do Insper.\nQuando o livro ficar pronto, poderemos utilizá-lo em outros contextos fora da sala de aula.\nOutro link de interesse do qual tirei ideias e conteúdos: https://livro.abj.org.br",
+    "text": "Prefácio\nA ideia deste livro é funcionar como material de apoio e estudos para a disciplina de Ciência de Dados no Direito II do curso de Direito do Insper.\nQuando o livro ficar pronto, poderemos utilizá-lo em outros contextos fora da sala de aula.\nOutro link de interesse do qual tirei ideias e conteúdos: https://livro.abj.org.br",
+    "crumbs": [
+      "Prefácio"
+    ]
+  },
+  {
+    "objectID": "index.html#autores",
+    "href": "index.html#autores",
+    "title": "Ciência de Dados Aplicada ao Direito II",
+    "section": "Autores",
+    "text": "Autores\nO livro está sendo coordenado pelo professor Julio Trecenti, com auxílio de várias outras pessoas:\n\nFelippe Fortunato\nGuilherme Tiengo\nJoão Lucas Brasileiro\nMaria Eduarda Perruci\nMaria Luiza Higashi Ferreira\n\nA parte de exercícios do livro não seria possível de ser feita sem a ajuda do Insper Data, organização estudantil que busca oportunidades para desenvolver alunos nas áreas de engenharia e ciência de dados através de projetos aplicados.",
     "crumbs": [
       "Prefácio"
     ]
