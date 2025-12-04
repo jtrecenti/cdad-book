@@ -11,3 +11,15 @@ A ideia deste livro é funcionar como material de apoio e estudos para a discipl
 Quando o livro ficar pronto, poderemos utilizá-lo em outros contextos fora da sala de aula.
 
 Outro link de interesse do qual tirei ideias e conteúdos: <https://livro.abj.org.br>
+
+## Autores
+
+O livro está sendo coordenado pelo professor Julio Trecenti, com auxílio de várias outras pessoas:
+
+- [Felippe Fortunato](https://www.linkedin.com/in/felippefurtunato/)
+- [Guilherme Tiengo](https://www.linkedin.com/in/guitiengo/)
+- [João Lucas Brasileiro](https://www.linkedin.com/in/joaolucasbrasileiro/)
+- [Maria Eduarda Perruci](https://www.linkedin.com/in/maria-eduarda-perruci-2404381bb)
+- [Maria Luiza Higashi Ferreira](https://www.linkedin.com/in/higashi/)
+
+A parte de exercícios do livro não seria possível de ser feita sem a ajuda do [Insper Data](https://www.linkedin.com/company/insper-data/), organização estudantil que busca oportunidades para desenvolver alunos nas áreas de engenharia e ciência de dados através de projetos aplicados.
